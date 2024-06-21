@@ -1957,7 +1957,7 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
 
 		 <div class="floating-label">
 		 <input type="text" id="add-logo" placeholder=" ">
-		 <label for="add-logo">Add Logo: <b><span class="infor">Ex: https://meupix.vercel.app/logo.png (450x450)</span></b></label>
+		 <label for="add-logo">Add Logo: <b><span class="infor">Ex: https://meupix.github.io/logo.png (450x450)</span></b></label>
 		 </div>
 		 
 		 <span class="showError" id="showError"></span><br />
@@ -2189,19 +2189,19 @@ function CompartilharPix() {
       const meupixsalvo = "?schave=" + pixkey + (amount ? "&valor=" + amount : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagen=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + CPFLink + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
       const textoOriginal = "?chave=" + pixkey + (amount ? "&valor=" + amount.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagen=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + CPFLink + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
       const LinkCriptografado = btoa(textoOriginal); 
-      GerarLinkCurto("https://meupix.vercel.app?codepix=" + encodeURIComponent(LinkCriptografado), "https://meupix.vercel.app?codepix=" + encodeURIComponent(LinkCriptografado)); // Função para gerar link curto (não implementada aqui)
-      document.getElementById('linkcodificador').value = "https://meupix.vercel.app?codepix=" + encodeURIComponent(LinkCriptografado);
-      document.getElementById('urlpix').value = "https://meupix.vercel.app" + textoOriginal.replace(/\ /g, '%20');
-      document.getElementById('salva-meu-pix').value = "https://meupix.vercel.app" + meupixsalvo.replace(/\ /g, '%20');
+      GerarLinkCurto("https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado), "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado)); // Função para gerar link curto (não implementada aqui)
+      document.getElementById('linkcodificador').value = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado);
+      document.getElementById('urlpix').value = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20');
+      document.getElementById('salva-meu-pix').value = "https://meupix.github.io" + meupixsalvo.replace(/\ /g, '%20');
 
     } else if (cpf.length === 14) {
       const meupixsalvo = "?schave=" + pixkey + (amount ? "&valor=" + amount : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagen=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + cpf + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
       const textoOriginal = "?chave=" + pixkey + (amount ? "&valor=" + amount.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagen=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + cpf + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
       const LinkCriptografado = btoa(textoOriginal);
-      GerarLinkCurto('https://meupix.vercel.app?codepix=' + encodeURIComponent(LinkCriptografado));
-      document.getElementById('linkcodificador').value = "https://meupix.vercel.app?codepix=" + encodeURIComponent(LinkCriptografado);
-      document.getElementById('urlpix').value = "https://meupix.vercel.app" + textoOriginal.replace(/\ /g, '%20');
-      document.getElementById('salva-meu-pix').value = "https://meupix.vercel.app" + meupixsalvo.replace(/\ /g, '%20');
+      GerarLinkCurto('https://meupix.github.io?codepix=' + encodeURIComponent(LinkCriptografado));
+      document.getElementById('linkcodificador').value = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado);
+      document.getElementById('urlpix').value = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20');
+      document.getElementById('salva-meu-pix').value = "https://meupix.github.io" + meupixsalvo.replace(/\ /g, '%20');
     }
   }
 
@@ -2422,7 +2422,7 @@ function gerarplacapix() {
   const txid = (document.getElementById('txid-placa').value).substring(0, 20) || '';
   const banco = document.getElementById('banco-placa').value || '';
   const cpf = (document.getElementById('documento-placa').value.replace(/\D/g, '')).substring(0, 18) || '';
-  const minhalogo = document.getElementById('add-logo-placa').value || 'https://meupix.vercel.app/pagamentos.files/imagens/logo.png';
+  const minhalogo = document.getElementById('add-logo-placa').value || 'https://meupix.github.io/pagamentos.files/imagens/logo.png';
 
 // Valida os parâmetros obrigatórios
   if (pixkey === '') {
@@ -2583,7 +2583,7 @@ function gerarplacapix() {
 
     // Gera o link do Pix criptografado e redireciona
 	const LinkCriptografado = btoa(ParamsChaves);
-	document.getElementById('link-placa-gerada').value = 'https://meupix.vercel.app/?criaplaca=' + encodeURIComponent(LinkCriptografado);
+	document.getElementById('link-placa-gerada').value = 'https://meupix.github.io/?criaplaca=' + encodeURIComponent(LinkCriptografado);
  }
 }
 
@@ -2906,10 +2906,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Adicionar o link ao localStorage
 	const LinkCriptografado = btoa(textoOriginal); 
-	    const paramschaves = "https://meupix.vercel.app" + textoOriginal.replace(/\ /g, '%20').trim();
+	    const paramschaves = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20').trim();
     const gerarPix = encodeURIComponent(LinkCriptografado).trim();
     const editarPix = meupixsalvo.replace(/\ /g, '%20').trim();
-    const compartilharPix = "https://meupix.vercel.app?codepix=" + encodeURIComponent(LinkCriptografado).trim();
+    const compartilharPix = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado).trim();
 
 //os dados completos dos produtos na transação
     const transaction = {
@@ -2981,7 +2981,7 @@ document.addEventListener('DOMContentLoaded', function () {
         btnCompartilhar.onclick = function() {
           document.getElementById('linkcodificador').value = transaction.compartilharPix;
           document.getElementById('urlpix').value = transaction.paramschaves;
-          document.getElementById('salva-meu-pix').value = "https://meupix.vercel.app" + transaction.editarPix;
+          document.getElementById('salva-meu-pix').value = "https://meupix.github.io" + transaction.editarPix;
           $('#mainContent').addClass('overlay');
           $('#compartilhar').show();
           $('#close-check').show();
@@ -3116,10 +3116,10 @@ const handleDeleteTransaction = (event) => {
 
     // Adicionar o link ao localStorage
 	const LinkCriptografado = btoa(textoOriginal); 
-	    const paramschaves = "https://meupix.vercel.app" + textoOriginal.replace(/\ /g, '%20').trim();
+	    const paramschaves = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20').trim();
     const gerarPix = encodeURIComponent(LinkCriptografado).trim();
     const editarPix = meupixsalvo.replace(/\ /g, '%20').trim();
-    const compartilharPix = "https://meupix.vercel.app?codepix=" + encodeURIComponent(LinkCriptografado).trim();
+    const compartilharPix = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado).trim();
 
 //os dados completos dos produtos na transação
     const transaction = {
@@ -3188,14 +3188,14 @@ const handleDeleteTransaction = (event) => {
 
     // Adicionar o link ao localStorage 
 	const LinkCriptografado = btoa(textoOriginal); 
-	    const paramschaves = "https://meupix.vercel.app" + textoOriginal.replace(/\ /g, '%20').trim();
+	    const paramschaves = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20').trim();
     const gerarPix = encodeURIComponent(LinkCriptografado).trim();
     const editarPix = meupixsalvo.replace(/\ /g, '%20').trim();
-    const compartilharPix = "https://meupix.vercel.app?codepix=" + encodeURIComponent(LinkCriptografado).trim();
+    const compartilharPix = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado).trim();
 
     document.getElementById('linkcodificador').value = compartilharPix;
     document.getElementById('urlpix').value = paramschaves;
-    document.getElementById('salva-meu-pix').value = "https://meupix.vercel.app" + editarPix;
+    document.getElementById('salva-meu-pix').value = "https://meupix.github.io" + editarPix;
 
     addDevendoTransaction();
 
@@ -3567,7 +3567,7 @@ function GeraQRCodePix(payload, minhalogo) {
 		</main>
  	  </div>`);
 
-   document.getElementById('link-placa-gerada').value = 'https://meupix.vercel.app/?criaplaca=' + Params.get('criaplaca');
+   document.getElementById('link-placa-gerada').value = 'https://meupix.github.io/?criaplaca=' + Params.get('criaplaca');
   ParamsPix = new URLSearchParams(Paramsdescriptografado); // Obtém a URL atual e seus  ex:?criaplaca=P2NoYXZlPVN1YUNoYXZlJnZhbG9yPTAwLjAwJm5vbWU9U2V1Tm9tZSZjaWRhZGU9U3VhQ2lkYWRlJm1lbnNhZ2VuPU1pbmhhIExvamEmdHhpZD1JRGRvUGFnYW1lbnRvJmJhbmNvPSoqKiZjcGY9U2V1RlBGb3VDTlBKJndoYXRzYXBwPXRydWUmdm9sdGFyPXRydWUmbG9nbz1odHRwczovL2ZmY29kaWd1aW4udmVyY2VsLmFwcC92ZXJpZmljYWRvci9pbWFnZW5zL0xvZ29fbm92YS5wbmc=
   
   const pixkey = ParamsPix.get('chave') || '';
@@ -3578,7 +3578,7 @@ function GeraQRCodePix(payload, minhalogo) {
   const txid = (ParamsPix.get('txid') || '').substring(0, 20);
   const banco = ParamsPix.get('banco') || '';
   const cpf = (ParamsPix.get('cpf') || '').substring(0, 14);
-  const minhalogo = ParamsPix.get('logo') || 'https://meupix.vercel.app/pagamentos.files/imagens/logo.png';
+  const minhalogo = ParamsPix.get('logo') || 'https://meupix.github.io/pagamentos.files/imagens/logo.png';
   
   const cor1 = ParamsPix.get('cor1') || '#ff5d00';
   const cor2 = ParamsPix.get('cor2') || '#ffa200';
@@ -4048,10 +4048,10 @@ function salvameupix() {
 
     // Adicionar o link ao localStorage
 	const LinkCriptografado = btoa(textoOriginal); 
-	    const paramschaves = "https://meupix.vercel.app" + textoOriginal.replace(/\ /g, '%20').trim();
+	    const paramschaves = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20').trim();
     const gerarPix = encodeURIComponent(LinkCriptografado).trim();
     const editarPix = meupixsalvo.replace(/\ /g, '%20').trim();
-    const compartilharPix = "https://meupix.vercel.app?codepix=" + encodeURIComponent(LinkCriptografado).trim();
+    const compartilharPix = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado).trim();
     let links = JSON.parse(localStorage.getItem('links')) || [];
     // Verifica se o link já existe
     if (links.some(item => item.titulo === titulo)) {
@@ -4148,7 +4148,7 @@ function mostrarLinks() {
         btnCompartilhar.onclick = function() {
           document.getElementById('linkcodificador').value = links[j].compartilharPix; 
           document.getElementById('urlpix').value = links[j].paramschaves; 
-          document.getElementById('salva-meu-pix').value = "https://meupix.vercel.app" + links[j].editarPix; 
+          document.getElementById('salva-meu-pix').value = "https://meupix.github.io" + links[j].editarPix; 
           $('#mainContent').addClass('overlay'); 
           $('#compartilhar').show(); 
           $('#close-check').show(); 
@@ -4420,7 +4420,7 @@ function atualizarAba(abaIndex) {
       btnCompartilhar.onclick = function() {
         document.getElementById('linkcodificador').value = links[j].compartilharPix;
         document.getElementById('urlpix').value = links[j].paramschaves;
-        document.getElementById('salva-meu-pix').value = "https://meupix.vercel.app" + links[j].editarPix;
+        document.getElementById('salva-meu-pix').value = "https://meupix.github.io" + links[j].editarPix;
         $('#mainContent').addClass('overlay');
         $('#compartilhar').show();
         $('#close-check').show();
