@@ -1,0 +1,25 @@
+@font-face {
+  font-family: 'Graphik';
+  src: url('/fonts/Graphik/variants/Graphik-Regular.eot');
+  src: url('/fonts/Graphik/variants/Graphik-Regular.woff2') format('woff2'),
+  url('/fonts/Graphik/variants/Graphik-Regular.woff') format('woff'),
+  url('/fonts/Graphik/variants/Graphik-Regular.ttf') format('truetype'),
+  url('/fonts/Graphik/variants/Graphik-Regular.svg#Graphik-Regular') format('svg'),
+  url('/fonts/Graphik/variants/Graphik-Regular.eot?#iefix') format('embedded-opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: fallback;
+}
+
+@font-face {
+  font-family: 'Graphik';
+  src: url('/fonts/Graphik/variants/Graphik-Semibold.eot');
+  src: url('/fonts/Graphik/variants/Graphik-Semibold.woff2') format('woff2'),
+  url('/fonts/Graphik/variants/Graphik-Semibold.woff') format('woff'),
+  url('/fonts/Graphik/variants/Graphik-Semibold.ttf') format('truetype'),
+  url('/fonts/Graphik/variants/Graphik-Semibold.svg#Graphik-Semibold') format('svg'),
+  url('/fonts/Graphik/variants/Graphik-Semibold.eot?#iefix') format('embedded-opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: fallback;
+}

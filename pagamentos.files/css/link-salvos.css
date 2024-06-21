@@ -1,0 +1,132 @@
+.links-style {
+background: linear-gradient(231deg, #ffa200e0, #ff5d00e0);
+    box-shadow: 0 0 15px #ff6700;
+    transform: skewX(-15deg);
+    border-radius: 15px;
+    margin-top: 10px;
+}
+.fechalinks {
+    cursor: pointer;
+}
+#links-container {
+    background: #000000c9;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgb(0 0 0);
+}
+
+/* Estilos gerais para os botões */
+.open-link,
+.share-link {
+  background-color: #007bff; /* Azul padrão */
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 4px; /* Espaçamento entre os botões */
+  transition: background-color 0.3s ease; /* Transição suave para o hover */
+}
+
+/* Hover effect */
+.open-link:hover,
+.share-link:hover {
+  background-color: #0056b3; /* Azul mais escuro no hover */
+}
+.delete-link {
+      background-color: #f44336; /* Vermelho */
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 4px; /* Espaçamento entre os botões */
+  transition: background-color 0.3s ease; /* Transição suave para o hover */
+    }
+
+.delete-link:hover {
+      background-color: #d32f2f; /* Vermelho mais escuro */
+    }
+/* Estilos específicos para telas pequenas (celular) */
+@media (max-width: 768px) {
+  .open-link,
+  .share-link,
+  .delete-link {
+    font-size: 12px; /* Reduzir o tamanho da fonte */
+    padding: 6px 12px; /* Reduzir o padding */
+  }
+}
+ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .link-item {
+    display: flex;
+    justify-content: center;
+    color: #fff;
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    border: none;
+    border-bottom: 2px solid #0d9475;
+    padding: 8px;
+    }
+
+    .link-actions {
+    display: flex;
+    flex-direction: row;
+    padding-left: 8px;
+    padding-bottom: 8px;
+    border-right-width: 8px;
+
+    }
+
+.links-header {
+    display: flex;
+    align-content: flex-start;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.links-header svg {
+    margin-right: 14px
+}
+
+.links-header h1 {
+    color: #fff
+}
+
+.links-item {
+    display: flex;
+    flex-direction: row;
+    margin-top: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.links-item:last-child {
+    margin-bottom: 18px
+}
+
+.link-delete {
+    background: transparent;
+    border: none;
+    transition: -webkit-transform .5s;
+    transition: transform .5s;
+    transition: transform .5s,-webkit-transform .5s
+}
+
+.link-delete:hover {
+    -webkit-transform: scale(1.15);
+    transform: scale(1.15)
+}
+
+
+
+
+
+
+
