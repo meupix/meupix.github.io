@@ -2755,8 +2755,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const botaovoltar = ParamsPix.get('voltar') || '';
   const minhalogo = ParamsPix.get('logo') || 'pagamentos.files/imagens/logo.png';
 
-
-
   if (chavepix === '') {
     exibirErro('Insira o valor no parâmetros &chave=');
     return;
@@ -2892,16 +2890,17 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    valor = parseFloat(amount.toString().replace(/\D/g, '')) / 100;
+    valor = formatarBRL(amount.toString());
     let meupixsalvo;
     let textoOriginal;
+
     if (cpf.length === 11) {
       const CPFLink = LinkCPF(cpf); 
       meupixsalvo = "?schave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
-      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
+      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
     } else if (cpf.length === 14) {
       meupixsalvo = "?schave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
-      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
+      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
     }
 
     // Adicionar o link ao localStorage
@@ -3102,16 +3101,18 @@ const handleDeleteTransaction = (event) => {
             setTimeout(() => {  modal.style.display = 'none';  }, 1500);
             return;
           }
-    valor = parseFloat(amount.toString().replace(/\D/g, '')) / 100;
+          
+    valor = formatarBRL(amount.toString());
     let meupixsalvo;
     let textoOriginal;
+
     if (cpf.length === 11) {
       const CPFLink = LinkCPF(cpf); 
       meupixsalvo = "?schave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
-      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
+      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
     } else if (cpf.length === 14) {
       meupixsalvo = "?schave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
-      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
+      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
     }
 
     // Adicionar o link ao localStorage
@@ -3173,17 +3174,17 @@ const handleDeleteTransaction = (event) => {
 
   document.getElementById('compartilhar-pagameto-button').addEventListener('click', () => {
 
-    valor = parseFloat(amount.toString().replace(/\D/g, '')) / 100;
+    valor = formatarBRL(amount.toString());
     let meupixsalvo;
     let textoOriginal;
 
     if (cpf.length === 11) {
       const CPFLink = LinkCPF(cpf); 
       meupixsalvo = "?schave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
-      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
+      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
     } else if (cpf.length === 14) {
       meupixsalvo = "?schave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
-      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
+      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
     }
 
     // Adicionar o link ao localStorage 
