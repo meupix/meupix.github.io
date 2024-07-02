@@ -46,6 +46,6 @@ Qualquer pessoa que possui uma chave Pix cadastrada pode criar um QrCode válido
 
 ## Autor
 
-Este é um projeto de **@DaviMaTaeus**.
+Este é um projeto de [**@DaviMaTaeus**](https://x.com/davimataeus).
 
 [![Github](https://img.shields.io/badge/GitHub-181717.svg?style=for-the-badge&logo=GitHub&logoColor=white)](https://github.com/meupix)
