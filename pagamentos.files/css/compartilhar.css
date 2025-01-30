@@ -1023,31 +1023,31 @@
 
             }
 
-            .share-wrapper-icons.colorful-ico {
-                display: flex;
-                 flex-wrap: wrap;
-            }
+.share-wrapper-icons.colorful-ico {
+    display: flex;
+    flex-wrap: wrap;
+}
 
-            .share-wrapper-icons.colorful-ico li {
-                list-style: none;
-                width: 25%;
-                text-align: center;
-            }
+.share-wrapper-icons.colorful-ico li {
+    list-style: none;
+    width: 25%;
+    text-align: center;
+}
 
-            .share-wrapper-icons.colorful-ico li a {
-                display: block;
-                width: 80px;
-                height: 40px;
-                line-height: 25px;
-                font-size: 12px;
-                margin: 6px auto;
-                padding: 15px 0;
-                text-align: center;
-                cursor: pointer;
-                border-radius: 5px;
-                background: linear-gradient(231deg, #ffa200e0, #ff5d00e0);
-                box-shadow: 0 0 15px #ff670085;
-            }
+.share-wrapper-icons.colorful-ico li a {
+    display: block;
+    width: 80px;
+    height: 40px;
+    line-height: 25px;
+    font-size: 12px;
+    margin: 6px auto;
+    padding: 15px 0;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 5px;
+    background: linear-gradient(231deg, #ffa200e0, #ff5d00e0);
+    box-shadow: 0 0 15px #ff670085;
+}
 
             .share-wrapper-icons.colorful-ico li a:hover {
                 opacity: 0.8
