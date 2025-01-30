@@ -1024,9 +1024,8 @@
             }
 
             .share-wrapper-icons.colorful-ico {
-                display: flex;
-                flex-wrap: wrap;
-                list-style: none;
+                flex-direction: column;
+
             }
 
             .share-wrapper-icons.colorful-ico li {
