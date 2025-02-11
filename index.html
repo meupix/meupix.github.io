@@ -1054,7 +1054,6 @@ h1 {
     100% { background-position: 0 0; }
 }
 
-
 .show-share .StickyBox {
     opacity: 1;
     visibility: visible;
@@ -1875,6 +1874,151 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
   background: linear-gradient(47deg, #206958, #05a581, #206958);
   box-shadow: 0 0 15px #05a581;
 }
+.fundoplaca {
+    background: #000000c9;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgb(0 0 0);
+}
+#cor-fundo-placa {
+    display: none;
+}
+.modalagendamento {
+  display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0 0 0 / 40%);
+}
+.modalagendamento-close-button {
+    color: #ffffff;
+    float: right;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.modalConfirm { /* Estilo para o botão "Confirmar Pagamento" */
+background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 8px #0081ff;
+    margin-right: 5px;
+}
+
+.modalConfirm:hover {
+  background: linear-gradient(47deg, #206958, #05a581, #206958);
+  box-shadow: 0 0 15px #05a581;
+}
+#Error-nome-agendamento {
+    color: red;
+    margin-top: 10px;
+}
+#clienteNome-form label {
+    display: block; 
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+
+#clienteNome-form input:focus + label,
+#clienteNome-form input:not(:placeholder-shown) + label {
+    top: -20px;
+    font-size: 12px;
+    color: #fff;
+    background: linear-gradient(226deg, #00ff14bd, #036306bd);
+    border-radius: 15px;
+    padding: 9px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+    box-shadow: 0 0 15px #0afc00d1;
+}
+
+#clienteNome-form input[type="text"], 
+#clienteNome-form input[type="number"] {
+  width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
+    box-shadow: 0 0 15px #0081ff;
+    border-bottom: 2px solid #ffffff;
+}
+
+#clienteNome-form input:focus {
+ outline: none;
+ border-bottom-color: #036306bd;
+ background: linear-gradient(267deg, #206958, #05a581, #206958, #05a581, #206958);
+ background-size: 400%;
+ width: calc(100% + 4px);
+ animation: glowing 20s linear infinite;
+ box-shadow: 0 0 8px #05a581;
+}
+
+.floating-label-clienteNome {
+    position: relative;
+    margin-bottom: 21px;
+	text-align: left;
+}
+
+.floating-label-clienteNome input {
+  border: none;
+    width: 100%;
+    padding: 8px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+    background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
+    box-shadow: 0 0 15px #0081ff;
+    border-bottom: 2px solid #ffffff;
+}
+
+.floating-label-clienteNome label {
+    position: absolute;
+    pointer-events: none;
+    left: 8px;
+    top: 12px;
+    transition: top 0.3s ease, font-size 0.3s ease;
+    font-size: 10px;
+    color: #fff;
+    border-radius: 15px;
+    padding: 9px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+}
+
+.floating-label-clienteNome input:focus {
+ outline: none;
+ border-bottom-color: #036306bd;
+ background: linear-gradient(267deg, #206958, #05a581, #206958, #05a581, #206958);
+ background-size: 400%;
+ width: calc(100% + 4px);
+ animation: glowing 20s linear infinite;
+ box-shadow: 0 0 15px #0afc00d1;
+}
+
+.floating-label-clienteNome input:focus + label,
+.floating-label-clienteNome input:not(:placeholder-shown) + label {
+    top: -35px;
+    font-size: 12px;
+    color: #fff;
+    background: linear-gradient(226deg, #00ff14bd, #036306bd);
+    border-radius: 15px;
+    padding: 9px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+    box-shadow: 0 0 15px #0afc00d1;
+}
 </style>
 </head>
 
@@ -1961,15 +2105,13 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
 </div>
 
 		 <div class="show-share">
-		   <div id="compartilhar">
+      <div id="compartilhar" class="">
             <div class="StickyBox" id="mainContent">
 					  <div class="loading-img overlay" id="CarregaCompartilhar"></div>
                     <div class="StickyDemo" style="display: none;">
                         <div class="StickyTab">
                             <div class="StickyType">Compartilhar com outros aplicativos</div>
-                            <label class=" " id="close-check" onclick="closecompartilhar()">
-                                <i class="far fa-window-close"></i>
-                            </label>
+                            <span class="close-button" aria-label="Fechar Modal" onclick="closecompartilhar()">×</span>
                         </div>
                         <div class="share-wrapper-icons colorful colorful-ico">
                             <li class="twitter">
@@ -2168,36 +2310,37 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
                     <strong> <strong id="valor2"></strong></strong>
                 </p>
                 <a id="copy-qr" class="copy-button copy-icon db tc no-underline br3 fw6 ttn-ns" onclick="copiarqrpix();">Copiar QR Code</a>
-                </div>
-            <div class="w-100 flex-ns flex-column ba-ns b--black-10 ph5-ns ph4 pt4-ns pt0 pb4">
-                <p class="lh-copy tc center mb4 db-ns f5"><strong>Ou use a chave Pix</strong></p>
-                <div class="flex flex-column flex-nowrap w-100 f6-ns bt-ns b--black-10 pt4-ns mt5 mt0-ns">
 
-                   <div class="flex flex-row justify-between w-auto pb3">
-                       <span class="justify-start b tl">Chave Pix</span>
-                       <span id="copy-chave" class="copy-icon-chave" onclick="copiarchavepix();">Copiar Chave PIX</span>
-                   </div>
-                    <div class="flex flex-row justify-between w-auto pb3">
-                        <span class="justify-start b tl">Nome</span>
-                        <span class="justify-end tr" id="nome2"></span>
-                    </div>
-                    <div class="flex flex-row justify-between w-auto pb3">
-                        <span class="justify-start b tl" id="cpf-cnpj">CPF</span>
-                        <span class="justify-end tr" id="cpf"></span>
-                    </div>
-                    <div class="flex flex-row justify-between w-auto pb3">
-                        <span class="justify-start b tl">Banco</span>
-                        <span class="justify-end tr" id="banco-do-beneficiario"></span>
-                    </div>
-                    <div id="infor-none" class="flex flex-row justify-between w-auto pb3">
-                        <span class="justify-start b tl">Identificador</span>
-                        <span class="justify-end tr" id="infor"></span>
-                    </div>
-                    <div id="mensagem-none" class="flex flex-row justify-between w-auto pb3">
-                        <span class="justify-start b tl">mensagem</span>
-                        <span class="justify-end tr" id="mensagem"></span>
-                    </div>
-                </div>
+                <div class="w-100 flex-ns flex-column ba-ns b--black-10 ph5-ns pt4-ns pt0 pb4" style="font-weight: 600;">
+                  <p class="lh-copy tc center mb4 db-ns f5"><strong>Ou use a chave Pix</strong></p>
+                  <div class="flex flex-column flex-nowrap w-100 f6-ns bt-ns b--black-10 pt4-ns mt5 mt0-ns">
+  
+                     <div class="flex flex-row justify-between w-auto pb3">
+                         <span class="justify-start b tl">Chave Pix</span>
+                         <span id="copy-chave" class="copy-icon-chave" onclick="copiarchavepix();">Copiar Chave PIX</span>
+                     </div>
+                      <div class="flex flex-row justify-between w-auto pb3">
+                          <span class="justify-start b tl">Nome</span>
+                          <span class="justify-end tr" id="nome2"></span>
+                      </div>
+                      <div class="flex flex-row justify-between w-auto pb3">
+                          <span class="justify-start b tl" id="cpf-cnpj">CPF</span>
+                          <span class="justify-end tr" id="cpf"></span>
+                      </div>
+                      <div class="flex flex-row justify-between w-auto pb3">
+                          <span class="justify-start b tl">Banco</span>
+                          <span class="justify-end tr" id="banco-do-beneficiario"></span>
+                      </div>
+                      <div id="infor-none" class="flex flex-row justify-between w-auto pb3">
+                          <span class="justify-start b tl">Identificador</span>
+                          <span class="justify-end tr" id="infor"></span>
+                      </div>
+                      <div id="mensagem-none" class="flex flex-row justify-between w-auto pb3">
+                          <span class="justify-start b tl">mensagem</span>
+                          <span class="justify-end tr" id="mensagem"></span>
+                      </div><br />
+                  </div>
+              </div>
             </div>
 
             <div id="Botaowhat2" class="dn-l w-100 flex-ns flex-column pt4-ns pb4-ns ph5-ns ph3">
@@ -2243,23 +2386,24 @@ const urlParams = new URLSearchParams(window.location.search);
 
 // Verifica se existem parâmetros na URL
 if (!urlParams || urlParams.keys().next().done) {
-  // Sem parâmetros encontrados, faça algo aqui (opcional)
+    // Sem parâmetros encontrados, faça algo aqui (opcional)
 } else {
-  // Verifica se os parâmetros necessários estão presentes
-  if (!urlParams.has('codepix') && !urlParams.has('chave') && !urlParams.has('schave') && !urlParams.has('criaplaca') && !urlParams.has('minhavenda')) {
-    // Parâmetros não encontrados: exibe mensagem de erro
-    document.getElementById('Error').innerText = 'Parâmetro não encontrado: &codepix= &chave= &schave= &criaplaca= &minhavenda=';
-    const modal = document.getElementById('modal');
-    modal.style.display = 'flex';
-    $('#desfocfundo').addClass('overlay');
-    $('.dados').hide();
-    $('#Carregando').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-pix.png" alt="">`);
-  } else {
-    // Parâmetros encontrados: inicia o processamento do pagamento
-    $('#desfocfundo').addClass('overlay');
-    $('.dados').hide();
-    $('#Carregando').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-pix.png" alt="">`);
-  }
+    // Verifica se os parâmetros necessários estão presentes
+    if (!urlParams.has('codepix') && !urlParams.has('chave') && !urlParams.has('schave') && 
+        !urlParams.has('criaplaca') && !urlParams.has('minhavenda')) {
+
+        // Parâmetros não encontrados: exibe mensagem de erro
+        $('#Error').text('Parâmetro não encontrado: &codepix= &chave= &schave= &criaplaca= &minhavenda=');
+        $('#modal').css('display', 'flex');
+        $('#desfocfundo').addClass('overlay');
+        $('.dados').hide();
+        $('#Carregando').html('<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-pix.png" alt="">');
+    } else {
+        // Parâmetros encontrados: inicia o processamento do pagamento
+        $('#desfocfundo').addClass('overlay');
+        $('.dados').hide();
+        $('#Carregando').html('<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-pix.png" alt="">');
+    }
 }
 
 function CompartilharPix() {
@@ -2772,7 +2916,8 @@ document.addEventListener('DOMContentLoaded', function () {
         ParamsPix = Params;
     }
 
-  $('.menuvendas').html(`<main class="containerfundo">
+  $('.menuvendas').html(`
+  <main class="containerfundo">
         <h1><span id="valordopagamentos" aria-live="polite">R$ 0,00</span></h1>
 
         <form id="pix-form">
@@ -2844,6 +2989,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     <div id="paymentModal" class="modal-vendas" aria-hidden="true">
         <div class="modal-contentvenda payment-modal">
+
+          <div id="modalagendamento" class="modalagendamento" aria-hidden="true">
+            <div class="modal-contentvenda">
+                <span class="modalagendamento-close-button" aria-label="Fechar agendamento" onclick="fecharModalNomeAgendamento()">×</span>
+                <h2>Nome do Cliente:</h2>
+                    <div class="floating-label-clienteNome">
+                      <input type="text" id="clienteNome" placeholder="" required="">
+                      <label for="clienteNome"></label>
+                    </div>
+                      <button id="modalConfirm" class='modalConfirm'>Confirmar</button>
+                      <br />
+                      <br />		
+                      <span id="Error-nome-agendamento"></span>
+            </div>
+           </div>
+
             <span class="close-button" aria-label="Fechar Modal">×</span>
             <h2>Pagamento QR Pix</h2>
 
@@ -2983,15 +3144,14 @@ document.addEventListener('DOMContentLoaded', function () {
     generateProductListModal(transactionId);
     totalAmountModal.textContent = formatarBRL(amount);
 
-    const paymentModal = document.getElementById('paymentModal');
-    paymentModal.style.display = 'block';
+    $('#paymentModal').show(); // Exibe o modal
 
-    window.addEventListener('click', (event) => {
-    if (event.target === paymentModal) {
-      paymentModal.style.display = 'none';
+    $(window).click(function(event) {
+      if ($(event.target).is('#paymentModal')) {
+        $('#paymentModal').hide(); // Esconde o modal se clicar fora dele
     }
-});
-  };
+  });
+};
 
   // Função para gerar a lista de produtos no modal de pagamento
   const generateProductListModal = (transactionId) => {
@@ -3308,68 +3468,75 @@ const handleDeleteProduct = (event) => {
   };
 
   const addDevendoTransaction = () => {
-    Cliente = prompt("Nome do Cliente:");
+    // Mostrar a modal 
+    $('#modalagendamento').show();
+    // Adicionar evento de clique ao botão "Confirmar"
+    const confirmButtonagendamento = document.getElementById('modalConfirm');
+    confirmButtonagendamento.addEventListener('click', () => {
+        let Cliente = document.getElementById('clienteNome').value;
 
-    if (!Cliente) {
-            document.getElementById('Error').innerText = 'Por favor, insira o nome do cliente antes de continuar.';
-            const modal = document.getElementById('modal');
-            modal.style.display = 'flex';  
-            setTimeout(() => {  modal.style.display = 'none';  }, 1500);
-            return;
-          }
-          
-    valor = formatarBRL(amount.toString());
-    let meupixsalvo;
-    let textoOriginal;
+        if (!Cliente) {
+          document.getElementById('Error-nome-agendamento').innerText = 'Por favor, insira o nome do cliente antes de continuar.';
+        setTimeout(() => {  document.getElementById('Error-nome-agendamento').innerText = '';  }, 1500);
+        return;
+        }
 
-    if (cpf.length === 11) {
-      const CPFLink = LinkCPF(cpf); 
-      meupixsalvo = "?schave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
-      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
-    } else if (cpf.length === 14) {
-      meupixsalvo = "?schave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
-      textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
-    }
+        $('#modalagendamento').hide();
+        $('#clienteNome').val('');
+        valor = formatarBRL(amount.toString());
+        let meupixsalvo;
+        let textoOriginal;
 
-    // Adicionar o link ao localStorage
-	const LinkCriptografado = btoa(textoOriginal); 
-	    const paramschaves = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20').trim();
-    const gerarPix = encodeURIComponent(LinkCriptografado).trim();
-    const editarPix = meupixsalvo.replace(/\ /g, '%20').trim();
-    const compartilharPix = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado).trim();
+        if (cpf.length === 11) {
+            const CPFLink = LinkCPF(cpf);
+            meupixsalvo = "?schave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
+            textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + CPFLink + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
+        } else if (cpf.length === 14) {
+            meupixsalvo = "?schave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
+            textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
+        }
 
-//os dados completos dos produtos na transação
-    const transaction = {
-      gerarPix: gerarPix, 
-      editarPix: editarPix,
-      compartilharPix: compartilharPix,
-      paramschaves: paramschaves,
-      id: transactionId,
-      amount: formatarBRL(amount),
-      chavepix: chavepix.replace(/\ /g, '+'),
-      date: new Date().toLocaleDateString(),
-      products: Object.entries(selectedProducts).map(([productId, quantity]) => { const product = JSON.parse(localStorage.getItem('products'))[productId]; return { name: product.name, price: product.price, quantity: quantity };}),
-      status: 'Aguardando Pagamento - ' + Cliente,
-    };
+        const LinkCriptografado = btoa(textoOriginal);
+        const paramschaves = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20').trim();
+        const gerarPix = encodeURIComponent(LinkCriptografado).trim();
+        const editarPix = meupixsalvo.replace(/\ /g, '%20').trim();
+        const compartilharPix = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado).trim();
 
-    let history = JSON.parse(localStorage.getItem(chavepix)) || [];
-    history.unshift(transaction);
-    localStorage.setItem(chavepix, JSON.stringify(history));
+        const transaction = {
+          gerarPix: gerarPix, 
+          editarPix: editarPix,
+          compartilharPix: compartilharPix,
+          paramschaves: paramschaves,
+          id: transactionId,
+          amount: formatarBRL(amount),
+          chavepix: chavepix.replace(/\ /g, '+'),
+          date: new Date().toLocaleDateString(),
+          products: Object.entries(selectedProducts).map(([productId, quantity]) => { const product = JSON.parse(localStorage.getItem('products'))[productId]; return { name: product.name, price: product.price, quantity: quantity };}),
+          status: 'Aguardando Pagamento - ' + Cliente,
+        };
 
-    document.getElementById('paymentModal').style.display = 'none';
-    document.getElementById('textocopiado').innerText = 'Cliente: ' + Cliente + ' ID: ' + transactionId + ' Valor: ' + formatarBRL(amount) ;
-   document.getElementById('titulocopiado').innerText = 'Pagamento cria com sucesso!';
-   telacopiado = document.getElementById('telacopiado');
-   telacopiado.style.display = 'flex';
-   setTimeout(() => { telacopiado.style.display = 'none'; }, 3000);
+        let history = JSON.parse(localStorage.getItem(chavepix)) || [];
+        history.unshift(transaction);
+        localStorage.setItem(chavepix, JSON.stringify(history));
+    
+        document.getElementById('textocopiado').innerText = 'Cliente: ' + Cliente + ' ID: ' + transactionId + ' Valor: ' + formatarBRL(amount) ;
+       document.getElementById('titulocopiado').innerText = 'Pagamento cria com sucesso!';
+       let $telacopiado = $('#telacopiado'); // Seleciona o elemento com jQuery
+       $telacopiado.css('display', 'flex'); // Exibe o elemento
+       setTimeout(() => { $telacopiado.fadeOut(); }, 3500);
+    
+       $('#mainContent').addClass('overlay');
+       $('#compartilhar').show();
+       $('#close-check').show();
+       $('#CarregaCompartilhar').show();
+       $('#CarregaCompartilhar').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-compartilhar.png" alt="">`);
+       GerarLinkCurto(compartilharPix, compartilharPix);
 
-    displayHistory();
-    resetTransaction();
-
-    const paymentModal = document.getElementById('paymentModal');
-    paymentModal.style.display = 'none';
-  };
-
+        displayHistory();
+        resetTransaction();
+        $('#paymentModal').hide();
+    });
+};
 
   document.getElementById('remove').addEventListener('click', () => {
     if (confirm("Tem certeza de que deseja limpar o histórico de transações?")) {
@@ -3384,8 +3551,7 @@ const handleDeleteProduct = (event) => {
 
   document.getElementById('pago-button').addEventListener('click', () => {
     saveTransaction();
-    const paymentModal = document.getElementById('paymentModal');
-    paymentModal.style.display = 'none';
+    $('#paymentModal').hide();
   });
 
   document.getElementById('compartilhar-pagameto-button').addEventListener('click', () => {
@@ -3410,28 +3576,12 @@ const handleDeleteProduct = (event) => {
     const editarPix = meupixsalvo.replace(/\ /g, '%20').trim();
     const compartilharPix = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado).trim();
 
-    document.getElementById('linkcodificador').value = compartilharPix;
-    document.getElementById('urlpix').value = paramschaves;
-    document.getElementById('salva-meu-pix').value = "https://meupix.github.io" + editarPix;
+    $('#linkcodificador').val(compartilharPix);
+    $('#urlpix').val(paramschaves);
+    $('#salva-meu-pix').val("https://meupix.github.io" + editarPix);
 
     addDevendoTransaction();
 
-    if (!Cliente) {
-      document.getElementById('Error').innerText = 'Por favor, insira o nome do cliente antes de continuar.';
-      const modal = document.getElementById('modal');
-      modal.style.display = 'flex';  
-      setTimeout(() => {  modal.style.display = 'none';  }, 1500);
-      return;
-    }
-
-    $('#mainContent').addClass('overlay');
-    $('#compartilhar').show();
-    $('#close-check').show();
-    $('#CarregaCompartilhar').show();
-    $('#CarregaCompartilhar').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-compartilhar.png" alt="">`);
-    GerarLinkCurto(compartilharPix, compartilharPix);
-
-    resetTransaction();
   });
 
   const productModal = document.getElementById('productModal');
@@ -3604,192 +3754,193 @@ function GeraQRCodePix(payload, minhalogo) {
   }
   
   const Paramsdescriptografado = atob(Params.get('criaplaca'));
+  document.getElementById("desfocfundo").style.display = "block";
+  $('.qrcriado').html(`
+  <div id="BotaoVoltar2" class="dn-l w-100 flex-ns flex-column pt4-ns pb4-ns ph5-ns ph3">
+    <a class="fechalinks" onclick="mostrarLinks()"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" color="#fff" height="38" width="38" xmlns="http://www.w3.org/2000/svg" style="color: rgb(255, 255, 255);"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></a>
+ </div>
+ <main class="flex flex-column flex-row-l mw8 center mt5 ph0 pb0 fundoplaca">
+     <section class="fixed-l flex center pt6-l pt5 ph0-l ph3 measure-wide w-auto">
 
-  $('.qrcriado').html(`<div id="BotaoVoltar2" class="dn-l w-100 flex-ns flex-column pt4-ns pb4-ns ph5-ns ph3">
-       <a onclick="backvolta();" class="Loja-button db tc no-underline br3 fw6 ttn-ns">&lt;</a>
-	</div><main class="flex flex-column flex-row-l mw8 center mt5 ph0 pb0">
-        <section class="fixed-l flex center pt6-l pt5 ph0-l ph3 measure-wide w-auto">
+        <div class="flex flex-column justify-between mr6-l mb1">
+        <div class="flex flex-column items-start">
+        
+        <div id="BotaoVoltar2" class="fw9 mt3-l dn db-l">
+             <a class="fechalinks" onclick="mostrarLinks()"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" color="#fff" height="38" width="38" xmlns="http://www.w3.org/2000/svg" style="color: rgb(255, 255, 255);"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></a>
+        </div>
+        <div id="logo" class="center flex-column items-start">
+        <img style=" width: 100px; height: 100px;" src="pagamentos.files/imagens/favicon.png" alt="Meu Pix">
+        </div>
+        <h2 class="npurple-1 tl-l tc lh-headline mb0-l mb3-m mb4 ">Alterar Imagem de Fundo e Cores.</h2>
+          <a class="botaocanva center" href="https://www.canva.com/pt_br/modelos/?query=pix&pricing=FREE" target="_blank">Modelos de fundo PIX no canva.com</a>
+          </div>
+        
+        <label class="ph4-placa" for="link-imagem">Link da imagem</label>
+        <div class="input-wrapper">
+        <input class="god" type="text" id="link-imagem" placeholder="" onchange="verificarUpload()"></input>
+        <button type="button" id="clear-link" onclick="limparLink()">X</button>
+        </div>
 
-           <div class="flex flex-column justify-between mr6-l mb1">
-           <div class="flex flex-column items-start">
-		   
-           <div id="BotaoVoltar2" class="fw9 mt3-l dn db-l">
-           <a onclick="backvolta();" class="Loja-button no-underline">&lt;</a>
-           </div>
-		   
-           <div id="logo" class="center flex-column items-start">
-           <img style=" width: 100px; height: 100px;" src="pagamentos.files/imagens/favicon.png" alt="Meu Pix">
-           </div>
-           <h2 class="npurple-1 tl-l tc lh-headline mb0-l mb3-m mb4 ">Alterar Imagem de Fundo e Cores.</h2>
-		     <a class="botaocanva center" href="https://www.canva.com/pt_br/modelos/?query=pix&pricing=FREE" target="_blank">Modelos de fundo PIX no canva.com</a>
-		     </div>
-		   
-		   <label class="ph4-placa" for="link-imagem">Link da imagem</label>
-		   <div class="input-wrapper">
-           <input class="god" type="text" id="link-imagem" placeholder="" onchange="verificarUpload()">
-           <button type="button" id="clear-link" onclick="limparLink()">X</button>
-           </div>
+        <div class="upload-wrapper">
+        <label class="ph4-placa" for="imagem-upload"></label>
+        <input type="file" id="imagem-upload" accept="image/*" onchange="verificarUpload()"></input>
+        <button type="button" id="clear-upload" onclick="limparUpload()">X</button>
+        </div>
 
-           <div class="upload-wrapper">
-           <label class="ph4-placa" for="imagem-upload"></label>
-           <input type="file" id="imagem-upload" accept="image/*" onchange="verificarUpload()"></input>
-		   <button type="button" id="clear-upload" onclick="limparUpload()">X</button>
-		   </div>
+        <label class="ph4-placa" for="angulo">Ângulo:</label>
+        <input class="god" type="number" id="angulo" value="0">
+        
 
-           <label class="ph4-placa" for="angulo">Ângulo:</label>
-           <input class="god" type="number" id="angulo" value="0">
-		   
-           <div>
-           <label class="ph4-placa" for="cor1">Cor do fundo:</label>
-           <input type="color" id="cor1" value="#ffa200">
-		   
-		   <label class="ph4-placa" for="cor2"></label>
-           <input type="color" id="cor2" value="#ff5d00">
-		   </div>
-		   
-           <div>
-           <label class="ph4-placa" for="cor3">Fundo do QR:</label>
-           <input type="color" id="cor3" value="#206958">
-		   
-           <label class="ph4-placa" for="cor4"></label>
-           <input type="color" id="cor4" value="#05a581">
-		   
-		   <label class="ph4-placa" for="cor5"></label>
-           <input type="color" id="cor5" value="#206958">
-		   </div>
+        <div id="cor-fundo-placa">
+        <label class="ph4-placa" for="cor1">Cor do fundo:</label>
+        <input type="color" id="cor1" value="#ffa200">
+        <label class="ph4-placa" for="cor2"></label>
+        <input type="color" id="cor2" value="#ff5d00">
+        </div>
+        
+        <div>
+        <label class="ph4-placa" for="cor3">Fundo do QR:</label>
+        <input type="color" id="cor3" value="#206958">
+        
+        <label class="ph4-placa" for="cor4"></label>
+        <input type="color" id="cor4" value="#05a581">
+        
+        <label class="ph4-placa" for="cor5"></label>
+        <input type="color" id="cor5" value="#206958">
+        </div>
+   </section>
+ 
+     <section class="flex-l dn w-50"></section>
+ 
+   <div class="w-80-ns center flex flex-column items-center tc mb5 mb7-l"><br />
+     <div class="floating-placa">
+      <input type="text" id="chave-placa" placeholder="">
+      <label for="pixkey">Chave Pix:<b><span class="infor">*</span></b></label>
+      </div>
+      
+      <div class="floating-placa">
+      <input  type="text" id="mensagem-placa" placeholder=" "  maxlength="28">
+      <label  for="mensagem-placa">mensagem no Pagamento:</label>
+      </div>
+      
+      <div class="floating-placa">
+      <input type="text" id="nome-placa" placeholder=""  maxlength="25"> 
+      <label for="nome-placa">Nome do Beneficiado: <b><span class="infor">*</span></b></label>
+      </div>
+      
+      <div class="floating-placa">
+      <input type="text" id="cidade-placa" placeholder=""  maxlength="15">
+      <label for="cidade-placa">Cidade do Beneficiado:<b><span class="infor">*</span></b></label>
+      </div>
+      
+      <div class="floating-placa">
+      <input type="text" id="txid-placa" placeholder=""  maxlength="20">
+      <label for="txid-placa" >Identificador do pagamento: Sem espaços</label>
+      </div>
+     
+      <div class="floating-placa">
+      <input type="text" id="valor-placa" placeholder=" " oninput="amount(this)">
+      <label for="valor-placa">Valor: R$ 1.000,00</label>
+      </div>
+      
+      <div class="floating-placa">
+      <input type="text" id="banco-placa" placeholder=" ">
+      <label for="banco-placa">banco do Beneficiado:<b><span class="infor">*</span></b></label>
+      </div>
 
-           <div>
-           <label class="ph4-placa" for="cor6">Cor do texto:</label>
-           <input type="color" id="cor6" value="#ffffff">
-           </div><br />
-      </section>
-    
-        <section class="flex-l dn w-50"></section>
-    
-      <div class="w-80-ns center flex flex-column items-center tc mb5 mb7-l"><br />
-		<div class="floating-placa">
-         <input type="text" id="chave-placa" placeholder="">
-         <label for="pixkey">Chave Pix:<b><span class="infor">*</span></b></label>
-		 </div>
-		 
-		 <div class="floating-placa">
-         <input  type="text" id="mensagem-placa" placeholder=" "  maxlength="28">
-         <label  for="mensagem-placa">mensagem no Pagamento:</label>
-		 </div>
-		 
-		 <div class="floating-placa">
-         <input type="text" id="nome-placa" placeholder=""  maxlength="25"> 
-         <label for="nome-placa">Nome do Beneficiado: <b><span class="infor">*</span></b></label>
-		 </div>
-		 
-		 <div class="floating-placa">
-         <input type="text" id="cidade-placa" placeholder=""  maxlength="15">
-         <label for="cidade-placa">Cidade do Beneficiado:<b><span class="infor">*</span></b></label>
-		 </div>
-		 
-		 <div class="floating-placa">
-         <input type="text" id="txid-placa" placeholder=""  maxlength="20">
-		 <label for="txid-placa" >Identificador do pagamento: Sem espaços</label>
-		 </div>
-		
-		 <div class="floating-placa">
-         <input type="text" id="valor-placa" placeholder=" " oninput="amount(this)">
-         <label for="valor-placa">Valor: R$ 1.000,00</label>
-		 </div>
-		 
-		 <div class="floating-placa">
-         <input type="text" id="banco-placa" placeholder=" ">
-		 <label for="banco-placa">banco do Beneficiado:<b><span class="infor">*</span></b></label>
-		 </div>
+      <div class="floating-placa">
+      <input type="text" id="documento-placa" name="documento" placeholder=" " oninput="formatarDocumento(this)" maxlength="18">
+      <label for="documento-placa">CPF ou CNPJ do Beneficiado:<b><span class="infor">*</span></b></label>
+      </div>
+      
+      <div class="floating-placa">
+      <input type="text" id="add-logo-placa" placeholder=" ">
+      <label for="add-logo-placa">Link da logo no qr (450x450)</label>
+      </div>
 
-		 <div class="floating-placa">
-         <input type="text" id="documento-placa" name="documento" placeholder=" " oninput="formatarDocumento(this)" maxlength="18">
-		 <label for="documento-placa">CPF ou CNPJ do Beneficiado:<b><span class="infor">*</span></b></label>
-		 </div>
-		 
-		 <div class="floating-placa">
-		 <input type="text" id="add-logo-placa" placeholder=" ">
-		 <label for="add-logo-placa">Link da logo no qr (450x450)</label>
-		 </div>
+      <div class="upload-logo-qr">
+      <div class="floating-placa">
+      <input type="file" id="imagem-upload-logo-qr" accept="image/*" onchange="verificarUpload()"></input>
+      <label for="imagem-upload"></label>
+      </div>
+      <button type="button" id="upload-logo-qr" onclick="limparUploadlogo()">X</button>
+      </div>
 
-		 <div class="upload-logo-qr">
-		 <div class="floating-placa">
-		 <input type="file" id="imagem-upload-logo-qr" accept="image/*" onchange="verificarUpload()"></input>
-         <label for="imagem-upload"></label>
-		 </div>
-		 <button type="button" id="upload-logo-qr" onclick="limparUploadlogo()">X</button>
-		 </div>
-		 
-		 <div>
-		 <label class="ph4-placa" for="corqrcode">Cor do QR:</label>
-		 <input type="color" id="corqrcode" value="#ffffff">
-		 </div><br />
-		 
-		 <span class="showError" id="showError" style="margin-bottom: 20px;" ></span>
-		 <button class="cliqueBtnplaca" onclick="gerarplacapix()">Atualizar Placa</button>
+      <div>
+      <label class="ph4-placa" for="cor6">Cor do texto:</label>
+      <input type="color" id="cor6" value="#ffffff">
+      </div><br />
+      
+      <div>
+      <label class="ph4-placa" for="corqrcode">Cor do QR:</label>
+      <input type="color" id="corqrcode" value="#ffffff">
+      </div><br />
+      
+      <span class="showError" id="showError" style="margin-bottom: 20px;" ></span>
+      <button class="cliqueBtnplaca" onclick="gerarplacapix()">Atualizar Placa</button>
 
 </div> 	
-		 <section class="dn"></section>
+      <section class="dn"></section>
 
- <!-- RIGHT SECTION -->
-        <section id="payment-info" class="tamanhoimagem center flex flex-column items-center tc mb5 mb7-l">
-        <div id="qr-data-placa" class="qr-placa flex-ns flex-column pt4-ns pb4-ns ph5-ns ph3">
-            <h3 class="f4 fw8 mb0">Use o QR Code do Pix para pagar</h3>
-            <p class="ph5-ns"></p>
-            <canvas id="qr-code-placa" class="ba pa2 bw1 pa0-ns bw3-ns center flex items-center justify-center overflow-hidden" height="250" width="250"></canvas>
-            <h2 id="valor-none">
-                <strong id="valor"></strong>
-            </h2>
-            <div id="cor-dados" class="flex-column ba-ns b--black-10 ph4-placa pt0 pb4">
+<!-- RIGHT SECTION -->
+     <section id="payment-info" class="tamanhoimagem center flex flex-column items-center tc mb5 mb7-l">
+     <div id="qr-data-placa" class="qr-placa flex-ns flex-column pt4-ns pb4-ns ph5-ns ph3">
+         <h3 class="f4 fw8 mb0">Use o QR Code do Pix para pagar</h3>
+         <p class="ph5-ns"></p>
+         <canvas id="qr-code-placa" class="ba pa2 bw1 pa0-ns bw3-ns center flex items-center justify-center overflow-hidden" height="250" width="250"></canvas>
+         <h2 id="valor-none">
+             <strong id="valor"></strong>
+         </h2>
+         <div id="cor-dados" class="flex-column ba-ns b--black-10 ph4-placa pt0 pb4">
 <p class="lh-copy tc center mb4 db-ns f5"><strong>Ou use a chave Pix</strong></p>
-                <div class="flex flex-column flex-nowrap f6-ns bt-ns pt4-ns mt5 mt0-ns">
+             <div class="flex flex-column flex-nowrap f6-ns bt-ns pt4-ns mt5 mt0-ns">
 
-                    <div class="flex flex-row justify-between w-auto pb3">
-                        <span class="justify-start b tl">Nome</span>
-                        <span class="justify-end tr" id="nome"></span>
-                    </div>
-                    <div class="flex flex-row justify-between w-auto pb3">
-                        <span class="justify-start b tl" id="cpf-cnpj">CPF</span>
-                        <span class="justify-end tr" id="cpf"></span>
-                    </div>
-                    <div class="flex flex-row justify-between w-auto pb3">
-                        <span class="justify-start b tl">Banco</span>
-                        <span class="justify-end tr" id="banco-Beneficiado"></span>
-                    </div>
-                    <div id="infor-none" class="flex flex-row justify-between w-auto pb3">
-                        <span class="justify-start b tl">Identificador</span>
-                        <span class="justify-end tr" id="identificador"></span>
-                    </div>
-                    <div id="mensagem-none" class="flex flex-row justify-between w-auto pb3">
-                        <span class="justify-start b tl">mensagem</span>
-                        <span class="justify-end tr" id="mensagem"></span>
-                    </div>
-                    <div class="flex flex-row justify-between w-auto pb3">
-                        <span class="justify-start b tl">Chave pix</span>
-                        <span class="justify-end tr" id="chave"></span>
-                    </div>
-                </div>
-            </div>
-        </div><br />
-		
-        <div id="telacopiado" class="modal">
-        <div class="modal-content">
-        <h3  class="notificatextocopiado">
-        <b><span id="titulocopiado"></span><br /></b></h3>
-        <span class="texocopiado" id="textocopiado"></span>					 
-        </div>
-        </div>
-		
-		
-	    <button class="cliqueBtnplaca" onclick="compartilharPlcaGerada()">Compartilhar</button><br />
-        <button class="cliqueBtnplaca" onclick="BaixaPlacaPix()">Baixar Placa</button><br />
-		<label class="ph4-placa">link da sua placa</label>
-		<div class="copy-post">
-		<input id="link-placa-gerada" onclick="copiaplacagerada()"></input>
-		</div>
-		</section>
-		</main>
- 	  </div>`);
+                 <div class="flex flex-row justify-between w-auto pb3">
+                     <span class="justify-start b tl">Nome</span>
+                     <span class="justify-end tr" id="nome"></span>
+                 </div>
+                 <div class="flex flex-row justify-between w-auto pb3">
+                     <span class="justify-start b tl" id="cpf-cnpj">CPF</span>
+                     <span class="justify-end tr" id="cpf"></span>
+                 </div>
+                 <div class="flex flex-row justify-between w-auto pb3">
+                     <span class="justify-start b tl">Banco</span>
+                     <span class="justify-end tr" id="banco-Beneficiado"></span>
+                 </div>
+                 <div id="infor-none" class="flex flex-row justify-between w-auto pb3">
+                     <span class="justify-start b tl">Identificador</span>
+                     <span class="justify-end tr" id="identificador"></span>
+                 </div>
+                 <div id="mensagem-none" class="flex flex-row justify-between w-auto pb3">
+                     <span class="justify-start b tl">mensagem</span>
+                     <span class="justify-end tr" id="mensagem"></span>
+                 </div>
+                 <div class="flex flex-row justify-between w-auto pb3">
+                     <span class="justify-start b tl">Chave pix</span>
+                     <span class="justify-end tr" id="chave"></span>
+                 </div>
+             </div>
+         </div>
+     </div><br />
+     
+     <div id="telacopiado" class="modal">
+     <div class="modal-content">
+     <h3  class="notificatextocopiado">
+     <b><span id="titulocopiado"></span><br /></b></h3>
+     <span class="texocopiado" id="textocopiado"></span>					 
+     </div>
+     </div>
+     
+     <button class="cliqueBtnplaca" onclick="compartilharPlcaGerada()">Compartilhar</button><br />
+     <button class="cliqueBtnplaca" onclick="BaixaPlacaPix()">Baixar Placa</button><br />
+     <label class="ph4-placa">link da sua placa</label>
+     <div class="copy-post">
+     <input id="link-placa-gerada" onclick="copiaplacagerada()"></input>
+     </div>
+     </section>
+     </main>
+    </div>
+    `);
 
    document.getElementById('link-placa-gerada').value = 'https://meupix.github.io/?criaplaca=' + Params.get('criaplaca');
   ParamsPix = new URLSearchParams(Paramsdescriptografado); // Obtém a URL atual e seus  ex:?criaplaca=P2NoYXZlPVN1YUNoYXZlJnZhbG9yPTAwLjAwJm5vbWU9U2V1Tm9tZSZjaWRhZGU9U3VhQ2lkYWRlJm1lbnNhZ2VuPU1pbmhhIExvamEmdHhpZD1JRGRvUGFnYW1lbnRvJmJhbmNvPSoqKiZjcGY9U2V1RlBGb3VDTlBKJndoYXRzYXBwPXRydWUmdm9sdGFyPXRydWUmbG9nbz1odHRwczovL2ZmY29kaWd1aW4udmVyY2VsLmFwcC92ZXJpZmljYWRvci9pbWFnZW5zL0xvZ29fbm92YS5wbmc=
@@ -3818,7 +3969,8 @@ function GeraQRCodePix(payload, minhalogo) {
   limparParametros();
 
   // Remove elementos da página e exibe o carregamento do QR Code
-    $('.dados').remove('');
+    //$('.dados').remove('');
+    $('.dados').hide();
     $('#Carregando').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-pix.png" alt="">`);
     setTimeout(() => {  $('.qrcriado').show(); $('#Carregando').hide(); $('#desfocfundo').removeClass('overlay'); }, 1000);
   
@@ -4290,9 +4442,9 @@ function salvameupix() {
       compartilharPix: compartilharPix,
       paramschaves: paramschaves	  
     }); 
-    localStorage.setItem('links', JSON.stringify(links));
-	const modalsalvapix = document.getElementById('modal-salvapix');
-  modalsalvapix.style.display = 'none';
+    
+    localStorage.setItem('links', JSON.stringify(links));  
+  $('#modal-salvapix').hide();
   //document.getElementById('pixkey').value = ``;
   //document.getElementById('amount').value = ``;
   //document.getElementById('description').value = ``;
@@ -4509,11 +4661,20 @@ function mostrarLinks() {
     listaLinks.appendChild(itemLista); // Adiciona o item de lista à lista de links
   }
 
+  document.getElementById("desfocfundo").style.display = "";
+  $('.qrcriado').hide();
+  $('.dados').show();
+
   // Ocultar o formulário e mostrar a lista de links
   $('#minhavenda').hide();
   $('.caixatex').hide(); // Oculta o elemento com a classe 'caixatex'
   $('#links-container').show(); // Exibe o elemento com o id 'links-container'
   limparParametros();
+}
+
+function voltarmeusalve() {
+
+  mostrarLinks();
 }
 
 function excluirLink(titulo, abaIndex) {
@@ -4707,6 +4868,7 @@ function limparUpload() {
     input.value = ''; // Limpa o valor do campo de upload
 	var clearlink = document.getElementById('clear-upload');
 	clearlink.style.display = 'none'; // Esconder o botão
+  verificarUpload();
 }
 
 function limparLink() {
@@ -4714,36 +4876,33 @@ function limparLink() {
     input.value = ''; // Limpa o valor do campo de texto
 	var clearupload = document.getElementById('clear-link');
 	clearupload.style.display = 'none'; // Esconder o botão
+  verificarUpload(); // Mostrar cor do fundo
 }
 
 function verificarUpload() {
+    var inputlogoqr = document.getElementById('imagem-upload-logo-qr');
+    var clearlogoqr = document.getElementById('upload-logo-qr');
 
- var inputlogoqr = document.getElementById('imagem-upload-logo-qr');
- var clearlogoqr = document.getElementById('upload-logo-qr');
- 
- var inputimagem = document.getElementById('link-imagem');
- var clearupload = document.getElementById('clear-link');
- 
-  var inputlink = document.getElementById('imagem-upload');
-  var clearlink = document.getElementById('clear-upload');
- 
-  if (inputlogoqr.value) {
-     clearlogoqr.style.display = 'block'; // Mostrar o botão
- } else {
-     clearlogoqr.style.display = 'none'; // Esconder o botão
- }
- 
- if (inputimagem.value) {
-     clearupload.style.display = 'block'; // Mostrar o botão
- } else {
-     clearupload.style.display = 'none'; // Esconder o botão
- }
- 
-  if (inputlink.value) {
-     clearlink.style.display = 'block'; // Mostrar o botão
- } else {
-     clearlink.style.display = 'none'; // Esconder o botão
- }
+    var corfundoplaca = document.getElementById('cor-fundo-placa');
+    var inputimagem = document.getElementById('link-imagem');
+    var clearupload = document.getElementById('clear-link');
+
+    var inputlink = document.getElementById('imagem-upload');
+    var clearlink = document.getElementById('clear-upload');
+
+    // Exibir ou ocultar botão de limpar logo QR
+    clearlogoqr.style.display = inputlogoqr.value ? 'block' : 'none';
+
+    // Exibir ou ocultar botão de limpar imagem e verificar fundo da placa
+    clearupload.style.display = inputimagem.value ? 'block' : 'none';
+    clearlink.style.display = inputlink.value ? 'block' : 'none';
+
+    // Se qualquer um dos inputs de imagem estiver preenchido, esconder cor-fundo-placa
+    if (inputimagem.value || inputlink.value) {
+        corfundoplaca.style.display = 'none';
+    } else {
+        corfundoplaca.style.display = 'block';
+    }
 }
 
 async function compartilharPlcaGerada() {
@@ -5058,8 +5217,7 @@ function formatarCNPJ(cnpj) {
 }
 
 function fecharcopia() {
-  const telacopiado = document.getElementById('telacopiado');
-  telacopiado.style.display = 'none';
+                                                $('#telacopiado').hide();
 }
 
 function backvolta() {
@@ -5137,17 +5295,26 @@ function copiarLinkEncurtado(shortenedUrl) {
 }
 
 function fecharsalvapix() {
-  document.getElementById('titulo').value = ``;
-  const modal = document.getElementById('modal-salvapix');
-  modal.style.display = 'none';
+  $('#titulo').val('');
+  $('#modal-salvapix').hide();
 }
+
 function fecharModal() {
-  const modal = document.getElementById('modal');
-  modal.style.display = 'none';
+  $('#modal').hide();
 }
+
+function fecharModalNomeAgendamento() {
+  $('#modalagendamento').hide(); // Exibe o modal
+
+$(window).click(function(event) {
+    if ($(event.target).is('#modalagendamento')) {
+        $('#modalagendamento').hide(); // Esconde o modal se clicar fora dele
+    }
+});
+}
+
 function fechareditform() {
-    const modal = document.getElementById('modal-editar');
-    modal.style.display = 'none';
+    $('#modal-editar').hide();
 }
 
 function compartilharlink(sociais) {
@@ -5158,7 +5325,7 @@ function compartilharlink(sociais) {
 function closecompartilhar() {
     $('#mainContent').removeClass('overlay');
     $('.StickyDemo').hide();
-    $('#compartilhar').hide();
+    $('#compartilhar').hide(); // Exibe o modal
 }
 	  new ClipboardJS('#copy-qr');
       var copyQR = document.getElementById('copy-qr');
