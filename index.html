@@ -3923,14 +3923,14 @@ function GeraQRCodePix(payload, minhalogo) {
          </div>
      </div><br />
      
-     <div id="telacopiado" class="modal">
+     <div id="telacopiaplacagerada" class="modal">
      <div class="modal-content">
      <h3  class="notificatextocopiado">
-     <b><span id="titulocopiado"></span><br /></b></h3>
-     <span class="texocopiado" id="textocopiado"></span>					 
+     <b><span id="titulocopiaplacagerada"></span><br /></b></h3>
+     <span class="texocopiado" id="textocopiaplacagerada"></span>					 
      </div>
      </div>
-     
+
      <button class="cliqueBtnplaca" onclick="compartilharPlcaGerada()">Compartilhar</button><br />
      <button class="cliqueBtnplaca" onclick="BaixaPlacaPix()">Baixar Placa</button><br />
      <label class="ph4-placa">link da sua placa</label>
@@ -5078,9 +5078,9 @@ function copiaplacagerada() {
   document.execCommand('copy');
   document.body.removeChild(tempInput);
   
-  document.getElementById('textocopiado').innerText = spanElement.value;
-  document.getElementById('titulocopiado').innerText = 'Link da placa pix Copiado.';
-   telacopiado = document.getElementById('telacopiado');
+  document.getElementById('textocopiaplacagerada').innerText = tempInput.value;
+  document.getElementById('titulocopiaplacagerada').innerText = 'Link da placa pix Copiado.';
+   telacopiado = document.getElementById('telacopiaplacagerada');
    telacopiado.style.display = 'flex';
    setTimeout(() => {  telacopiado.style.display = 'none'; }, 2000);
 }
@@ -5217,7 +5217,7 @@ function formatarCNPJ(cnpj) {
 }
 
 function fecharcopia() {
-                                                $('#telacopiado').hide();
+  $('#telacopiado').hide();
 }
 
 function backvolta() {
