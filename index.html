@@ -2019,6 +2019,22 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
     margin-top: 0px;
     box-shadow: 0 0 15px #0afc00d1;
 }
+.keypad-button.enter {
+  grid-column: span 3;
+}
+
+#valordopagamentos {
+  font-family: 'Arial', sans-serif; 
+  font-size: 1.2em; 
+  font-weight: bold; 
+  color: #27ae60; 
+  text-align: center; 
+  display: block; 
+  margin: 20px auto; 
+  letter-spacing: 1px; 
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); 
+  transition: color 0.3s ease-in-out;
+}
 </style>
 </head>
 
@@ -2924,20 +2940,21 @@ document.addEventListener('DOMContentLoaded', function () {
             <label for="pix-key">Chave PIX: <span id="pix-key"></span></label>
         </form>
 
-        <div class="keypad" aria-label="Teclado Numérico">
-    <button class="keypad-button" data-value="7">7</button>
-    <button class="keypad-button" data-value="8">8</button>
-    <button class="keypad-button" data-value="9">9</button>
-    <button class="keypad-button" data-value="4">4</button>
-    <button class="keypad-button" data-value="5">5</button>
-    <button class="keypad-button" data-value="6">6</button>
-    <button class="keypad-button" data-value="1">1</button>
-    <button class="keypad-button" data-value="2">2</button>
-    <button class="keypad-button" data-value="3">3</button>
-    <button class="keypad-button backspace" data-value="backspace">←</button>
-    <button class="keypad-button" data-value="0">0</button>
-    <button class="keypad-button enter" data-value="enter">✓</button>
-</div>
+  <div class="keypad" aria-label="Teclado Numérico">
+        <button class="keypad-button" data-value="7">7</button>
+        <button class="keypad-button" data-value="8">8</button>
+        <button class="keypad-button" data-value="9">9</button>
+        <button class="keypad-button" data-value="4">4</button>
+        <button class="keypad-button" data-value="5">5</button>
+        <button class="keypad-button" data-value="6">6</button>
+        <button class="keypad-button" data-value="1">1</button>
+        <button class="keypad-button" data-value="2">2</button>
+        <button class="keypad-button" data-value="3">3</button>
+        <button class="keypad-button backspace" data-value="backspace">←</button>
+        <button class="keypad-button" data-value="0">0</button>
+        <button class="keypad-button" data-value="+">+</button>  <!-- Adicionado o botão de soma -->
+        <button class="keypad-button enter" data-value="enter">✓</button>
+    </div>
 
         <div class="button-group">
             <button class="Btnvendas" id="new-product">+ Novo Produto</button>
@@ -3072,9 +3089,11 @@ document.addEventListener('DOMContentLoaded', function () {
   const totalAmountModal = document.getElementById('total-amount-modal');
 
   let amount = 0;
-  let selectedProducts = {};
-  let transactionId;
-  let Cliente;
+    let selectedProducts = {};
+    let transactionId;
+    let Cliente;
+    let previewValue = 0; // Valor para o preview
+    let previewString = ''; // String para mostrar o preview
 
   document.getElementById('pix-key').textContent = chavepix.replace(/\ /g, '+');
   document.getElementById('banco-do-beneficiario').textContent = banco;
@@ -3099,30 +3118,79 @@ document.addEventListener('DOMContentLoaded', function () {
     return 'Pagamento' + id;
   };
 
-  // Função para formatar um número como valor em Real (R$)
   function formatarBRL(valorNumerico) {
     return (valorNumerico / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   }
 
-  // Função para atualizar o valor exibido
   const updateAmountDisplay = () => {
-    amountDisplay.textContent = formatarBRL(amount);
-  };
+        if (previewString) {
+            amountDisplay.textContent = previewString + ' + ' + formatarBRL(amount);
+        } else {
+            amountDisplay.textContent = formatarBRL(amount);
+        }
+    };
 
-  // Função para lidar com a entrada do teclado numérico
-  const handleKeypadInput = (value) => {
-    if (value === 'backspace') {
-      amount = Math.floor(amount / 10);
-    } else if (value === 'enter') {
-      displayProducts();
-      showPaymentScreen();
-    } else {
-      amount = amount * 10 + Number(value);
+  const formatarValorParaNumero = (valorFormatado) => {
+    const valorNumerico = Number(valorFormatado.replace(/[^\d,]/g, '').replace('.', '').replace(',', '.')) * 100;
+    return isNaN(valorNumerico) ? 0 : valorNumerico; // Retorna 0 se a conversão falhar
+};
+
+const removerUltimoValorDoPreview = () => {
+    if (previewString) {
+        const values = previewString.split(' + ');
+        if (values.length > 0) {
+          if (amount > 0) {
+            amount = Math.floor(amount / 10);
+          } else {
+            const removedValue = values.pop();
+            previewString = values.join(' + ');
+            previewValue -= formatarValorParaNumero(removedValue);
+          }
+        } else {
+            previewValue = 0;
+            previewString = '';
+        }
+    }
+};
+
+const adicionarValorAoPreview = () => {
+    if (amount > 0) {
+        previewValue += amount;
+        if (previewString === '') {
+            previewString += formatarBRL(amount);
+        } else {
+            previewString += ' + ' + formatarBRL(amount);
+        }
+        amount = 0;
+    }
+};
+
+const handleKeypadInput = (value) => {
+    switch (value) {
+        case 'backspace':
+            if (previewString) {
+                removerUltimoValorDoPreview();
+            } else {
+                amount = Math.floor(amount / 10);
+            }
+            break;
+        case 'enter':
+            amount += previewValue;
+            displayProducts();
+            showPaymentScreen();
+            previewValue = 0;
+            previewString = '';
+            break;
+        case '+':
+            adicionarValorAoPreview();
+            break;
+        default:
+            amount = amount * 10 + Number(value);
+            break;
     }
     updateAmountDisplay();
-  };
+};
 
-  // Função para exibir a tela de pagamento
   const showPaymentScreen = () => {
     const pixKey = chavepix;
     if (!pixKey) {
