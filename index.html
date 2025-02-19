@@ -3210,6 +3210,20 @@ const handleKeypadInput = (value) => {
     GeraQRCodePix(payload, minhalogo);
 
     generateProductListModal(transactionId);
+
+    if (previewString) {
+        const values = previewString.split(' + ');
+     if (values.length > 0) {
+      // Exibe o total acumulado com preview
+      const previewTotalElement = document.createElement('p');
+      previewTotalElement.id = 'preview-total';
+      previewTotalElement.textContent = amountDisplay.textContent; // Usa o conteúdo de amountDisplay
+      productListModal.appendChild(previewTotalElement);
+        } else {
+          $('#preview-total').hide();
+        }
+    }
+
     totalAmountModal.textContent = formatarBRL(amount);
 
     $('#paymentModal').show(); // Exibe o modal
@@ -3223,27 +3237,36 @@ const handleKeypadInput = (value) => {
 
   // Função para gerar a lista de produtos no modal de pagamento
   const generateProductListModal = (transactionId) => {
-    productListModal.innerHTML = '';
-    const products = JSON.parse(localStorage.getItem('products')) || [];
+  productListModal.innerHTML = ''; // Limpa o conteúdo anterior do modal
 
-    const transactionIdElement = document.createElement('p');
-    transactionIdElement.textContent = `ID da Transação: ${transactionId}`;
-    productListModal.appendChild(transactionIdElement);
+  const products = JSON.parse(localStorage.getItem('products')) || [];
+  selectedProducts = selectedProducts || {}; // Garante que selectedProducts esteja definido
 
-    for (const index in selectedProducts) {
-      if (selectedProducts.hasOwnProperty(index)) {
-        const product = products[index];
-        const quantity = selectedProducts[index];
-        if (quantity > 0) {
-          const listItem = document.createElement('li');
-          listItem.textContent = `${product.name} x${quantity} - ${formatarBRL(
-            parseFloat(product.price.replace(/[^\d]/g, '')) * quantity
-          )}`;
-          productListModal.appendChild(listItem);
-        }
+
+  // Exibe o ID da transação
+  const transactionIdElement = document.createElement('p');
+  transactionIdElement.textContent = `ID da Transação: ${transactionId}`;
+  productListModal.appendChild(transactionIdElement);
+
+  // Lista os produtos selecionados
+  for (const index in selectedProducts) {
+    if (selectedProducts.hasOwnProperty(index)) {
+      const product = products[index];
+      const quantity = selectedProducts[index];
+
+      if (quantity > 0 && product) { // Verifica se a quantidade é maior que zero e se o produto existe
+        const listItem = document.createElement('li');
+        listItem.textContent = `${product.name} x${quantity} - ${formatarBRL(
+          parseFloat(product.price.replace(/[^\d]/g, '')) * quantity
+        )}`;
+        productListModal.appendChild(listItem);
       }
     }
-  };
+  }
+
+  // Exibe o total da transação
+  totalAmountModal.textContent = formatarBRL(amount);
+};
 
   // Função para salvar a transação
   const saveTransaction = (status = 'pago') => {
