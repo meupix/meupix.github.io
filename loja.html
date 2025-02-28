@@ -1267,7 +1267,7 @@
         <div id="minhalogo"></div>
         <h1 id="NomeDaLoja">Carregando...</h1>
         <p id="descricao">Carregando...</p>
-        <div id="statusLoja"><p class="loja-aberta">Loja Aberta! Boas compras!</p></div>
+        <div id="statusLoja"></div>
     </header>
 
     <!-- Container Principal -->
@@ -2627,6 +2627,7 @@ const whatsappMessage = `
             // Carrega os produtos do carrossel
             carouselProducts.forEach(product => {
                 if (!product.available) return;
+                
                 const carouselItem = document.createElement('div');
                 carouselItem.classList.add('carousel-item');
 
@@ -2634,6 +2635,7 @@ const whatsappMessage = `
                 let quantityHTML = '';
                 let sizeSelectId = `carouselSizeSelect_${product.name}`;
                 let quantitySelectId = `carouselQuantitySelect_${product.name}`;
+                let discountBadgeHTML = '';
 
                 if (product.sizes && product.sizes.length > 0) {
                     sizesHTML = `
@@ -2647,15 +2649,13 @@ const whatsappMessage = `
                 quantityHTML = `
                 <label for="${quantitySelectId}">Quantidade:</label>
                 <select id="${quantitySelectId}" class="custom-select">
-                ${Array.from({
-                            length: product.quantity
-                        }, (_, i) => i + 1).map(qty => `<option value="${qty}">${qty}</option>`).join('')}
+                ${Array.from({ length: product.quantity }, (_, i) => i + 1).map(qty => `<option value="${qty}">${qty}</option>`).join('')}
                 </select>
                 `;
-
                 if (product.discount > 0) {
                     discountBadgeHTML = `<div class="discount-carrossel">-${product.discount}%</div>`;
                 }
+
 
                 carouselItem.innerHTML = `
                 ${discountBadgeHTML}
