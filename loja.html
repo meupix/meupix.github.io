@@ -903,9 +903,9 @@ to {
     display: inline-block;
 }
 
-@media (max-width: 1246px) {
+@media (max-width: 1280px) {
 #featuredProductsCarousel {
-        margin-right: 0 !important;
+    margin-right: 0 !important;
 }
 
 .container {
@@ -1090,11 +1090,10 @@ to {
     border-collapse: collapse;
 }
 
-    th,
-    td {
-    border: 1px solid #000000;
-    padding: 13px;
-    color: #000000;
+    th, td {
+    border: 3px solid #ffffff;
+    padding: 15px;
+    color: #ffffff;
     font-weight: bold;
 }
 	
@@ -1250,6 +1249,22 @@ to {
     transform: rotate(-2deg)
 }
 }	
+
+.backgroundred {
+    background: linear-gradient(118deg, #ff0000, #cc0000);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+.backgroundverde {
+    background: linear-gradient(120deg, #206958, #05a582);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
     </style>
 </head>
 
@@ -1360,7 +1375,7 @@ to {
         <div id="carrinhocheckout">
         <h2>Produtos</h2>
         <ul id="cartListCheckout"></ul>
-        <p>Total do pedido: R$ <span id="TotalcartCheckout">0,00</span></p>
+        <p>Total do pedido: <span id="TotalcartCheckout">R$ 0,00</span></p>
         </div>
         <div class="button-group">
         <button class="btnInicio" type="button" onclick="generatePix()" id="generatePixButton">Gerar QR Code Pix</button>
@@ -1495,17 +1510,17 @@ to {
     button.addEventListener('click', function () {
         const tabId = this.dataset.tab;
         showTab(tabId);
-});
-});
+    });
+  });
 });
 
-    function verificarStatusDaLoja() {
+function verificarStatusDaLoja() {
     const script = document.createElement('script');
     script.src = 'https://www.blogger.com/feeds/' + blog + '/pages/default?start-index=1&max-results=500&alt=json-in-script&callback=processarStatusDaLoja';
     document.body.appendChild(script);
 }
 
-    function processarStatusDaLoja(data) {
+function processarStatusDaLoja(data) {
     let fechada = false;
     let manutencao = false;
     let ativahorario = false;
@@ -1580,7 +1595,6 @@ to {
     } else if (line.startsWith('termosUsoURL')) {
         termosUsoURL = line.split('termosUsoURL =')[1].trim();
     }
-
     });
         atualizarInterface(fechada, manutencao, ativahorario);
 
@@ -1704,13 +1718,12 @@ to {
         if (privacidadeTermosParagrafo) {
         removerRedeSocial(privacidadeTermosParagrafo, null);
     }
-    }
-}
-}
+   }
+  }
+ }
 }
 
-
-    function atualizarInterface(fechada, manutencao, ativahorario) {
+function atualizarInterface(fechada, manutencao, ativahorario) {
     const minecart = document.getElementById('floating-cart');
     const telaAtivada = document.querySelector('.products');
     const cartTabButton = document.querySelector('.tab-button[data-tab="cart"]');
@@ -1750,7 +1763,9 @@ to {
     </div>
     `;
 } else if (ativahorario) {
-    getStoreStatus();
+    if (horariosFuncionamento) {
+        getStoreStatus();
+    }
 } else {
     // Loja aberta
     if (document.querySelector('.desativado')) {
@@ -1774,7 +1789,7 @@ to {
 }
 }
 
-    function fetchProducts() {
+function fetchProducts() {
     const loadingMessage = document.getElementById('loadingMessage');
     const errorMessage = document.getElementById('errorMessage');
     const minecart = document.getElementById('floating-cart');
@@ -1925,9 +1940,7 @@ to {
         ${discountBadgeHTML}
         <img src="${product.imageUrl}" alt="${product.name}">
         <h3>${product.name}</h3>
-        <p>${product.discount > 0 ? `De <strike>R$ ${product.originalPrice.toFixed(2)}</strike>
-        Por` : ``} R$ ${product.price.toFixed(2)}</p>
-
+        <p>${product.discount > 0 ? `De <strike class="backgroundred">R$ ${product.originalPrice.toFixed(2)}</strike> Por <span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>` : `<span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`}</p>
         ${sizesHTML}
         ${quantityHTML}
        <button class="add-to-cart-button" onclick="addToCart('${product.name}', ${product.price}, '${product.imageUrl}', document.getElementById('${sizeSelectId}') ? document.getElementById('${sizeSelectId}').value : '', document.getElementById('${quantitySelectId}').value)">Adicionar ao Carrinho</button>
@@ -1968,7 +1981,6 @@ function buyNow(product) {
 }
 }
 
-    // Validação da quantidade
     if (!selectedQuantity) {
     showNotification("Por favor, selecione uma quantidade.", 'error');
     return;
@@ -2071,7 +2083,7 @@ function addToCart(name, price, imageUrl, selectedSize, selectedQuantity) {
     showNotification("Item removido do carrinho!", 'success');
 }
 
-    function updateCartDisplay() {
+function updateCartDisplay() {
   const cartList = document.getElementById('cartList');
   const cartTotalElement = document.getElementById('cartTotal');
   const cartListCheckout = document.getElementById('cartListCheckout');
@@ -2096,7 +2108,7 @@ function addToCart(name, price, imageUrl, selectedSize, selectedQuantity) {
     li.classList.add('cart-item');
     li.innerHTML = `
       <img src="${item.imageUrl}" alt="${item.name}">
-      <span>${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - R$ ${subtotal.toFixed(2)}</span>
+      <span>${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(subtotal.toFixed(2))}</span>
       <button class="remove-button" onclick="removeFromCart(${index})"><i class="fas fa-trash-alt"></i></i></button>
     `;
 
@@ -2104,7 +2116,7 @@ function addToCart(name, price, imageUrl, selectedSize, selectedQuantity) {
     li1.classList.add('cart-item');
     li1.innerHTML = `
       <img src="${item.imageUrl}" alt="${item.name}">
-      <span>${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - R$ ${subtotal.toFixed(2)}</span>
+      <span>${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(subtotal.toFixed(2))}</span>
     `;
 
     // Adiciona o item na lista do carrinho
@@ -2113,8 +2125,8 @@ function addToCart(name, price, imageUrl, selectedSize, selectedQuantity) {
   });
 
   // Atualiza o total
-  cartTotalElement.textContent = total.toFixed(2);
-  TotalcartCheckout.textContent = total.toFixed(2);
+  cartTotalElement.textContent = realBR(total.toFixed(2));
+  TotalcartCheckout.textContent = realBR(total.toFixed(2));
 
   // Habilita ou desabilita os botões conforme o carrinho esteja vazio ou não
   const cartHasItems = cart.length > 0;
@@ -2252,7 +2264,6 @@ async function generatePix() {
     orderHistory.push(order);
     localStorage.setItem(blog, JSON.stringify(orderHistory));
 
-    // Tornar o modal fullscreen
     document.getElementById('myModal').classList.add('fullscreen');
     document.getElementById('qrCode').innerHTML = `<iframe src='${order.pixUrl}' style="width:100%; height:100%; border:none;"></iframe>`;
 
@@ -2268,14 +2279,13 @@ let whatsappMessage = `
   ${deliveryOption === 'delivery' ? `Endereço: ${address}, ${cidade} - ${bairro}, ${postcode}` : 'Retirada no Local'}
 
   Itens do Pedido:
-  ${cart.map(item => `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - R$ ${(item.price * item.quantity).toFixed(2)}`).join('\n  ')}
+  ${cart.map(item => `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR((item.price * item.quantity).toFixed(2))}`).join('\n  ')}
 
-  Total: R$ ${valorNumerico}
+  Total: ${realBR(valorNumerico)}
   Data da Compra: ${dataCompra}
 `;
-    //Link Pix: ${pixUrl}
 
-    whatsappMessage = encodeURIComponent(whatsappMessage);
+          whatsappMessage = encodeURIComponent(whatsappMessage);
     const whatsappLink = `https://wa.me/${whatsapp}?text=${whatsappMessage}`;
 
     window.open(whatsappLink, '_blank');
@@ -2293,7 +2303,7 @@ let whatsappMessage = `
 }
 }
 
-    function openModal() {
+function openModal() {
     document.getElementById('myModal').style.display = 'block';
 }
 
@@ -2485,7 +2495,7 @@ function resendWhatsappMessage(index) {
     if (order.items && order.items.length > 0) {
     itemsList = order.items.map(item => {
         const itemTotal = item.price * item.quantity;
-        return `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - R$ ${itemTotal.toFixed(2)}`;}).join('\n  ');
+        return `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}`;}).join('\n  ');
 } else {
     itemsList = "Nenhum item no pedido.";
 }
@@ -2511,7 +2521,7 @@ const whatsappMessage = `
   Itens do Pedido:
   ${itemsList}
 
-  Total: R$ ${order.total}
+  Total: ${realBR(order.total)}
   Data da Compra: ${dataCompra}
 `;
 
@@ -2662,8 +2672,7 @@ function nextPage() {
     ${discountBadgeHTML}
     <img src="${product.imageUrl}" alt="${product.name}" width="200" height="200">
     <h3>${product.name}</h3>
-    <p>${product.discount > 0 ? `De <strike>R$ ${product.originalPrice.toFixed(2)}</strike>
-    Por` : ``} R$ ${product.price.toFixed(2)}</p>
+    <p>${product.discount > 0 ? `De <strike class="backgroundred">R$ ${product.originalPrice.toFixed(2)}</strike> Por <span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>` : `<span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`}</p>
     ${sizesHTML}
     ${quantityHTML}
     <button class="add-to-cart-button" onclick="addToCart('${product.name}', ${product.price},
@@ -2862,7 +2871,6 @@ if (existingItemIndex > -1) {
     const minute = now.getMinutes();
     const currentTime = hour * 60 + minute; // Converter para minutos
 
-
     let isOpen = false;
     let openingTime = 0;
     let closingTime = 0;
@@ -2966,6 +2974,13 @@ if (existingItemIndex > -1) {
 
     tableHTML += '</tbody></table>';
     return tableHTML;
+}
+
+function realBR(input) { //R$ 325.325.232,53
+    valor = input.replace(/\D/g, '');
+    valor = (parseFloat(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    valor = valor.toLocaleString('pt-BR');
+	return input.value = valor; 
 }
 
 function AbrirWhatsapp() {
