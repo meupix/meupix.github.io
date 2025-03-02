@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -80,11 +81,13 @@
 
     /* Container Principal */
 .container {
-    max-width: 1200px;
-    margin: 20px auto;
+    margin-right: 30px;
+    margin-left: 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     padding: 20px;
-    box-shadow: 0 0 15px #ff6700;
-    background: linear-gradient(231deg, #ffa200e0, #ff5d00e0);
+    box-shadow: 0 0 15px #000000bd;
+    background: linear-gradient(120deg, #206958b8, #05a582a1);
     border-radius: 15px;
     display: flex;
 }
@@ -123,7 +126,6 @@
     /* Item de Produto */
 .product {
     width: calc(50% - 20px);
-    border: 1px solid var(--light-gray);
     padding: 15px;
     margin-bottom: 20px;
     margin-right: 20px;
@@ -132,8 +134,8 @@
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
     border-radius: 15px;
-    box-shadow: 0 0 10px rgb(0 0 0);
-    background: #ffffff5e;
+    box-shadow: 0 0 10px rgb(0 0 0 / 53%);
+    background: linear-gradient(231deg, #ffa200e0, #ff5d00e0);
 }
 
 .product:nth-child(2n) {
@@ -161,7 +163,7 @@
 .product h3 {
     font-size: 1.5em;
     margin-bottom: 8px;
-    color: #3498db;
+    color: #ffffff;
     transition: color 0.3s ease;
 }
 
@@ -172,7 +174,7 @@
 .product p {
     font-size: 1.2em;
     margin-bottom: 12px;
-    color: #333;
+    color: #ffffff;
 }
 
     /* Badge de Desconto */
@@ -180,7 +182,7 @@
     position: absolute;
     top: 10px;
     left: 10px;
-    background: linear-gradient(47deg, #ff0000, #4800ff);
+    background: linear-gradient(118deg, #ff0000, #cc0000);
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -191,7 +193,7 @@
 .discount-carrossel {
     position: absolute;
     top: 10px;
-    background: linear-gradient(47deg, #ff0000, #4800ff);
+    background: linear-gradient(118deg, #ff0000, #cc0000);
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -252,15 +254,15 @@ aside {
 }
 
 .tab-button.active {
-    background: linear-gradient(120deg, #206958, #05a581);
+    box-shadow: 0 0 15px #ff6700;
+    background: linear-gradient(231deg, #ffa200e0, #ff5d00e0);
     color: #fff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 3;
 }
 
 /* Estilo base para os botões */
 button {
-    padding: 12px 24px;
+    padding: 12px 18px;
     font-size: 1em;
     border: none;
     border-radius: 8px;
@@ -612,6 +614,7 @@ button:hover {
     margin-bottom: 10px;
     border-radius: 12px;
     background-color: #ffab0096;
+    color: #000000;
 }
 
 .order-details h3 {
@@ -900,10 +903,19 @@ to {
     display: inline-block;
 }
 
-    @media (max-width: 1246px) {
+@media (max-width: 1246px) {
+#featuredProductsCarousel {
+        margin-right: 0 !important;
+}
+
 .container {
-    flex-direction: column;
+    margin-right: 10px !important;
+    margin-left: 10px !important;
+    margin-top: 20px !important;
+    margin-bottom: 20px !important;
+    flex-direction: column-reverse;
     padding: 10px;
+    display: flex;
 }
 
 .products {
@@ -936,6 +948,19 @@ to {
     width: 100%;
     margin-right: 0;
 }
+}
+
+#featuredProductsCarousel {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    margin-right: 20px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+    box-shadow: 0 0 10px rgb(0 0 0);
+    background: linear-gradient(24deg, #ff000078, #4800ff80);
 }
 
 .loja-fechada-mensagem {
@@ -985,19 +1010,7 @@ to {
     margin-right: 5px;
 }
 
-#featuredProductsCarousel {
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 20px;
-    border-radius: 15px;
-    margin-right: 20px;
-    border: 1px solid var(--light-gray);
-    text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-sizing: border-box;
-    box-shadow: 0 0 10px rgb(0 0 0);
-    background: #ffffff5e;
-}
+
 
 .carousel-slide {
     display: flex;
