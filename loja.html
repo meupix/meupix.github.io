@@ -748,6 +748,9 @@ to {
     transition: opacity 0.5s ease-in-out, transform 0.3s ease;
     transform: translateX(100%);
 }
+.notification.atualizado {
+    background-color: #006eff;
+}
 
 .notification.success {
     background-color: #2ecc71;
@@ -1999,7 +2002,7 @@ function buyNow(product) {
      else {
     // Se a quantidade for diferente, atualiza a quantidade
     cart[existingItemIndex].quantity  = parseInt(selectedQuantity);
-    showNotification("Quantidade do produto atualizada!", 'success');
+    showNotification("Quantidade do produto atualizada!", 'atualizado');
  }
  } else {
       // O produto não existe no carrinho, então adicione-o
@@ -2052,7 +2055,7 @@ function addToCart(name, price, imageUrl, selectedSize, selectedQuantity) {
 } else {
     // Se a quantidade for diferente, atualiza a quantidade
     cart[existingItemIndex].quantity = parseInt(selectedQuantity);
-    showNotification("Quantidade do produto atualizada!", 'success');
+    showNotification("Quantidade do produto atualizada!", 'atualizado');
 }
 } else {
     // O produto não existe no carrinho, então adicione-o
@@ -2588,17 +2591,10 @@ function nextPage() {
     notificationContainer.appendChild(notification);
 
 
-    setTimeout(() => {
-    notification.classList.add('show');
-
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-        notificationContainer.removeChild(notification);
-    }, 300);
-}, 3000);
-}, 10);
-}
+    setTimeout(() => { notification.classList.add('show');
+    setTimeout(() => { notification.classList.remove('show'); 
+    setTimeout(() => { notificationContainer.removeChild(notification); }, 300);}, 3000);}, 10);
+    }
 
     // --- Carrossel ---
     function initializeCarousel() {
@@ -2628,7 +2624,7 @@ function nextPage() {
     slideIndex--;
     if (slideIndex < 0) {
         slideIndex = carouselProducts.length - 1;
-}
+    }
     carouselSlide.style.transform = `translateX(-${slideIndex * 100}%)`;
 });
 
@@ -2655,7 +2651,7 @@ function nextPage() {
     ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
     </select>
     `;
-}
+    }
 
     quantityHTML = `
     <label for="${quantitySelectId}">Quantidade:</label>
@@ -2665,7 +2661,7 @@ function nextPage() {
     `;
     if (product.discount > 0) {
         discountBadgeHTML = `<div class="discount-carrossel">-${product.discount}%</div>`;
-}
+    }
 
 
     carouselItem.innerHTML = `
@@ -2724,7 +2720,7 @@ if (existingItemIndex > -1) {
     else {
        // Se a quantidade for diferente, atualiza a quantidade
        cart[existingItemIndex].quantity  = parseInt(selectedQuantity);
-       showNotification("Quantidade do produto atualizada!", 'success');
+       showNotification("Quantidade do produto atualizada!", 'atualizado');
 }
 } else {
      // O produto não existe no carrinho, então adicione-o
