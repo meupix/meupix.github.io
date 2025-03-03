@@ -1314,7 +1314,7 @@ to {
     <div id="cart" class="tab-content active">
         <h2>Seu Carrinho</h2>
         <ul id="cartList"></ul>
-        <p>Total: R$ <span id="cartTotal">0,00</span></p>
+        <p>Total:<span id="cartTotal">R$ 0,00</span></p>
         <div class="button-group">
         <button class="ButtonFinalizarCompra" onclick="showTab('checkout')" id="proceedToCheckoutButton" disabled>Finalizar Compra</button>
         <button class="ButtonEsvaziarCarrinho" id="clearCartButton" onclick="clearCart()" disabled>Esvaziar Carrinho</button>
@@ -2310,13 +2310,13 @@ function openModal() {
     document.getElementById('myModal').style.display = 'block';
 }
 
-    function closeModal() {
+function closeModal() {
     document.getElementById('myModal').style.display = 'none';
     document.getElementById('myModal').classList.remove('fullscreen'); // Remove a classe fullscreen ao fechar
     document.getElementById('qrCode').innerHTML = '';
 }
 
-    function clearCart() {
+function clearCart() {
     cart = [];
     localStorage.removeItem(blog + 'cart');
     updateCartDisplay();
@@ -2345,29 +2345,28 @@ function updateOrderHistoryDisplay() {
         const addressData = order.address || {};
         const nomeCliente = addressData.name || 'Nome não disponível';
         const enderecoCompleto = addressData.address ?
-        `${addressData.address}, ${addressData.city || 'Cidade não disponível'} - ${addressData.bairro || 'Bairro não disponível'}, ${addressData.postcode || 'CEP não disponível'}` :
-        'Endereço não disponível';
+        `${addressData.address}, ${addressData.city || 'Cidade não disponível'} - ${addressData.bairro || 'Bairro não disponível'}, ${addressData.postcode || 'CEP não disponível'}` : 'Endereço não disponível';
 
         let itemsList = "";
 
         if (order.items && order.items.length > 0) {
         itemsList = order.items.map(item => {
         const itemTotal = item.price * item.quantity;
-        return `<li style="list-style:none;"><img src="${item.imageUrl}" alt="${item.name}" width="40" height="40"> ${item.name} (Qtd: ${item.quantity}) - R$ ${itemTotal.toFixed(2)}</li>`;}).join('\n    ');
-    } else {
+        return `<li style="list-style:none;"><img src="${item.imageUrl}" alt="${item.name}" width="40" height="40"> ${item.name} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}</li>`;}).join('\n    ');
+        } else {
         itemsList = "Nenhum item no pedido.";
-    }
+        }
 
         let addressDisplay = "";
         let buttonRetirada = "";
         if (order.deliveryOption === 'delivery') {
         addressDisplay = `<p>Endereço: ${enderecoCompleto}</p>`;
-    } else {
+        } else {
         buttonRetirada = `
         <p>Retirada no Local</p>
         <button onclick="goToAddress()">Endereço de Retirada</button>
         `;
-    }
+        }
 
         const originalIndex = history.findIndex(item => item.id === order.id);
         const safeIndex = originalIndex !== -1 ? originalIndex : index; 
@@ -2383,7 +2382,7 @@ function updateOrderHistoryDisplay() {
         <ul>
         ${itemsList}
         </ul>
-        <p>Total: R$ ${order.total}</p>
+        <p>Total: ${realBR(order.total)}</p>
         <div class="button-container">
         ${buttonRetirada}
         <button onclick="showPixQrCode(${originalIndex})">Ver QR Pix</button>
@@ -2403,91 +2402,89 @@ function updateOrderHistoryDisplay() {
         document.getElementById('additionalInfo').value = '';
         document.getElementById('deliveryOption').value = '';
         toggleAddressFields();
-});
+        });
 
-    clearHistoryButton.style.display = '';
-} else {
-    orderHistoryList.textContent = "Nenhuma transação no histórico.";
+        clearHistoryButton.style.display = '';
+        } else {
+        orderHistoryList.textContent = "Nenhuma transação no histórico.";
         clearHistoryButton.style.display = 'none';
-
+        }
 }
 
-}
-
-    function goToAddress() {
+function goToAddress() {
     const addressElement = document.querySelector('.rodape');
 
     if (addressElement) {
     addressElement.scrollIntoView({
         behavior: 'smooth'
-});
-} else {
+    });
+    } else {
     alert("Endereço para retirada não encontrado!");
-}
+    }
 }
 
-    function showPixQrCode(index) {
+function showPixQrCode(index) {
     const order = orderHistory[index];
     document.getElementById('myModal').classList.add('fullscreen');
     document.getElementById('qrCode').innerHTML = `<iframe src='${order.pixUrl}' style="width:100%; height:100%; border:none;"></iframe>`;
     openModal();
 }
 
-    function generatePaymentId() {
+function generatePaymentId() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let paymentId = 'Pagamento';
     for (let i = 0; i < 4; i++) {
     paymentId += characters.charAt(Math.floor(Math.random() * characters.length));
-}
+    }
     return paymentId;
 }
 
-    function clearOrderHistory() {
+function clearOrderHistory() {
     if (confirm("Tem certeza que deseja apagar o histórico de pedidos?")) {
     orderHistory = [];
     localStorage.removeItem(blog);
     updateOrderHistoryDisplay();
     showNotification("Histórico de pedidos apagado!", 'success');
-}
+    }
 }
 
-    function showTab(tabId) {
+function showTab(tabId) {
     const tabContents = document.querySelectorAll('.tab-content');
     const tabButtons = document.querySelectorAll('.tab-button');
 
     tabContents.forEach(content => {
     content.classList.remove('active');
     content.style.display = 'none';
-});
+    });
 
     tabButtons.forEach(button => {
     button.classList.remove('active');
-});
+    });
 
     const tabContent = document.getElementById(tabId);
     if (tabContent) {
     tabContent.classList.add('active');
     tabContent.style.display = 'block';
-} else {}
+    } else {}
 
     const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
 
     if (tabButton) {
     tabButton.classList.add('active');
-} else {}
+    } else {}
 
     const proceedToCheckoutButton = document.getElementById('proceedToCheckoutButton');
 
     if (proceedToCheckoutButton) {
     if (tabId === 'checkout') {
         proceedToCheckoutButton.style.display = 'none';
-} else {
+    } else {
         proceedToCheckoutButton.style.display = 'inline-block';
-}
-}
+    }
+    }
     document.getElementById(tabId).scrollIntoView({
     behavior: 'smooth'
-});
+    });
 }
 
 function resendWhatsappMessage(index) {
@@ -2499,17 +2496,17 @@ function resendWhatsappMessage(index) {
     itemsList = order.items.map(item => {
         const itemTotal = item.price * item.quantity;
         return `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}`;}).join('\n  ');
-} else {
+    } else {
     itemsList = "Nenhum item no pedido.";
-}
+    }
 
     let addressInfo = "";
     if (order.deliveryOption === 'delivery') {
     addressInfo =
         ` Endereço: ${order.address.address}, ${order.address.city} - ${order.address.bairro}, ${order.address.postcode}`;
-} else {
+    } else {
     addressInfo = "Retirada no Local";
-}
+    }
 
 const whatsappMessage = `
   Pedido #${order.id} (REENVIO)
@@ -2535,14 +2532,14 @@ const whatsappMessage = `
     showNotification(`Mensagem do pedido #${order.id} reenviada para o WhatsApp!`, 'success');
 }
 
-    function previousPage() {
+function previousPage() {
     if (currentPage > 1) {
     currentPage--;
     displayProducts();
     document.getElementById('productList').scrollIntoView({
         behavior: 'smooth'
-});
-}
+    });
+    }
 }
 
 function nextPage() {
@@ -2551,20 +2548,20 @@ function nextPage() {
     currentPage++;
     document.getElementById('productList').scrollIntoView({
         behavior: 'smooth'
-});
+    });
     displayProducts();
-}
+    }
 }
 
-    function goToPage(page) {
+function goToPage(page) {
     currentPage = page;
     displayProducts();
     document.getElementById('productList').scrollIntoView({
     behavior: 'smooth'
-});
+    });
 }
 
-    function updatePaginationButtons() {
+function updatePaginationButtons() {
     const btnInicio = document.getElementById('btnInicio');
     const btnAnterior = document.getElementById('btnAnterior');
     const btnProximo = document.getElementById('btnProximo');
@@ -2578,10 +2575,9 @@ function nextPage() {
     btnInicio.onclick = () => goToPage(1);
     btnAnterior.onclick = previousPage;
     btnProximo.onclick = nextPage;
-
 }
 
-    function showNotification(message, type = 'success') {
+function showNotification(message, type = 'success') {
     const notificationContainer = document.getElementById('notification-container');
 
     const notification = document.createElement('div');
@@ -2597,7 +2593,7 @@ function nextPage() {
     }
 
     // --- Carrossel ---
-    function initializeCarousel() {
+function initializeCarousel() {
     const carouselSlide = document.querySelector('.carousel-slide');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
@@ -2605,7 +2601,7 @@ function nextPage() {
     if (!carouselSlide || !prevBtn || !nextBtn) {
     console.warn('Carrossel não inicializado corretamente. Verifique os elementos.');
     return;
-}
+    }
 
     let slideIndex = 0;
 
@@ -2615,9 +2611,9 @@ function nextPage() {
     slideIndex++;
     if (slideIndex >= carouselProducts.length) {
         slideIndex = 0;
-}
+    }
     carouselSlide.style.transform = `translateX(-${slideIndex * 100}%)`;
-}
+    }
 
     nextBtn.addEventListener('click', showSlide);
     prevBtn.addEventListener('click', () => {
@@ -2626,7 +2622,7 @@ function nextPage() {
         slideIndex = carouselProducts.length - 1;
     }
     carouselSlide.style.transform = `translateX(-${slideIndex * 100}%)`;
-});
+    });
 
     // Limpa o carrossel antes de adicionar novos itens
     carouselSlide.innerHTML = '';
@@ -2677,16 +2673,16 @@ function nextPage() {
     <button class="buy-now-button" onclick="buyNowCarousel(this, '${product.name}')">Comprar Agora</button>
     `;
     carouselSlide.appendChild(carouselItem);
-});
+    });
 }
 
-    function buyNowCarousel(button, productName) {
+function buyNowCarousel(button, productName) {
     const product = carouselProducts.find(p => p.name === productName);
 
     if (!product) {
     showNotification("Produto não encontrado.", 'error');
     return;
-}
+    }
 
     const sizeSelectId = `carouselSizeSelect_${product.name}`;
     const quantitySelectId = `carouselQuantitySelect_${product.name}`;
@@ -2700,40 +2696,38 @@ function nextPage() {
     if (product.sizes && Array.isArray(product.sizes) && product.sizes.length > 0 && !selectedSize) {
     showNotification("Por favor, selecione um tamanho.", 'error');
     return;
-}
+    }
 
     if (!selectedQuantity) {
     showNotification("Por favor, selecione uma quantidade.", 'error');
     return;
-}
+    }
 
     const existingItemIndex = cart.findIndex(item => item.name === product.name && item.selectedSize === selectedSize);
 
-// Verifica se o produto já existe no carrinho
-if (existingItemIndex > -1) {
-    // O produto já existe no carrinho, então verifica se a quantidade é a mesma
+
+    if (existingItemIndex > -1) {
+
     const existingItem = cart.find(item => item.name === product.name && item.selectedSize === selectedSize && item.quantity === parseInt(selectedQuantity));
 
     if (existingItem) {
        showNotification("Produto já adicionado no carrinho!", 'error');
- }
+    }
     else {
-       // Se a quantidade for diferente, atualiza a quantidade
        cart[existingItemIndex].quantity  = parseInt(selectedQuantity);
        showNotification("Quantidade do produto atualizada!", 'atualizado');
-}
-} else {
-     // O produto não existe no carrinho, então adicione-o
+    }
+    } else {
       cart.push({
      name: product.name,
      price: product.price,
      quantity: parseInt(selectedQuantity),
      imageUrl: product.imageUrl,
      selectedSize: selectedSize
-  });
+    });
 
       showNotification("Produto adicionado ao carrinho", 'success');
-}
+    }
     showTab('checkout');
     localStorage.setItem(blog + 'cart', JSON.stringify(cart));
     updateCartDisplay();
@@ -2743,17 +2737,15 @@ if (existingItemIndex > -1) {
 }
 
 
-    // Função para criar o botão "Comprar Agora"
-    function createBuyNowButton(product) {
+function createBuyNowButton(product) {
     const button = document.createElement('button');
     button.classList.add('buy-now-button');
     button.textContent = 'Comprar Agora';
-    button.onclick = () => buyNow(product); // Chama a função buyNow
+    button.onclick = () => buyNow(product);
     return button;
 }
 
-    // Função para verificar a validade do CEP
-    async function isCepValido(cep) {
+async function isCepValido(cep) {
     let cepLimpo = cep.replace(/\D/g, '');
     if (cepLimpo.length !== 8) return false;
 
@@ -2766,23 +2758,23 @@ if (existingItemIndex > -1) {
 
     if (unidadefederativa && data.uf !== unidadefederativa) {
         isValid = false;
-}
+    }
     if (cidade && data.localidade !== cidade) {
         isValid = false;
-}
+    }
     if (bairro && data.bairro !== bairro) {
         isValid = false;
-}
+    }
 
     return isValid;
 
-} catch (error) {
+    } catch (error) {
     console.error("Erro ao buscar o CEP:", error);
     return false;
-}
+    }
 }
 
-    document.getElementById("postcode").addEventListener("blur", async function () {
+document.getElementById("postcode").addEventListener("blur", async function () {
     let cep = this.value.replace(/\D/g, ''); // Remove caracteres não numéricos
 
     if (cep.length === 8) {
@@ -2824,13 +2816,13 @@ if (existingItemIndex > -1) {
     } else {
         showNotification("CEP não encontrado!", 'error');
     }
-} catch (error) {
+    } catch (error) {
         console.error("Erro ao buscar o CEP:", error);
-}
-} else {
+    }
+    } else {
     showNotification("CEP inválido!", 'error');
-}
-});
+    }
+    });
 
     function toggleAddressFields() {
     const deliveryOption = document.getElementById('deliveryOption').value;
@@ -2843,7 +2835,7 @@ if (existingItemIndex > -1) {
     document.getElementById('address').setAttribute('required', '');
     document.getElementById('city').setAttribute('required', '');
     document.getElementById('bairro').setAttribute('required', '');
-} else {
+    } else {
     addressFields.style.display = 'none';
     // Remove o atributo 'required' dos campos de endereço
     document.getElementById('postcode').removeAttribute('required');
@@ -2856,16 +2848,15 @@ if (existingItemIndex > -1) {
     document.getElementById('address').value = '';
     document.getElementById('city').value = '';
     document.getElementById('bairro').value = '';
-}
+    }
 }
 
-    // Nova função para verificar o status da loja e exibir mensagem
-    function getStoreStatus() {
+function getStoreStatus() {
     const now = new Date();
-    const dayOfWeek = now.getDay(); // 0 (Domingo) - 6 (Sábado)
+    const dayOfWeek = now.getDay();
     const hour = now.getHours();
     const minute = now.getMinutes();
-    const currentTime = hour * 60 + minute; // Converter para minutos
+    const currentTime = hour * 60 + minute; 
 
     let isOpen = false;
     let openingTime = 0;
@@ -2883,15 +2874,15 @@ if (existingItemIndex > -1) {
         cartTabButton.disabled = true;
         cartTabButton.style.display = 'none';
         document.getElementById('cart').style.display = 'none';
-}
+    }
     if (checkoutTabButton) {
         checkoutTabButton.classList.add('disabled-tab');
         checkoutTabButton.disabled = true;
         checkoutTabButton.style.display = 'none';
-}
+    }
     const featuredProductsCarousel = document.getElementById('featuredProductsCarousel');
     if (featuredProductsCarousel) featuredProductsCarousel.style.display = 'none';
-}
+    }
 
     const horariosArray = horariosFuncionamento.split(';');
     const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
@@ -2904,8 +2895,8 @@ if (existingItemIndex > -1) {
         dia: dia.trim(),
         tempo: tempo.trim()
     };
-}
-});
+    }
+    });
 
     const statusLojaDiv = document.getElementById('products');
     const LojaAberta = document.getElementById('statusLoja');
@@ -2916,7 +2907,7 @@ if (existingItemIndex > -1) {
     desativarInterface();
     clearInterval(intervalID2);
     return;
-}
+    }
 
     if (horarioDia) {
     const [abertura, fechamento] = horarioDia.tempo.split('-');
@@ -2931,13 +2922,13 @@ if (existingItemIndex > -1) {
         if (currentTime >= openingTime && currentTime <= closingTime) {
         isOpen = true;
     }
-}
-}
+    }
+    }
 
     // Exibir mensagem de status da loja
     if (isOpen) {
     LojaAberta.innerHTML = '<p class="loja-aberta">Loja Aberta! Boas compras!</p>';
-} else {
+    } else {
     statusLojaDiv.innerHTML = ''; // Limpar mensagens anteriores
     LojaAberta.innerHTML = '<p class="loja-fechada">Loja Fechada!</p>';
     statusLojaDiv.innerHTML =
@@ -2945,28 +2936,25 @@ if (existingItemIndex > -1) {
     desativarInterface();
     clearInterval(intervalID2);
     return;
-}
+    }
 
     var intervalID2 = setInterval(getStoreStatus, 60000);
 }
 
-    // Função para gerar a tabela de horários de funcionamento
-    function generateScheduleTable(horarios) {
+function generateScheduleTable(horarios) {
     const horariosArray = horarios.split(';');
-    let tableHTML =
-    '<table><thead><tr><th>Dia da Semana</th><th>Horário de Abertura</th><th>Horário de Fechamento</th></tr></thead><tbody>';
+    let tableHTML = '<table><thead><tr><th>Dia da Semana</th><th>Horário de Abertura</th><th>Horário de Fechamento</th></tr></thead><tbody>';
 
     horariosArray.forEach(horario => {
     const [dia, tempo] = horario.split(':');
 
     if (tempo === 'FECHADO') {
         tableHTML += `<tr><td>${dia.trim()}</td><td colspan="2">FECHADO</td></tr>`;
-} else {
+    } else {
         const [abertura, fechamento] = tempo.split('-');
         tableHTML += `<tr><td>${dia.trim()}</td><td>${abertura.trim()}</td><td>${fechamento}</td></tr>`;
-}
-
-});
+    }
+    });
 
     tableHTML += '</tbody></table>';
     return tableHTML;
@@ -2986,14 +2974,14 @@ const button = document.getElementById("whatswidget-button");
     const conversation = document.getElementById("whatswidget-conversation");
     let chatOpen = false;
 
-    function openChat() {
+function openChat() {
     if (!chatOpen) {
     conversation.style.display = "block";
     conversation.style.opacity = "1";
-} else {
+    } else {
     conversation.style.opacity = "0";
     conversation.style.display = "none";
-}
+    }
     chatOpen = !chatOpen;
 }
 
