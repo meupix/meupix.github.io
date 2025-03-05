@@ -1437,10 +1437,9 @@ to {
     <a id="termosUsoLink" href="#" target="_blank">Termos de Uso</a>
     </p>
 
-    <p>⚠️ Este site é administrado por pessoa física. Todas as vendas são feitas sob encomenda e conforme
-    disponibilidade.</p>
-
-    <p id="nomedalojarodape">Carregando...</p>
+    <p id="avisonorodape">⚠️ Todas as vendas são feitas sob encomenda e conforme disponibilidade ⚠️</p>
+    <p id="rodapedaloja">Todos os direitos reservados.</p>
+    
     </div>
     </footer>
 
@@ -1541,8 +1540,8 @@ function processarStatusDaLoja(data) {
         document.getElementById('descricao').textContent = descricao;
         document.getElementById('NomeDaLoja').textContent = nomedaloja;
         
-        titulo.textContent = "Meu Pix - Loja " + nomedaloja;
-        document.getElementById('nomedalojarodape').textContent = '© 2025 ' + nomedaloja + ' - Todos os direitos reservados.';
+        titulo.textContent = "Meu Pix - " + nomedaloja;
+        document.getElementById('rodapedaloja').textContent = '© 2025 ' + nomedaloja + ' - Todos os direitos reservados.';
 
         lines.forEach(line => {
         line = line.replace(/<[^>]*>/g, '').trim();
@@ -1597,6 +1596,9 @@ function processarStatusDaLoja(data) {
         politicaPrivacidadeURL = line.split('politicaPrivacidadeURL =')[1].trim();
     } else if (line.startsWith('termosUsoURL')) {
         termosUsoURL = line.split('termosUsoURL =')[1].trim();
+    } else if (line.startsWith('avisonorodape')) {
+        avisonorodape = line.split('avisonorodape =')[1].trim();
+        document.getElementById('avisonorodape').textContent = avisonorodape;
     }
     });
         atualizarInterface(fechada, manutencao, ativahorario);
