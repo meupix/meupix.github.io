@@ -33,6 +33,8 @@ Qualquer pessoa que possui uma chave Pix cadastrada pode criar um QrCode válido
 | `voltar`   	| Não         	| Link ou true = #BotaoVoltarPix.                                                                                                                                                                       	|
 | `logo`     	| Não         	| Ex: https://meupix.github.io/pagamentos.files/imagens/logo.png (450x450).                                                                                                                       |
 
+## Exemplos de PIX do Gerador
+
  [https://meupix.github.io?chave=604e3bed-af56-4235-92c4-9a272b24acdb&valor=0,00&nome=Davi%20M%20S%20Silva&cidade=BELEM&mensagem=Gostei%20do%20gerador%20de%20pix&txid=PagamentoDoacao&banco=NU%20PAGAMENTOS%20-%20S.A&cpf=00009480200&logo=https://lh3.googleusercontent.com/a/ACg8ocJW-_MyuslD1WsPQQrk4-CHSV_l8buzzYAexlXifDXAqs0II5URxQ=s450-c-rg-br100&voltar=https://github.com/meupix/meupix.github.io](https://meupix.github.io?chave=604e3bed-af56-4235-92c4-9a272b24acdb&valor=0,00&nome=Davi%20M%20S%20Silva&cidade=BELEM&mensagem=Gostei%20do%20gerador%20de%20pix&txid=PagamentoDoacao&banco=NU%20PAGAMENTOS%20-%20S.A&cpf=00009480200&logo=https://lh3.googleusercontent.com/a/ACg8ocJW-_MyuslD1WsPQQrk4-CHSV_l8buzzYAexlXifDXAqs0II5URxQ=s450-c-rg-br100&voltar=https://github.com/meupix/meupix.github.io)
 
  [https://meupix.github.io?schave=604e3bed-af56-4235-92c4-9a272b24acdb&valor=0,00&nome=Davi%20M%20S%20Silva&cidade=BELEM&mensagem=Gostei%20do%20gerador%20de%20pix&txid=PagamentoDoacao&banco=NU%20PAGAMENTOS%20-%20S.A&cpf=00009480200&logo=https://lh3.googleusercontent.com/a/ACg8ocJW-_MyuslD1WsPQQrk4-CHSV_l8buzzYAexlXifDXAqs0II5URxQ=s450-c-rg-br100&voltar=https://github.com/meupix/meupix.github.io](https://meupix.github.io?schave=604e3bed-af56-4235-92c4-9a272b24acdb&valor=0,00&nome=Davi%20M%20S%20Silva&cidade=BELEM&mensagem=Gostei%20do%20gerador%20de%20pix&txid=PagamentoDoacao&banco=NU%20PAGAMENTOS%20-%20S.A&cpf=00009480200&logo=https://lh3.googleusercontent.com/a/ACg8ocJW-_MyuslD1WsPQQrk4-CHSV_l8buzzYAexlXifDXAqs0II5URxQ=s450-c-rg-br100&voltar=https://github.com/meupix/meupix.github.io)
@@ -43,7 +45,14 @@ Qualquer pessoa que possui uma chave Pix cadastrada pode criar um QrCode válido
 
  [https://meupix.github.io?minhavenda=P2NoYXZlPTYwNGUzYmVkLWFmNTYtNDIzNS05MmM0LTlhMjcyYjI0YWNkYiZ2YWxvcj0wLDAwJm5vbWU9RGF2aSBNIFMgU2lsdmEmY2lkYWRlPUJFTEVNJm1lbnNhZ2VtPUdvc3RlaSBkbyBnZXJhZG9yIGRlIHBpeCZ0eGlkPVBhZ2FtZW50b0RvYWNhbyZiYW5jbz1OVSBQQUdBTUVOVE9TIC0gUy5BJmNwZj0wMDAwOTQ4MDIwMCZsb2dvPWh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0pXLV9NeXVzbEQxV3NQUVFyazQtQ0hTVl9sOGJ1enpZQWV4bFhpZkRYQXFzMElJNVVSeFE9czQ1MC1jLXJnLWJyMTAwJnZvbHRhcj1odHRwczovL2dpdGh1Yi5jb20vbWV1cGl4L21ldXBpeC5naXRodWIuaW8%3D](https://meupix.github.io?minhavenda=P2NoYXZlPTYwNGUzYmVkLWFmNTYtNDIzNS05MmM0LTlhMjcyYjI0YWNkYiZ2YWxvcj0wLDAwJm5vbWU9RGF2aSBNIFMgU2lsdmEmY2lkYWRlPUJFTEVNJm1lbnNhZ2VtPUdvc3RlaSBkbyBnZXJhZG9yIGRlIHBpeCZ0eGlkPVBhZ2FtZW50b0RvYWNhbyZiYW5jbz1OVSBQQUdBTUVOVE9TIC0gUy5BJmNwZj0wMDAwOTQ4MDIwMCZsb2dvPWh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0pXLV9NeXVzbEQxV3NQUVFyazQtQ0hTVl9sOGJ1enpZQWV4bFhpZkRYQXFzMElJNVVSeFE9czQ1MC1jLXJnLWJyMTAwJnZvbHRhcj1odHRwczovL2dpdGh1Yi5jb20vbWV1cGl4L21ldXBpeC5naXRodWIuaW8%3D)
 
-Deixe um comentário [**Comenta Agora**](https://chat-meupix.blogspot.com/p/gerarpix.html).
+
+Deixe um comentário sobre o Gerador de pix [**Comenta Agora**](https://chat-meupix.blogspot.com/p/gerarpix.html).
+
+## Loja Virtual
+
+[https://meupix.github.io/lojavirtual?id=1364727178420957300](https://meupix.github.io/lojavirtual?id=1364727178420957300)
+
+Deixe um comentário sobre a loja virtual [**Comenta Agora**](https://chat-meupix.blogspot.com/p/cria-sua-loja-virtual-com-meupix.html).
 
 ## Autor
 
