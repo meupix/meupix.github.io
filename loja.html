@@ -583,8 +583,7 @@ button:hover {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    background-image:
-    url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23343a40%22%20d%3D%22M7%2C10l5%2C5l5%2C-5H7z%22%2F%3E%3C%2Fsvg%3E');
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20fill%3D%22%23343a40%22%20d%3D%22M7%2C10l5%2C5l5%2C-5H7z%22%2F%3E%3C%2Fsvg%3E');
     background-repeat: no-repeat;
     background-position: right 12px top 50%;
     background-size: 18px;
@@ -618,7 +617,7 @@ button:hover {
 }
 
 .order-details h3 {
-    color: #2ecc71;
+    color: #000000;
     margin-bottom: 10px;
 }
 
@@ -629,7 +628,7 @@ button:hover {
 .order-details h4 {
     margin-top: 15px;
     margin-bottom: 10px;
-    color: #3498db;
+    color: #055d00;
 }
 
 .order-details ul {
@@ -1106,7 +1105,7 @@ to {
     position: fixed !important;
     bottom: 20px !important;
     right: 30px !important;
-    z-index: 1001 !important
+    z-index: 100;
 }
 
 .whatswidget-conversation {
@@ -1267,7 +1266,52 @@ to {
     border-radius: 5px;
     font-size: 0.9em;
 }
-
+#modalErro {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 101;
+        }
+        #modalErro .conteudo {
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        #modalErro .botaoAjuda {
+            background-color: #007BFF;
+            color: white;
+        }
+        #modalErro .botaoFechar {
+            background-color: #ff0000;
+            color: white;
+        }
+        /* Estilos para os tipos de mensagem */
+        #modalErro.success .conteudo {
+            background: linear-gradient(153deg, #4CAF50, #028329);
+            color: white;
+        }
+        #modalErro.error .conteudo {
+            background: linear-gradient(153deg, #f44336, #880303);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #modalErro button {
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -1454,7 +1498,7 @@ to {
         <div id="whatswidget-widget-wrapper" class="whatswidget-widget-wrapper" style="all:revert;">
         <div id="whatswidget-conversation" class="whatswidget-conversation" style="display: none; opacity: 0;">
         <div class="whatswidget-conversation-header" style="all:revert;">
-            <div id="whatswidget-conversation-title" class="whatswidget-conversation-title" style="all:revert;"><span id="nome1">Davi Silva</span></div>
+            <div id="whatswidget-conversation-title" class="whatswidget-conversation-title" style="all:revert;"><span id="nome1"></span></div>
         </div>
         <div id="whatswidget-conversation-message" class="whatswidget-conversation-message " style="all:revert;">Qualquer dúvida estou a disposição.</div>
         <div class="whatswidget-conversation-cta" style="all:revert; cursor: pointer;">
@@ -1475,10 +1519,12 @@ to {
 
     <script>
     const Params = new URLSearchParams(window.location.search);
-    const blog = Params.get('minhaloja') || '';
+  
+  const blog = Params.get('id');
+  let cart = JSON.parse(localStorage.getItem(blog + 'cart')) || [];
+  let orderHistory = JSON.parse(localStorage.getItem(blog)) || [];
     let products = [];
-    let cart = JSON.parse(localStorage.getItem(blog + 'cart')) || [];
-    let orderHistory = JSON.parse(localStorage.getItem(blog)) || [];
+
     let carouselProducts = [];
     let MeuPix = '';
     let whatsapp = '';
@@ -1499,12 +1545,22 @@ to {
     const productsPerPage = 10;
 
     document.addEventListener('DOMContentLoaded', function () {
+    if (!Params || Params.keys().next().done) {
+      // Sem parâmetros encontrados, faça algo aqui (opcional)
+    } else {
+      // Verifica se os parâmetros necessários estão presentes
+    if (!Params.has('id')) {
+    exibirModalErro("Insira o valor no parâmetro ?id=", false, false, 'error');
+    return;
+    } else {
+
+    }
+    }
     verificarStatusDaLoja();
     updateCartDisplay();
     updateOrderHistoryDisplay();
     updateMiniCartCount();
     updateFloatingCartCount();
-    fetchProducts();
     updateFloatingCartAccessibilityLabel(); // Inicializa a label ARIA
 
     const tabButtons = document.querySelectorAll('.tab-button');
@@ -1516,13 +1572,71 @@ to {
   });
 });
 
+function exibirModalErro(mensagem, comb, x, tipo = 'error') {
+    // Verifica se já existe um modal e remove antes de criar outro
+    let modalExistente = document.getElementById('modalErro');
+    if (modalExistente) {
+        modalExistente.remove();
+    }
+
+    // Criação do modal
+    let modal2 = document.createElement('div');
+    modal2.id = 'modalErro';
+
+    // Criação do conteúdo do modal
+    let conteudo = document.createElement('div');
+    conteudo.className = "conteudo";
+    conteudo.innerHTML = `
+        <h3>${tipo === 'error' ? '✖️ Erro' : '✔️ Sucesso'}</h3>
+        <p>${mensagem}</p>
+    `;
+
+    // Adiciona o botão "Como criar um ID?" se `comb` for verdadeiro
+    if (comb) {
+        let botaoAjuda = document.createElement('a');
+        botaoAjuda.href = "https://chat-meupix.blogspot.com/2025/03/cria-sua-loja-virtual-com.html";
+        botaoAjuda.target = "_blank";
+
+        let botao = document.createElement('button');
+        botao.className = "botaoAjuda";
+        botao.innerText = "Como criar um ID?";
+        botaoAjuda.appendChild(botao);
+        conteudo.appendChild(botaoAjuda);
+    }
+
+    // Adiciona o botão "Fechar" se `x` for verdadeiro
+    if (x) {
+        let botaoFechar = document.createElement('button');
+        botaoFechar.className = "botaoFechar";
+        botaoFechar.innerText = "Fechar";
+        botaoFechar.onclick = function () {
+            modal2.remove();
+        };
+
+        conteudo.appendChild(botaoFechar);
+    }
+
+    // Adiciona a classe do tipo ao modal
+    modal2.classList.add(tipo); // Adiciona 'success' ou 'error'
+
+    modal2.appendChild(conteudo);
+    document.body.appendChild(modal2);
+}
+
 function verificarStatusDaLoja() {
     const script = document.createElement('script');
     script.src = 'https://www.blogger.com/feeds/' + blog + '/pages/default?start-index=1&max-results=500&alt=json-in-script&callback=processarStatusDaLoja';
+    
+    script.onerror = function () {
+            exibirModalErro("ID do blog inválido. ?id=", true, false, 'error');
+        };
+    
     document.body.appendChild(script);
 }
 
 function processarStatusDaLoja(data) {
+    const verificar = data.feed.link[2].href;
+    console.error(verificar);
     let fechada = false;
     let manutencao = false;
     let ativahorario = false;
@@ -1540,7 +1654,7 @@ function processarStatusDaLoja(data) {
         document.getElementById('descricao').textContent = descricao;
         document.getElementById('NomeDaLoja').textContent = nomedaloja;
         
-        titulo.textContent = "Meu Pix - " + nomedaloja;
+        titulo.textContent = "Meu Pix - Loja " + nomedaloja;
         document.getElementById('rodapedaloja').textContent = '© 2025 ' + nomedaloja + ' - Todos os direitos reservados.';
 
         lines.forEach(line => {
@@ -1726,6 +1840,7 @@ function processarStatusDaLoja(data) {
    }
   }
  }
+ fetchProducts();
 }
 
 function atualizarInterface(fechada, manutencao, ativahorario) {
