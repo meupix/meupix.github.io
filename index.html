@@ -1766,9 +1766,6 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
     opacity: 1;
 }
 
-
-
-
 #edit-form input:focus + label,
 #edit-form input:not(:placeholder-shown) + label {
     top: -20px;
@@ -2405,8 +2402,7 @@ if (!urlParams || urlParams.keys().next().done) {
     // Sem parâmetros encontrados, faça algo aqui (opcional)
 } else {
     // Verifica se os parâmetros necessários estão presentes
-    if (!urlParams.has('codepix') && !urlParams.has('chave') && !urlParams.has('schave') && 
-        !urlParams.has('criaplaca') && !urlParams.has('minhavenda')) {
+    if (!urlParams.has('codepix') && !urlParams.has('chave') && !urlParams.has('schave') && !urlParams.has('criaplaca') && !urlParams.has('minhavenda')) {
 
         // Parâmetros não encontrados: exibe mensagem de erro
         $('#Error').text('Parâmetro não encontrado: &codepix= &chave= &schave= &criaplaca= &minhavenda=');
@@ -2916,7 +2912,7 @@ document.addEventListener('DOMContentLoaded', function () {
   
   if (!Params.has('criaplaca')) {
   
-  if (!Params.has('minhavenda')) {return;}// Sai da função se nenhum dos parâmetros estiver presente
+  if (!Params.has('minhavenda')) {return}
 
   let ParamsPix;
  const minhavenda = atob(Params.get('minhavenda'));
@@ -3192,12 +3188,6 @@ const handleKeypadInput = (value) => {
 };
 
   const showPaymentScreen = () => {
-    const pixKey = chavepix;
-    if (!pixKey) {
-      alert('Por favor, insira a chave PIX.');
-      return;
-    }
-
     transactionId = generateTransactionID();
 
     if (/^(0+|00[.,]00|0[.,]00)$/.test(amount.toString().replace(/[^\d,.]/g, '')) || amount.toString().replace(/[^\d,.]/g, '') === '') {		
@@ -3270,11 +3260,6 @@ const handleKeypadInput = (value) => {
 
   // Função para salvar a transação
   const saveTransaction = (status = 'pago') => {
-    const pixKey = chavepix;
-    if (!pixKey) {
-      return;
-    }
-
     valor = formatarBRL(amount.toString());
     let meupixsalvo;
     let textoOriginal;
@@ -3493,17 +3478,11 @@ const salvarEdicao = (index) => {
     const newPrice = document.getElementById('edit-price').value;
 
     if (newName && newPrice) {
-        // Atualiza o produto
         product.name = newName;
         product.price = newPrice;
 
-        // Atualiza o localStorage
         localStorage.setItem('products', JSON.stringify(products));
-
-        // Fecha o modal
         fechareditform();
-
-        // Atualiza a exibição dos produtos
         displayProducts();
     }
 };
@@ -3540,14 +3519,12 @@ const handleDeleteProduct = (event) => {
         return;
     }
 
-    // Obtém o nome do produto a ser excluído
     const productName = products[index].name;
 
-    // Exibe a mensagem de confirmação com o nome do produto
     if (confirm(`Tem certeza de que deseja apagar o produto "${productName}"?`)) {
-        products.splice(index, 1); // Remove o produto do array
-        localStorage.setItem('products', JSON.stringify(products)); // Atualiza o localStorage
-        displayProducts(); // Atualiza a exibição dos produtos
+        products.splice(index, 1);
+        localStorage.setItem('products', JSON.stringify(products)); 
+        displayProducts();
     }
 };
 
@@ -3559,9 +3536,9 @@ const handleDeleteProduct = (event) => {
   };
 
   const addDevendoTransaction = () => {
-    // Mostrar a modal 
+
     $('#modalagendamento').show();
-    // Adicionar evento de clique ao botão "Confirmar"
+
     const confirmButtonagendamento = document.getElementById('modalConfirm');
     confirmButtonagendamento.addEventListener('click', () => {
         let Cliente = document.getElementById('clienteNome').value;
@@ -3660,9 +3637,8 @@ const handleDeleteProduct = (event) => {
       textoOriginal = "?chave=" + chavepix.replace(/\ /g, '+') + (valor ? "&valor=" + valor.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (transactionId ? "&txid=" + transactionId : "") + "&banco=" + banco + "&cpf=" + cpf + (minhalogo ? "&logo=" + minhalogo : "") + (whatsapp ? "&whatsapp=" + whatsapp : "") + (botaovoltar ? "&voltar=" + botaovoltar : "");
     }
 
-    // Adicionar o link ao localStorage 
-	const LinkCriptografado = btoa(textoOriginal); 
-	    const paramschaves = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20').trim();
+	  const LinkCriptografado = btoa(textoOriginal); 
+	  const paramschaves = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20').trim();
     const gerarPix = encodeURIComponent(LinkCriptografado).trim();
     const editarPix = meupixsalvo.replace(/\ /g, '%20').trim();
     const compartilharPix = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado).trim();
@@ -3731,11 +3707,6 @@ const handleDeleteProduct = (event) => {
   };
 
   addProductsButton.addEventListener('click', () => {
-    const pixKey = chavepix;
-    if (!pixKey) {
-      alert('Por favor, insira a chave PIX.');
-      return;
-    }
     const products = JSON.parse(localStorage.getItem('products')) || [];
     amount = 0;
     for (const index in selectedProducts) {
@@ -3757,6 +3728,9 @@ const handleDeleteProduct = (event) => {
     GeraQRCodePix(payload, minhalogo);
     generateProductListModal(transactionId);
     totalAmountModal.textContent = formatarBRL(amount);
+    
+    previewValue = 0;
+            previewString = '';
     const paymentModal = document.getElementById('paymentModal');
 
     window.addEventListener('click', (event) => {
