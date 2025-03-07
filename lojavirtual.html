@@ -191,7 +191,7 @@
 
 .discount-carrossel {
     position: absolute;
-    top: 0px;
+    top: 19px;
     margin-left: 20px;
     background: linear-gradient(118deg, #ff0000, #cc0000);
     color: white;
@@ -294,6 +294,14 @@ button {
     justify-content: space-around;
     margin-bottom: 20px;
     margin-top: 20px;
+}
+
+.button-group-carousel {
+    display: flex;
+    margin-bottom: 9px;
+    margin-top: 28px;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* Estilo base para os botões */
@@ -573,7 +581,7 @@ button:hover {
 
 .custom-select {
     margin-bottom: 12px;
-    width: 100%;
+    width: 55%;
     padding: 12px;
     font-size: 1em;
     border: 2px solid #ddd;
@@ -1020,7 +1028,6 @@ to {
     align-items: baseline;
     justify-content: space-evenly;
     flex-wrap: nowrap;
-    margin-top: 20px;
 }
 
 .carousel-item {
@@ -1035,6 +1042,7 @@ to {
     height: auto;
     margin-bottom: 10px;
     border-radius: 8px;
+    margin-top: 20px;
 }
 
 .carousel-nav {
@@ -2000,13 +2008,14 @@ function fetchProducts() {
 
         if (isCarousel) {
         carouselProducts.push(product); // Adiciona ao array do carrossel
+        initializeCarousel();
     }
 
         return product;
 });
 
     displayProducts();
-    initializeCarousel(); // Inicializa o carrossel após carregar os produtos
+     // Inicializa o carrossel após carregar os produtos
 
 } catch (error) {}
 }
@@ -2059,10 +2068,12 @@ function fetchProducts() {
         <img src="${product.imageUrl}" alt="${product.name}">
         <h3>${product.name}</h3>
         <p>${product.discount > 0 ? `De <strike class="backgroundred">R$ ${product.originalPrice.toFixed(2)}</strike> Por <span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>` : `<span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`}</p>
+           <div class="button-group-carousel">
         ${sizesHTML}
         ${quantityHTML}
        <button class="add-to-cart-button" onclick="addToCart('${product.name}', ${product.price}, '${product.imageUrl}', document.getElementById('${sizeSelectId}') ? document.getElementById('${sizeSelectId}').value : '', document.getElementById('${quantitySelectId}').value)">Adicionar ao Carrinho</button>
-    `;
+       </div>
+       `;
     productDiv.appendChild(createBuyNowButton(product)); // Adiciona o botão "Comprar Agora"
     productListElement.appendChild(productDiv);
 
@@ -2736,10 +2747,8 @@ function showNotification(message, type = 'success') {
             carouselSlide.style.transform = `translateX(-${slideIndex * 100}%)`;
         }
 
-        // Função para iniciar o slideshow automático
         function startAutoSlide() {
-            // Define um intervalo para chamar a função showSlide a cada 5 segundos (5000ms)
-            autoSlideInterval = setInterval(showSlide, 5000);
+            autoSlideInterval = setInterval(showSlide, 10000);
         }
 
         // Função para pausar o slideshow automático
@@ -2771,7 +2780,9 @@ function showNotification(message, type = 'success') {
 
     function loadCarouselProducts() {
     carouselSlide.innerHTML = '';
-
+    let sizesHTML = '';
+    let quantityHTML = '';
+    let discountBadgeHTML = '';
 
     carouselProducts.forEach(product => {
     if (!product.available) return;
@@ -2779,9 +2790,7 @@ function showNotification(message, type = 'success') {
     const carouselItem = document.createElement('div');
     carouselItem.classList.add('carousel-item');
 
-    const sizeSelectId = `carouselSizeSelect_${product.name}`;
-    const quantitySelectId = `carouselQuantitySelect_${product.name}`;
-
+    let sizeSelectId = `carouselSizeSelect_${product.name}`;
     const sizesHTML = product.sizes && product.sizes.length > 0 ? `
     <label for="${sizeSelectId}">Tamanho:</label>
     <select id="${sizeSelectId}" class="custom-select">
@@ -2789,26 +2798,27 @@ function showNotification(message, type = 'success') {
     </select>
     ` : '';
 
-                const quantityHTML = `
+    let quantitySelectId = `carouselQuantitySelect_${product.name}`;
+    const quantityHTML = `
     <label for="${quantitySelectId}">Quantidade:</label>
     <select id="${quantitySelectId}" class="custom-select">
       ${Array.from({ length: product.quantity }, (_, i) => i + 1).map(qty => `<option value="${qty}">${qty}</option>`).join('')}
     </select>
     `;
 
-                // Cria o elemento HTML para o selo de desconto, se aplicável
     const discountBadgeHTML = product.discount > 0 ? `<div class="discount-carrossel">-${product.discount}%</div>` : '';
 
-            
     carouselItem.innerHTML = `
     ${discountBadgeHTML}
     <img src="${product.imageUrl}">
     <h3>${product.name}</h3>
     <p>${product.discount > 0 ? `De <strike class="backgroundred">R$ ${product.originalPrice.toFixed(2)}</strike> Por <span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>` : `<span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`}</p>
+    <div class="button-group-carousel">
     ${sizesHTML}
     ${quantityHTML}
     <button class="add-to-cart-button" onclick="addToCart('${product.name}', ${product.price}, '${product.imageUrl}', document.getElementById('${sizeSelectId}') ? document.getElementById('${sizeSelectId}').value : '', document.getElementById('${quantitySelectId}').value)">Adicionar ao Carrinho</button>
     <button class="buy-now-button" onclick="buyNowCarousel(this, '${product.name}')">Comprar Agora</button>
+   </div>
     `;
 
     carouselSlide.appendChild(carouselItem);
