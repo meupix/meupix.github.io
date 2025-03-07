@@ -4607,9 +4607,8 @@ function mostrarLinks() {
       excluirLink(links[j].titulo, i); // Chama a função para excluir o link
       };
 
-		const linkActions2 = document.createElement('div');
+	  	const linkActions2 = document.createElement('div');
       linkActions2.classList.add('link-actions');
-
       const btnCriaPlaca = document.createElement('button');
       btnCriaPlaca.textContent = 'Cria Placa';
       btnCriaPlaca.classList.add('open-link');
@@ -4617,20 +4616,27 @@ function mostrarLinks() {
         window.location.href = "?criaplaca=" + links[j].gerarPix;
       };
 	  
-	  const btnCriaVenda = document.createElement('button');
+	    const btnCriaVenda = document.createElement('button');
       btnCriaVenda.textContent = 'Minhas Vendas';
       btnCriaVenda.classList.add('open-link');
       btnCriaVenda.onclick = function() {
         window.location.href = "?minhavenda=" + links[j].gerarPix;
       };
 
-      // Adicionar os botões à lista
+      const btnlojavirtual = document.createElement('button');
+      btnlojavirtual.textContent = 'Loja Virtual';
+      btnlojavirtual.classList.add('open-link');
+      btnlojavirtual.onclick = function() {
+        window.location.href = "lojavirtual.html?id=";
+      };
+
       linkActions.appendChild(btnAbrir);
       linkActions.appendChild(btnEditar);
       linkActions.appendChild(btnCompartilhar);
       linkActions.appendChild(btnExcluir);
 	    linkActions2.appendChild(btnCriaPlaca);
       linkActions2.appendChild(btnCriaVenda);
+      linkActions2.appendChild(btnlojavirtual);
 	   
       // Adicionar os elementos à lista
       itemLista.appendChild(linkItem);
@@ -4886,7 +4892,7 @@ function atualizarAba(abaIndex) {
         excluirLink(links[j].titulo, abaIndex);
       };
 
-    const linkActions2 = document.createElement('div');
+      const linkActions2 = document.createElement('div');
       linkActions2.classList.add('link-actions');
       const btnCriaPlaca = document.createElement('button');
       btnCriaPlaca.textContent = 'Cria Placa';
@@ -4902,12 +4908,20 @@ function atualizarAba(abaIndex) {
         window.location.href = "?minhavenda=" + links[j].gerarPix;
       };
 
+      const btnlojavirtual = document.createElement('button');
+      btnlojavirtual.textContent = 'Loja Virtual';
+      btnlojavirtual.classList.add('open-link');
+      btnlojavirtual.onclick = function() {
+        window.location.href = "lojavirtual.html?id=";
+      };
+
       linkActions.appendChild(btnAbrir);
       linkActions.appendChild(btnEditar);
       linkActions.appendChild(btnCompartilhar);
       linkActions.appendChild(btnExcluir);
       linkActions2.appendChild(btnCriaPlaca);
       linkActions2.appendChild(btnCriaVenda);
+      linkActions2.appendChild(btnlojavirtual);
 
       itemLista.appendChild(linkItem);
       itemLista.appendChild(linkActions);

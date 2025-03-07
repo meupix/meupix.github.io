@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -1635,8 +1634,6 @@ function verificarStatusDaLoja() {
 }
 
 function processarStatusDaLoja(data) {
-    const verificar = data.feed.link[2].href;
-    console.error(verificar);
     let fechada = false;
     let manutencao = false;
     let ativahorario = false;
@@ -1654,7 +1651,7 @@ function processarStatusDaLoja(data) {
         document.getElementById('descricao').textContent = descricao;
         document.getElementById('NomeDaLoja').textContent = nomedaloja;
         
-        titulo.textContent = "Meu Pix - Loja " + nomedaloja;
+        titulo.textContent = "Meu Pix - " + nomedaloja;
         document.getElementById('rodapedaloja').textContent = '© 2025 ' + nomedaloja + ' - Todos os direitos reservados.';
 
         lines.forEach(line => {
