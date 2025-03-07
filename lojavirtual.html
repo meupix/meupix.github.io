@@ -191,7 +191,8 @@
 
 .discount-carrossel {
     position: absolute;
-    top: 10px;
+    top: 0px;
+    margin-left: 20px;
     background: linear-gradient(118deg, #ff0000, #cc0000);
     color: white;
     padding: 5px 10px;
@@ -1019,11 +1020,11 @@ to {
     align-items: baseline;
     justify-content: space-evenly;
     flex-wrap: nowrap;
+    margin-top: 20px;
 }
 
 .carousel-item {
     min-width: 100%;
-    padding: 13px;
     box-sizing: border-box;
     text-align: center;
     align-content: space-around;
@@ -2707,87 +2708,114 @@ function showNotification(message, type = 'success') {
     }
 
     // --- Carrossel ---
-function initializeCarousel() {
-    const carouselSlide = document.querySelector('.carousel-slide');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+    function initializeCarousel() {
+        const carouselSlide = document.querySelector('.carousel-slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
 
-    if (!carouselSlide || !prevBtn || !nextBtn) {
-    console.warn('Carrossel não inicializado corretamente. Verifique os elementos.');
-    return;
-    }
+        // Verifica se os elementos do carrossel existem
+        if (!carouselSlide || !prevBtn || !nextBtn) {
+            console.warn('Carrossel não inicializado corretamente. Verifique os elementos.');
+            return; // Aborta a inicialização se algum elemento estiver faltando
+        }
 
-    let slideIndex = 0;
+        let slideIndex = 0;
+        let autoSlideInterval; // Variável para armazenar o intervalo do slideshow automático
 
-    function showSlide() {
-    if (carouselProducts.length === 0) return; //Evita erros se não houver produtos
+        // Função para exibir um slide específico
+        function showSlide() {
+            // Evita erros se não houver produtos no carrossel
+            if (carouselProducts.length === 0) return;
 
-    slideIndex++;
-    if (slideIndex >= carouselProducts.length) {
-        slideIndex = 0;
-    }
-    carouselSlide.style.transform = `translateX(-${slideIndex * 100}%)`;
-    }
+            slideIndex++;
+            // Volta para o primeiro slide se chegar ao final
+            if (slideIndex >= carouselProducts.length) {
+                slideIndex = 0;
+            }
+            // Aplica a transformação para exibir o slide correto
+            carouselSlide.style.transform = `translateX(-${slideIndex * 100}%)`;
+        }
 
-    nextBtn.addEventListener('click', showSlide);
-    prevBtn.addEventListener('click', () => {
-    slideIndex--;
-    if (slideIndex < 0) {
-        slideIndex = carouselProducts.length - 1;
-    }
-    carouselSlide.style.transform = `translateX(-${slideIndex * 100}%)`;
-    });
+        // Função para iniciar o slideshow automático
+        function startAutoSlide() {
+            // Define um intervalo para chamar a função showSlide a cada 5 segundos (5000ms)
+            autoSlideInterval = setInterval(showSlide, 5000);
+        }
 
-    // Limpa o carrossel antes de adicionar novos itens
+        // Função para pausar o slideshow automático
+        function pauseAutoSlide() {
+            // Limpa o intervalo para pausar o slideshow
+            clearInterval(autoSlideInterval);
+        }
+
+        // Event listener para avançar o slide ao clicar no botão "próximo"
+        nextBtn.addEventListener('click', () => {
+            pauseAutoSlide(); // Pausa o slideshow ao interagir
+            showSlide();
+            startAutoSlide(); // Reinicia o slideshow após a interação
+        });
+
+        // Event listener para retroceder o slide ao clicar no botão "anterior"
+        prevBtn.addEventListener('click', () => {
+            pauseAutoSlide(); // Pausa o slideshow ao interagir
+            slideIndex--;
+            // Volta para o último slide se estiver no primeiro
+            if (slideIndex < 0) {
+                slideIndex = carouselProducts.length - 1;
+            }
+            // Aplica a transformação para exibir o slide correto
+            carouselSlide.style.transform = `translateX(-${slideIndex * 100}%)`;
+            startAutoSlide(); // Reinicia o slideshow após a interação
+        });
+
+
+    function loadCarouselProducts() {
     carouselSlide.innerHTML = '';
 
-    // Carrega os produtos do carrossel
+
     carouselProducts.forEach(product => {
     if (!product.available) return;
-    
+
     const carouselItem = document.createElement('div');
     carouselItem.classList.add('carousel-item');
 
-    let sizesHTML = '';
-    let quantityHTML = '';
-    let sizeSelectId = `carouselSizeSelect_${product.name}`;
-    let quantitySelectId = `carouselQuantitySelect_${product.name}`;
-    let discountBadgeHTML = '';
+    const sizeSelectId = `carouselSizeSelect_${product.name}`;
+    const quantitySelectId = `carouselQuantitySelect_${product.name}`;
 
-    if (product.sizes && product.sizes.length > 0) {
-        sizesHTML = `
+    const sizesHTML = product.sizes && product.sizes.length > 0 ? `
     <label for="${sizeSelectId}">Tamanho:</label>
     <select id="${sizeSelectId}" class="custom-select">
     ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
     </select>
-    `;
-    }
+    ` : '';
 
-    quantityHTML = `
+                const quantityHTML = `
     <label for="${quantitySelectId}">Quantidade:</label>
     <select id="${quantitySelectId}" class="custom-select">
-    ${Array.from({ length: product.quantity }, (_, i) => i + 1).map(qty => `<option value="${qty}">${qty}</option>`).join('')}
+      ${Array.from({ length: product.quantity }, (_, i) => i + 1).map(qty => `<option value="${qty}">${qty}</option>`).join('')}
     </select>
     `;
-    if (product.discount > 0) {
-        discountBadgeHTML = `<div class="discount-carrossel">-${product.discount}%</div>`;
-    }
 
+                // Cria o elemento HTML para o selo de desconto, se aplicável
+    const discountBadgeHTML = product.discount > 0 ? `<div class="discount-carrossel">-${product.discount}%</div>` : '';
 
+            
     carouselItem.innerHTML = `
     ${discountBadgeHTML}
-    <img src="${product.imageUrl}" alt="${product.name}" width="200" height="200">
+    <img src="${product.imageUrl}">
     <h3>${product.name}</h3>
     <p>${product.discount > 0 ? `De <strike class="backgroundred">R$ ${product.originalPrice.toFixed(2)}</strike> Por <span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>` : `<span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`}</p>
     ${sizesHTML}
     ${quantityHTML}
-    <button class="add-to-cart-button" onclick="addToCart('${product.name}', ${product.price},
-    '${product.imageUrl}', document.getElementById('${sizeSelectId}') ?
-    document.getElementById('${sizeSelectId}').value : '', document.getElementById('${quantitySelectId}').value)">Adicionar ao Carrinho</button>
+    <button class="add-to-cart-button" onclick="addToCart('${product.name}', ${product.price}, '${product.imageUrl}', document.getElementById('${sizeSelectId}') ? document.getElementById('${sizeSelectId}').value : '', document.getElementById('${quantitySelectId}').value)">Adicionar ao Carrinho</button>
     <button class="buy-now-button" onclick="buyNowCarousel(this, '${product.name}')">Comprar Agora</button>
     `;
+
     carouselSlide.appendChild(carouselItem);
     });
+    }
+    loadCarouselProducts();
+    startAutoSlide();
 }
 
 function buyNowCarousel(button, productName) {
