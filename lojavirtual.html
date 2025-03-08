@@ -1389,11 +1389,11 @@ to {
 
         .modal-contenthorarios {
             background: linear-gradient(120deg, #206958b3, #05a582ba);
-    margin: 15% auto;
-    padding: 20px;
-    width: 50%;
-    position: relative;
-    border-radius: 15px;
+            margin: 15% auto;
+            padding: 20px;
+            width: 84%;
+            position: relative;
+            border-radius: 15px;
         }
 
         .close {
@@ -2025,6 +2025,7 @@ function atualizarInterface(fechada, manutencao, ativahorario) {
 
     if (fechada) {
     desativarInterface();
+    clearCart();
     const LojaAberta = document.getElementById('statusLoja');
     LojaAberta.innerHTML = '<h1 class="loja-fechada">Loja fechada!</h1>';
     telaAtivada.innerHTML = `
@@ -2035,6 +2036,7 @@ function atualizarInterface(fechada, manutencao, ativahorario) {
     `;
     } else if (manutencao) {
     desativarInterface();
+    clearCart();
     const LojaAberta = document.getElementById('statusLoja');
     LojaAberta.innerHTML = '<h1 class="loja-fechada">Loja em Manutenção!</h1>';
     telaAtivada.innerHTML = `
