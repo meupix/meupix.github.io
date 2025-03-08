@@ -1020,9 +1020,11 @@ to {
     margin-right: 5px;
 }
 
+
+
 .carousel-slide {
     display: flex;
-   transition: transform 0.5s ease-in-out;
+    transition: transform 0.5s ease-in-out;
 }
 
 .carousel-item {
@@ -1089,19 +1091,6 @@ to {
     font-weight: bold;
 }
 
-    table {
-    width: 50%;
-    margin: 20px auto;
-    border-collapse: collapse;
-}
-
-    th, td {
-    border: 3px solid #ffffff;
-    padding: 15px;
-    color: #ffffff;
-    font-weight: bold;
-}
-	
 .whatswidget-widget-wrapper {
     font-family: "Helvetica Neue","Apple Color Emoji",Helvetica,Arial,sans-serif !important;
     font-size: 16px !important;
@@ -1315,6 +1304,164 @@ to {
             border-radius: 5px;
             cursor: pointer;
         }
+
+        /* Estilos para a tabela de horários */
+.schedule-table-container {
+    width: 100%;
+    max-width: 50%;
+    margin: 20px auto;
+    overflow-x: auto;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Combina as bordas das células em uma única borda */
+    margin: 0 auto;
+    /* Centraliza a tabela dentro do container */
+    font-size: 0.9em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    /* Sutil sombra para dar profundidade */
+    border-radius: 8px;
+    /* Borda arredondada para um visual mais suave */
+    overflow: hidden;
+    /* Garante que as bordas arredondadas sejam aplicadas */
+    color: var(--text-color);
+}
+
+.schedule-table thead {
+    background: linear-gradient(360deg, #ffa200e0, #ff5d00e0);
+    color: #fff;
+    font-weight: bold;
+}
+
+.schedule-table th,
+.schedule-table td {
+    padding: 12px 15px;
+    /* Espaçamento interno para melhor legibilidade */
+    text-align: center;
+    /* Alinhamento do texto centralizado */
+    border-bottom: 1px solid #ddd;
+    /* Linha divisória sutil */
+}
+
+.schedule-table tbody tr:nth-child(even) {
+    background: linear-gradient(181deg, #ffa200, #ff5e00);
+}
+
+.schedule-table tbody tr:last-child {
+    border-bottom: 2px solid #e2940c;
+}
+
+/* Estilos responsivos para telas menores */
+@media (max-width: 600px) {
+    .schedule-table-container {
+        max-width: 100%;
+        /* Ocupa toda a largura em telas menores */
+        margin-left: 0;
+        margin-right: 0;
+        /* Remove margens laterais */
+    }
+
+    .schedule-table {
+        font-size: 0.8em;
+        /* Reduz o tamanho da fonte em telas menores */
+    }
+
+    .schedule-table th,
+    .schedule-table td {
+        padding: 8px 10px;
+        /* Reduz o espaçamento interno em telas menores */
+    }
+}
+   /* Estilos para o modal */
+   .horariosModal {
+            display: none;
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-contenthorarios {
+            background: linear-gradient(120deg, #206958b3, #05a582ba);
+    margin: 15% auto;
+    padding: 20px;
+    width: 50%;
+    position: relative;
+    border-radius: 15px;
+        }
+
+        .close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        /* Estilos para a tabela de horários */
+        .schedule-table-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            overflow-x: auto;
+            color: #333;
+            /* Cor do texto para melhor contraste */
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            font-size: 0.9em;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .schedule-table thead {
+            background-color: #343a40;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .schedule-table th,
+        .schedule-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .schedule-table tbody tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .schedule-table tbody tr:last-child {
+            border-bottom: 2px solid #343a40;
+        }
+
+        /* Responsivo para telas menores */
+        @media (max-width: 600px) {
+            .schedule-table-container {
+                max-width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .schedule-table {
+                font-size: 0.8em;
+            }
+
+            .schedule-table th,
+            .schedule-table td {
+                padding: 8px 10px;
+            }
+        }
     </style>
 </head>
 
@@ -1451,6 +1598,13 @@ to {
     </div>
     </div>
 
+    <div id="horariosModal" class="horariosModal">
+        <div class="modal-contenthorarios">
+            <span class="close" onclick="closeModalhorarios()">×</span>
+            <div id="horariosContent"></div>
+        </div>
+    </div>
+
     <footer class="rodape">
     <div>
     <p id="contatoParagrafo">📞 Contato: <a id="whatsappLink2" href="#" target="_blank">WhatsApp</a> | ✉️ <a
@@ -1483,6 +1637,8 @@ to {
     <span id="privacidadeTermosSeparator"> | </span>
     <a id="termosUsoLink" href="#" target="_blank">Termos de Uso</a>
     </p>
+    <div><strong>Horário de funcionamento:</strong></div>
+    <button id="openModalhorarios" onclick="openModalhorarios()">Ver Horários⏳</button>
 
     <p id="avisonorodape">⚠️ Todas as vendas são feitas sob encomenda e conforme disponibilidade ⚠️</p>
     <p id="rodapedaloja">Todos os direitos reservados.</p>
@@ -1543,7 +1699,7 @@ to {
     let twitterUsuario = '';
     let politicaPrivacidadeURL = '';
     let termosUsoURL = '';
-
+    let isOpen = false;
     let currentPage = 1;
     const productsPerPage = 10;
 
@@ -1857,41 +2013,49 @@ function atualizarInterface(fechada, manutencao, ativahorario) {
         cartTabButton.disabled = true;
         cartTabButton.style.display = 'none';
         document.getElementById('cart').style.display = 'none';
-}
+    }
     if (checkoutTabButton) {
         checkoutTabButton.classList.add('disabled-tab');
         checkoutTabButton.disabled = true;
         checkoutTabButton.style.display = 'none';
-}
+    }
     const featuredProductsCarousel = document.getElementById('featuredProductsCarousel');
     if (featuredProductsCarousel) featuredProductsCarousel.style.display = 'none';
-}
+    }
 
     if (fechada) {
     desativarInterface();
+    const LojaAberta = document.getElementById('statusLoja');
+    LojaAberta.innerHTML = '<h1 class="loja-fechada">Loja fechada!</h1>';
     telaAtivada.innerHTML = `
     <div class="desativado">
-    <h1>Loja fechada</h1>
+    <h1>⚠️</h1>
     <p>A loja está temporariamente fechada. Por favor, volte mais tarde!</p>
     </div>
     `;
-} else if (manutencao) {
+    } else if (manutencao) {
     desativarInterface();
+    const LojaAberta = document.getElementById('statusLoja');
+    LojaAberta.innerHTML = '<h1 class="loja-fechada">Loja em Manutenção!</h1>';
     telaAtivada.innerHTML = `
     <div class="desativado">
-    <h1>Loja em Manutenção</h1>
+    <h1>⚠️</h1>
     <p>Estamos trabalhando para melhorar sua experiência de compra. Por favor, volte mais tarde!</p>
     </div>
     `;
-} else if (ativahorario) {
+    } else if (ativahorario) {
     if (horariosFuncionamento) {
         getStoreStatus();
     }
-} else {
+    } else {
+    isOpen = true;
+    const LojaAberta = document.getElementById('statusLoja');
+    LojaAberta.innerHTML = '<p class="loja-aberta">Loja Aberta! Boas compras!</p>';
+
     // Loja aberta
     if (document.querySelector('.desativado')) {
         telaAtivada.innerHTML = ''; // Limpa a mensagem "Loja fechada"
-}
+    }
     if (minecart) minecart.style.display = 'flex'; // Exibe o carrinho flutuante
     //Reativa o carrinho caso a loja volte a estar disponível
     if (cartTabButton) {
@@ -1899,18 +2063,19 @@ function atualizarInterface(fechada, manutencao, ativahorario) {
         cartTabButton.disabled = false;
         cartTabButton.style.display = 'block';
         document.getElementById('cart').style.display = 'block';
-}
+    }
     if (checkoutTabButton) {
         checkoutTabButton.classList.remove('disabled-tab');
         checkoutTabButton.disabled = false;
         checkoutTabButton.style.display = 'block';
-}
+    }
     const featuredProductsCarousel = document.getElementById('featuredProductsCarousel');
     if (featuredProductsCarousel) featuredProductsCarousel.style.display = 'block';
-}
+    }
 }
 
 function fetchProducts() {
+    if (isOpen) { } else { return;}
     const loadingMessage = document.getElementById('loadingMessage');
     const errorMessage = document.getElementById('errorMessage');
     const minecart = document.getElementById('floating-cart');
@@ -3005,7 +3170,7 @@ function getStoreStatus() {
     const minute = now.getMinutes();
     const currentTime = hour * 60 + minute; 
 
-    let isOpen = false;
+ 
     let openingTime = 0;
     let closingTime = 0;
 
@@ -3076,10 +3241,11 @@ function getStoreStatus() {
     if (isOpen) {
     LojaAberta.innerHTML = '<p class="loja-aberta">Loja Aberta! Boas compras!</p>';
     } else {
+    const openModalhorarios = document.getElementById("openModalhorarios");
+    openModalhorarios.style.display = "none";
     statusLojaDiv.innerHTML = ''; // Limpar mensagens anteriores
     LojaAberta.innerHTML = '<p class="loja-fechada">Loja Fechada!</p>';
-    statusLojaDiv.innerHTML =
-        `<p class="loja-fechada">Horário de funcionamento:</p> ${generateScheduleTable(horariosFuncionamento)}`;
+    statusLojaDiv.innerHTML = `<p class="loja-fechada">Horário de funcionamento:</p> ${generateScheduleTable(horariosFuncionamento)}`;
     desativarInterface();
     clearInterval(intervalID2);
     return;
@@ -3090,21 +3256,62 @@ function getStoreStatus() {
 
 function generateScheduleTable(horarios) {
     const horariosArray = horarios.split(';');
-    let tableHTML = '<table><thead><tr><th>Dia da Semana</th><th>Horário de Abertura</th><th>Horário de Fechamento</th></tr></thead><tbody>';
+    let tableHTML = `
+    <div class="schedule-table-container">
+        <table class="schedule-table">
+            <thead>
+                <tr>
+                    <th>Dia da Semana</th>
+                    <th>Abertura</th>
+                    <th>Fechamento</th>
+                </tr>
+            </thead>
+            <tbody>`;
 
     horariosArray.forEach(horario => {
-    const [dia, tempo] = horario.split(':');
+        const [dia, tempo] = horario.split(':');
+        const diaTrimmed = dia.trim();
 
-    if (tempo === 'FECHADO') {
-        tableHTML += `<tr><td>${dia.trim()}</td><td colspan="2">FECHADO</td></tr>`;
-    } else {
-        const [abertura, fechamento] = tempo.split('-');
-        tableHTML += `<tr><td>${dia.trim()}</td><td>${abertura.trim()}</td><td>${fechamento}</td></tr>`;
-    }
+        if (tempo === 'FECHADO') {
+            tableHTML += `<tr><td>${diaTrimmed}</td><td colspan="2">Fechado</td></tr>`;
+        } else {
+            const [abertura, fechamento] = tempo.split('-');
+            const aberturaTrimmed = abertura.trim();
+            const fechamentoTrimmed = fechamento.trim();
+            tableHTML += `<tr><td>${diaTrimmed}</td><td>${aberturaTrimmed}</td><td>${fechamentoTrimmed}</td></tr>`;
+        }
     });
 
-    tableHTML += '</tbody></table>';
+    tableHTML += `
+            </tbody>
+        </table>
+    </div>
+    `;
     return tableHTML;
+}
+
+// Funções para abrir e fechar o modal
+function openModalhorarios() {
+    const modal = document.getElementById("horariosModal");
+    const content = document.getElementById("horariosContent");
+
+    // Aqui, "seuHorarioFuncionamento" deve ser substituído pela sua variável real
+    content.innerHTML = `<p class="loja-fechada">Horário de funcionamento:</p> ${generateScheduleTable(horariosFuncionamento)}`;
+
+    modal.style.display = "block";
+}
+
+function closeModalhorarios() {
+    const modal = document.getElementById("horariosModal");
+    modal.style.display = "none";
+}
+
+        // Para fechar o modal ao clicar fora do conteúdo do modal
+window.onclick = function (event) {
+    const modal = document.getElementById("horariosModal");
+    if (event.target == modal) {
+    modal.style.display = "none";
+    }
 }
 
 function realBR(input) { //R$ 325.325.232,53
