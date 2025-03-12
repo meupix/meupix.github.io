@@ -14,7 +14,6 @@
     
     <link rel="icon" href="pagamentos.files/imagens/favicon.png" type="image/png">
     <link href="pagamentos.files/imagens/favicon.png" rel="shortcut icon" type="image/png">
-
     <title>Meu Pix - Loja online</title>
     <!-- Fontes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -96,7 +95,7 @@
     margin: 20px auto;
     padding: 20px;
     box-shadow: 0 0 15px #ff0000;
-    background: linear-gradient(231deg, #ff0000e0, #ff0000e0);
+    background: #ad0000b2;
     border-radius: 15px;
     color: #fff;
     text-align: center;
@@ -654,9 +653,9 @@ button:hover {
 }
 
 .order-details img {
-    margin-right: 8px;
     vertical-align: middle;
     border-radius: 50%;
+    object-fit: contain;
 }
 
 .modal {
@@ -754,6 +753,9 @@ to {
     opacity: 0;
     transition: opacity 0.5s ease-in-out, transform 0.3s ease;
     transform: translateX(100%);
+}
+.notification.aguardando {
+    background-color: #9e8600;
 }
 .notification.atualizado {
     background-color: #006eff;
@@ -1462,6 +1464,14 @@ to {
                 padding: 8px 10px;
             }
         }
+.status {
+    font-family: helvetica;
+    text-align: center;
+    color: #ffffff;
+    display: block;
+    font-size: 1.57em;
+    font-weight: bold;
+}
     </style>
 </head>
 
@@ -1607,8 +1617,7 @@ to {
 
     <footer class="rodape">
     <div>
-    <p id="contatoParagrafo">📞 Contato: <a id="whatsappLink2" href="#" target="_blank">WhatsApp</a> | ✉️ <a
-        id="emailLink" href="#">E-mail</a></p>
+    <p id="contatoParagrafo">📞 Contato: <a id="whatsappLink2" href="#" target="_blank">WhatsApp</a> | ✉️ <a id="emailLink" href="#">E-mail</a></p>
 
     <p id="sigaNosParagrafo">Siga-nos:</p>
     <div id="redesSociaisDiv" class="redes-sociais">
@@ -1654,7 +1663,7 @@ to {
     </div>
 
     <div id="whatswidget-pre-wrapper" class="">
-        <div id="whatswidget-widget-wrapper" class="whatswidget-widget-wrapper" style="all:revert;">
+        <div id="whatswidget-widget-wrapper" class="whatswidget-widget-wrapper">
         <div id="whatswidget-conversation" class="whatswidget-conversation" style="display: none; opacity: 0;">
         <div class="whatswidget-conversation-header" style="all:revert;">
             <div id="whatswidget-conversation-title" class="whatswidget-conversation-title" style="all:revert;"><span id="nome1"></span></div>
@@ -1702,33 +1711,52 @@ to {
     let isOpen = false;
     let currentPage = 1;
     const productsPerPage = 10;
+    let nomedaloja = '';
+    let descricao = '';
 
     document.addEventListener('DOMContentLoaded', function () {
-    if (!Params || Params.keys().next().done) {
-      // Sem parâmetros encontrados, faça algo aqui (opcional)
-    } else {
-      // Verifica se os parâmetros necessários estão presentes
-    if (!Params.has('id')) {
-    exibirModalErro("Insira o valor no parâmetro ?id=", false, false, 'error');
-    return;
-    } else {
+    const Params = new URLSearchParams(window.location.search); // Correção para obter os parâmetros da URL
 
+    if (!Params || Params.keys().next().done) {
+        // Sem parâmetros encontrados, faça algo aqui (opcional)
+    } else {
+        if (!Params.has('id')) {
+            exibirModalErro("Insira o valor no parâmetro ?id=", false, false, 'error');
+            return;
+        }
     }
+
+    // Função que processa pagamentos sequencialmente
+    async function processarPagamentos() {
+        // Obtém o histórico uma vez
+        const history = JSON.parse(localStorage.getItem(blog)) || [];
+        const indicesAguardandoPagamento = history
+            .map((order, index) => (order.Entregue === "" || order.Enviado === "" || order.StatusPedido === "Aguardando Pagamento") ? index : -1)
+            .filter(index => index !== -1); // Filtra apenas os índices válidos
+
+        for (let i = 0; i < indicesAguardandoPagamento.length; i++) {
+            const index = indicesAguardandoPagamento[i];
+            await verificarPagamento(index); 
+        }
     }
+
+    processarPagamentos(); // Inicia o processo de pagamento
+
+    // Adiciona comportamento ao clique nas abas
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const tabId = this.dataset.tab;
+            showTab(tabId);
+        });
+    });
+
     verificarStatusDaLoja();
     updateCartDisplay();
     updateOrderHistoryDisplay();
     updateMiniCartCount();
     updateFloatingCartCount();
     updateFloatingCartAccessibilityLabel(); // Inicializa a label ARIA
-
-    const tabButtons = document.querySelectorAll('.tab-button');
-    tabButtons.forEach(button => {
-    button.addEventListener('click', function () {
-        const tabId = this.dataset.tab;
-        showTab(tabId);
-    });
-  });
 });
 
 function exibirModalErro(mensagem, comb, x, tipo = 'error') {
@@ -1797,26 +1825,23 @@ function processarStatusDaLoja(data) {
     let fechada = false;
     let manutencao = false;
     let ativahorario = false;
-
+    
     if (data && data.feed && data.feed.entry && data.feed.entry.length > 0) {
-    const entry = data.feed.entry[0];
-
-    if (entry && entry.content && entry.content.$t) {
-        const content = entry.content.$t;
-        const nomedaloja = data.feed.title.$t;
-        const descricao = data.feed.subtitle.$t;
-        const lines = content.split('\n');
-
-        const titulo = document.querySelector('title');
+         nomedaloja = data.feed.title.$t;
+         descricao = data.feed.subtitle.$t;
+        
+        document.querySelector('title').textContent = "Meu Pix - " + nomedaloja;
         document.getElementById('descricao').textContent = descricao;
         document.getElementById('NomeDaLoja').textContent = nomedaloja;
-        
-        titulo.textContent = "Meu Pix - " + nomedaloja;
         document.getElementById('rodapedaloja').textContent = '© 2025 ' + nomedaloja + ' - Todos os direitos reservados.';
-
-        lines.forEach(line => {
+        
+        data.feed.entry.forEach(entry => {
+        if (entry.content && entry.content.$t) {
+        const lines = entry.content.$t.split('\n');
+                
+    lines.forEach(line => {
         line = line.replace(/<[^>]*>/g, '').trim();
-        if (line.startsWith('fechada')) {
+    if (line.startsWith('fechada')) {
         fechada = line.includes('ativado');
     } else if (line.startsWith('manutenção')) {
         manutencao = line.includes('ativado');
@@ -1833,10 +1858,10 @@ function processarStatusDaLoja(data) {
     } else if (line.startsWith('horários')) {
         horariosFuncionamento = line.split('horários =')[1].trim();
     } else if (line.startsWith('logo')) {
-        logatipo = line.split('logo =')[1].trim();
+        logotipo = line.split('logo =')[1].trim();
         var imagemContainer = document.getElementById('minhalogo');
         var imagemElemento = document.createElement('img');
-        imagemElemento.setAttribute('src', logatipo);
+        imagemElemento.setAttribute('src', logotipo);
         imagemElemento.setAttribute('width', '200');
         imagemElemento.setAttribute('height', '200');
         imagemContainer.appendChild(imagemElemento);
@@ -1871,10 +1896,12 @@ function processarStatusDaLoja(data) {
         avisonorodape = line.split('avisonorodape =')[1].trim();
         document.getElementById('avisonorodape').textContent = avisonorodape;
     }
-    });
-        atualizarInterface(fechada, manutencao, ativahorario);
+                });
+            }
+        });
 
-        // Elementos HTML
+        atualizarInterface(fechada, manutencao, ativahorario);
+                // Elementos HTML
         const whatsappLink2 = document.getElementById("whatsappLink2");
         const emailLink = document.getElementById("emailLink");
         const instagramLink = document.getElementById("instagramLink");
@@ -1910,7 +1937,6 @@ function processarStatusDaLoja(data) {
         if (separatorElement.parentNode) { //verifica se o elemento pai existe
         separatorElement.parentNode.removeChild(separatorElement);
     }
-
     }
     }
 
@@ -1979,7 +2005,6 @@ function processarStatusDaLoja(data) {
         removerRedeSocial(termosUsoLink, null);
     }
 
-
         if (isEmpty(termosUsoURL) || isEmpty(politicaPrivacidadeURL)) {
         if (privacidadeTermosSeparator) {
         if (privacidadeTermosSeparator.parentNode) {
@@ -1995,9 +2020,9 @@ function processarStatusDaLoja(data) {
         removerRedeSocial(privacidadeTermosParagrafo, null);
     }
    }
-  }
- }
- fetchProducts();
+    }
+    
+    fetchProducts();
 }
 
 function atualizarInterface(fechada, manutencao, ativahorario) {
@@ -2464,135 +2489,110 @@ function updateFloatingCartAccessibilityLabel() {
     `Carrinho de Compras (itens: ${cartCount}). Clique para ver o carrinho.`);
 }
 
+async function generateHash(value) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(value);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
 async function generatePix() {
     const deliveryOption = document.getElementById('deliveryOption').value;
-
-    // Validation for required fields based on delivery option
-    let requiredFields = ['name', 'email', 'phone']; // Always required
+    let requiredFields = ['name', 'email', 'phone'];
+    
     if (deliveryOption === 'delivery') {
-    requiredFields = requiredFields.concat(['postcode', 'address', 'city', 'bairro']);
-}
+        requiredFields = requiredFields.concat(['postcode', 'address', 'city', 'bairro']);
+    }
 
     const missingFields = requiredFields.filter(field => !document.getElementById(field).value);
-
     if (missingFields.length > 0) {
-    showNotification(`Por favor, preencha os campos: ${missingFields.join(', ')}.`, 'error');
-    return;
-}
-
-    // Validation for CEP if delivery option is selected
-    if (deliveryOption === 'delivery') {
-    const postcode = document.getElementById('postcode').value;
-    if (!(await isCepValido(postcode))) {
-        let errorMessage = "Apenas CEPs ";
-        let restrictions = [];
-
-        if (unidadefederativa) {
-        restrictions.push("do cidade " + unidadefederativa);
-    }
-        if (cidade) {
-        restrictions.push("da cidade " + cidade);
-    }
-        if (bairro) {
-        restrictions.push("do bairro " + bairro);
-    }
-        errorMessage += restrictions.join(", ");
-        errorMessage += " são aceitos!";
-        showNotification(errorMessage, 'error');
+        showNotification(`Por favor, preencha os campos: ${missingFields.join(', ')}.`, 'error');
         return;
-}
-}
+    }
+
+    if (deliveryOption === 'delivery') {
+        const postcode = document.getElementById('postcode').value;
+        if (!(await isCepValido(postcode))) {
+            showNotification("CEP fora da área de entrega!", 'error');
+            return;
+        }
+    }
 
     if (cart.length === 0) {
-    showNotification("Carrinho de compra vazio!", 'error');
-    return;
-}
+        showNotification("Carrinho de compras vazio!", 'error');
+        return;
+    }
 
     try {
-    const idPagamentos = generatePaymentId();
-    const valor = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const valorNumerico = valor.toFixed(2);
-    const dataCompra = new Date().toLocaleDateString();
-    const paramschaves = `${MeuPix}&valor=${valorNumerico}&txid=${idPagamentos}`;
-    dadospix = `${btoa(paramschaves)}`;
-    const pixUrl = `https://meupix.github.io/?codepix=${dadospix}`;
+        const idPagamentos = generatePaymentId();
+        const paymentHash = idPagamentos;
+        //const paymentHash = await generateHash(String(idPagamentos));
+        const valor = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
+        const dataCompra = new Date().toLocaleDateString();
+        const paramschaves = `${MeuPix}&valor=${valor}&txid=${idPagamentos}`;
+        const dadospix = btoa(paramschaves);
+        const pixUrl = `https://meupix.github.io/?codepix=${dadospix}`;
 
-    const nomecliente = document.getElementById('name').value;
-    const address = document.getElementById('address').value;
-    const cidade = document.getElementById('city').value;
-    const email = document.getElementById('email').value;
-    const phone = document.getElementById('phone').value;
-    const postcode = document.getElementById('postcode').value;
-    const bairro = document.getElementById('bairro').value;
-    const additionalInfo = document.getElementById('additionalInfo').value;
+        const order = {
+            id: idPagamentos,
+            paymentHash: paymentHash,
+            isPago: false,
+            Pagamento: '',
+            Enviado: '',
+            StatusButton: true,
+            StatusPedido: 'Aguardando Pagamento',
+            Entregue: '',
+            items: cart.map(item => ({
+                name: item.name,
+                price: item.price,
+                quantity: item.quantity,
+                imageUrl: item.imageUrl,
+                selectedSize: item.selectedSize || '',
+            })),
+            total: valor,
+            pixUrl: pixUrl,
+            timestamp: Date.now(),
+            deliveryOption: deliveryOption,
+            address: {
+                name: document.getElementById('name').value,
+                address: document.getElementById('address').value,
+                city: document.getElementById('city').value,
+                bairro: document.getElementById('bairro').value,
+                postcode: document.getElementById('postcode').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                additionalInfo: document.getElementById('additionalInfo').value
+            }
+        };
 
-    const order = {
-        id: idPagamentos,
-        items: cart.map(item => ({
-        name: item.name,
-        price: item.price,
-        quantity: item.quantity,
-        imageUrl: item.imageUrl,
-        selectedSize: item.selectedSize
-    })),
-        total: valorNumerico,
-        pixUrl: pixUrl,
-        timestamp: Date.now(),
-        deliveryOption: deliveryOption, // Save the delivery option
+        orderHistory.push(order);
+        localStorage.setItem(blog, JSON.stringify(orderHistory));
 
-        address: {
-        name: nomecliente,
-        address: address,
-        city: cidade,
-        bairro: bairro,
-        postcode: postcode,
-        email: email,
-        phone: phone,
-        additionalInfo: additionalInfo
+        document.getElementById('myModal').classList.add('fullscreen');
+        document.getElementById('qrCode').innerHTML = `<iframe src='${order.pixUrl}' style="width:100%; height:100%; border:none;"></iframe>`;
+
+        let whatsappMessage = `Novo pedido #${idPagamentos}\n\n` +
+            `Dados do Cliente:\nNome: ${order.address.name}\nEmail: ${order.address.email}\nTelefone: ${order.address.phone}\n` +
+            `Informações Adicionais: ${order.address.additionalInfo}\n\n` +
+            (deliveryOption === 'delivery' ? `Endereço: ${order.address.address}, ${order.address.city} - ${order.address.bairro}, ${order.address.postcode}\n\n` : 'Retirada no Local\n\n') +
+            `Itens do Pedido:\n` +
+            order.items.map(item => `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR((item.price * item.quantity).toFixed(2))}`).join('\n') +
+            `\n\nTotal: ${realBR(valor)}\nData da Compra: ${dataCompra}`;
+
+        const whatsappLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
+        window.open(whatsappLink, '_blank');
+
+        showNotification("QR Code Pix gerado e dados enviados para o WhatsApp!", 'success');
+        clearCart();
+        updateOrderHistoryDisplay();
+        openModal();
+        showTab('orderHistory');
+    } catch (error) {
+        showNotification("Erro ao gerar QR Code Pix. Tente novamente.", 'error');
     }
-};
-
-    orderHistory.push(order);
-    localStorage.setItem(blog, JSON.stringify(orderHistory));
-
-    document.getElementById('myModal').classList.add('fullscreen');
-    document.getElementById('qrCode').innerHTML = `<iframe src='${order.pixUrl}' style="width:100%; height:100%; border:none;"></iframe>`;
-
-let whatsappMessage = `
-  Novo pedido #${idPagamentos}
-
-  Dados do Cliente:
-  Nome: ${nomecliente}
-  Email: ${email}
-  Telefone: ${phone}
-  Informações Adicionais: ${additionalInfo}
-
-  ${deliveryOption === 'delivery' ? `Endereço: ${address}, ${cidade} - ${bairro}, ${postcode}` : 'Retirada no Local'}
-
-  Itens do Pedido:
-  ${cart.map(item => `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR((item.price * item.quantity).toFixed(2))}`).join('\n  ')}
-
-  Total: ${realBR(valorNumerico)}
-  Data da Compra: ${dataCompra}
-`;
-
-          whatsappMessage = encodeURIComponent(whatsappMessage);
-    const whatsappLink = `https://wa.me/${whatsapp}?text=${whatsappMessage}`;
-
-    window.open(whatsappLink, '_blank');
-
-    showNotification("QR Code Pix gerado e dados enviados para o WhatsApp!", 'success');
-    clearCart();
-    updateOrderHistoryDisplay();
-    openModal();
-
-    // Mostrar aba do histórico de pedidos e scrollar para lá
-    showTab('orderHistory');
-
-} catch (error) {
-    showNotification("Erro ao gerar QR Code Pix. Tente novamente.", 'error');
 }
-}
+
 
 function openModal() {
     document.getElementById('myModal').style.display = 'block';
@@ -2632,11 +2632,9 @@ function updateOrderHistoryDisplay() {
         // Verificações de segurança para evitar erros
         const addressData = order.address || {};
         const nomeCliente = addressData.name || 'Nome não disponível';
-        const enderecoCompleto = addressData.address ?
-        `${addressData.address}, ${addressData.city || 'Cidade não disponível'} - ${addressData.bairro || 'Bairro não disponível'}, ${addressData.postcode || 'CEP não disponível'}` : 'Endereço não disponível';
+        const enderecoCompleto = addressData.address ? `${addressData.address}, ${addressData.city || 'Cidade não disponível'} - ${addressData.bairro || 'Bairro não disponível'}, ${addressData.postcode || 'CEP não disponível'}` : 'Endereço não disponível';
 
         let itemsList = "";
-
         if (order.items && order.items.length > 0) {
         itemsList = order.items.map(item => {
         const itemTotal = item.price * item.quantity;
@@ -2647,15 +2645,22 @@ function updateOrderHistoryDisplay() {
 
         let addressDisplay = "";
         let buttonRetirada = "";
+        let Retiranolocal = "";
+        let cancelado = "";
         if (order.deliveryOption === 'delivery') {
         addressDisplay = `<p>Endereço: ${enderecoCompleto}</p>`;
+        Retiranolocal = `<h3>Total: ${realBR(order.total)}</h3>`;
         } else {
-        buttonRetirada = `
-        <p>Retirada no Local</p>
-        <button onclick="goToAddress()">Endereço de Retirada</button>
-        `;
-        }
+            if (order.StatusButton === false) {
+                cancelado = `<span class='loja-fechada'>Cancelado</span>`;
+            } else {
+                Retiranolocal = `
+                <h3>Total: ${realBR(order.total)}</h3>
+                <h3>(Retirada no Local)</h3>`;
+                buttonRetirada = `<button onclick="goToAddress()">Endereço de Retirada</button>`;
+            }
 
+        }
         const originalIndex = history.findIndex(item => item.id === order.id);
         const safeIndex = originalIndex !== -1 ? originalIndex : index; 
         li.innerHTML = `
@@ -2665,16 +2670,32 @@ function updateOrderHistoryDisplay() {
         <p>Email: ${order.address.email}</p>
         <p>Telefone: ${order.address.phone}</p>
         ${addressDisplay}
+        <p>Informações Adicionais: ${order.address.additionalInfo}</p>
         <p>Data: ${new Date(order.timestamp).toLocaleString()}</p>
         <h4>Itens Comprados:</h4>
         <ul>
         ${itemsList}
         </ul>
-        <p>Total: ${realBR(order.total)}</p>
+
+          ${Retiranolocal} 
+
+        <div class="status">
+        <h4>Status do Pedido: ${cancelado} ${order.Entregue ? `${order.Entregue}` : `${order.Enviado ? `${order.Enviado}` : `${order.Pagamento ? `${order.Pagamento}` : `Aguardando Pagamentos`}`}`} </h4>
+        </div>
         <div class="button-container">
-        ${buttonRetirada}
-        <button onclick="showPixQrCode(${originalIndex})">Ver QR Pix</button>
-        <button onclick="resendWhatsappMessage(${safeIndex})">Reenviar WhatsApp</button>
+ 
+        ${order.StatusButton ? `
+         ${buttonRetirada}
+         ${order.isPago ? '' : `<button onclick="showPixQrCode(${originalIndex})">Ver QR Pix</button>`}
+         ${order.isPago ? '' : `<button onclick="verificarPagamento(${originalIndex})">Verificar Pagamento</button>`}
+         ${order.isPago ? '' : `<button onclick="resendWhatsappMessage(${safeIndex})">Reenviar WhatsApp</button>`}
+         ${order.isPago ? `<button onclick="printOrder(${safeIndex})">🖨️ Imprimir Pedido</button>` : ``}
+         <button onclick="deleteOrderFromHistory(${safeIndex})">🗑️ Excluir Pedido</button>
+        ` : `
+         <button onclick="AbrirWhatsapp();">Entra em contato</button>
+         <button onclick="deleteOrderFromHistory(${safeIndex})">🗑️ Excluir Pedido</button>
+        `}
+        
         </div>
         </div>
         `;
@@ -2699,6 +2720,426 @@ function updateOrderHistoryDisplay() {
         }
 }
 
+function deleteOrderFromHistory(index) {
+    let history = JSON.parse(localStorage.getItem(blog)) || [];
+
+    if (index >= 0 && index < history.length) {
+        const removedOrder = history[index];
+
+        history.splice(index, 1); 
+        localStorage.setItem(blog, JSON.stringify(history));
+        updateOrderHistoryDisplay();
+        showNotification(`Pedido #${removedOrder.id} foi excluído com sucesso!`, 'error');
+    } else {
+        showNotification("Erro ao excluir o pedido. Tente novamente.", 'error');
+    }
+}
+
+// Função para imprimir um pedido
+function printOrder(index) {
+    const history = JSON.parse(localStorage.getItem(blog)) || [];
+    const order = history[index];
+
+    if (!order) {
+        showNotification("Erro ao imprimir o pedido.", "error");
+        return;
+    }
+    const addressData = order.address || {};
+    const enderecoCompleto = addressData.address ? `${addressData.address}, ${addressData.city || 'Cidade não disponível'} - ${addressData.bairro || 'Bairro não disponível'}, ${addressData.postcode || 'CEP não disponível'}` : 'Endereço não disponível';
+   
+    let itemsList = "";
+    if (order.items && order.items.length > 0) {
+        itemsList = order.items.map(item => {
+            const itemTotal = item.price * item.quantity;
+            return `
+                <li>
+                    <img src="${item.imageUrl}" alt="${item.name}" width="40" height="40" />
+                    <div style="word-break: break-word;">
+                        ${item.name} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}
+                    </div>
+                </li>`;
+        }).join('\n');
+    } else {
+        itemsList = "Nenhum item no pedido.";
+    }
+    
+    let addressDisplay = "";
+    let buttonRetirada = "";
+    if (order.deliveryOption === 'delivery') {
+        addressDisplay = `<p><strong>Endereço de Entrega:</strong> ${enderecoCompleto}</p>`;
+    } else {
+        buttonRetirada = `<h2>Retirada no Local</h2>`;
+    }
+
+    const printWindow = window.open('a', '_blank');
+    printWindow.document.write(`
+        <html>
+        <head>
+            <style>
+                /* Estilos Globais */
+                :root {
+                    --primary-color: #000;
+                    --secondary-color: #6c757d;
+                    --text-color: #343a40;
+                    --light-bg: #f8f9fa;
+                    --border-color: #dee2e6;
+                    --font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                }
+
+                body {
+                    font-family: var(--font-family);
+                    padding: 20px;
+                    line-height: 1.6;
+                    color: var(--text-color);
+                }
+
+                h2, h3, h4 {
+                    text-align: center;
+                    color: var(--primary-color);
+                    margin-bottom: 15px;
+                }
+
+                h4 {
+                    margin-top: 25px;
+                    border-bottom: 1px solid var(--border-color);
+                    padding-bottom: 5px;
+                }
+
+                .order-container {
+                    max-width: 800px;
+                    margin: 0 auto;
+                }
+
+                .order-details {
+                    border: 1px solid var(--border-color);
+                    padding: 15px;
+                    margin: 20px 0;
+                    border-radius: 5px;
+                    background-color: var(--light-bg);
+                    display: flex; /* Alinha as informações e o QR Code lado a lado */
+                    justify-content: space-between;
+                    align-items: flex-start;
+                }
+
+                .order-details p {
+                    margin-bottom: 8px;
+                }
+
+                .order-info {
+                    flex-grow: 1;
+                }
+
+                /* Estilo para o container do QR Code */
+                .qr-code {
+                    margin-left: 20px;
+                }
+
+                .qr-code img {
+                    display: block;
+                    width: 150px;
+                    height: 150px;
+                }
+
+                .logo {
+                    display: block;
+                    margin: 0 auto 20px;
+                    max-width: 150px;
+                    height: auto;
+                }
+
+                ul {
+                    list-style-type: none;
+                    padding: 0;
+                }
+
+                strong {
+                    font-weight: 600;
+                }
+
+                .total {
+                    font-size: 1.2em;
+                    font-weight: bold;
+                    margin-top: 20px;
+                    text-align: center;
+                    color: var(--primary-color);
+                }
+
+                .description {
+                    margin-top: 20px;
+                    font-style: italic;
+                    color: var(--secondary-color);
+                }
+
+                .address {
+                    margin-top: 15px;
+                    color: var(--secondary-color);
+                }
+
+                @media print {
+                    body {
+                        padding: 10px;
+                        font-size: 12pt;
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+
+                    .logo {
+                        max-width: 100px;
+                    }
+
+                    .order-details {
+                        background-color: transparent !important;
+                        border: none !important;
+                        padding: 0;
+                        margin: 10px 0;
+                        display: block;
+                    }
+
+                    .order-details img {
+                        display: block;
+                        margin: 0 auto;
+                    }
+
+                    h2, h3, h4, .total {
+                        color: #000 !important;
+                    }
+
+                    a {
+                        text-decoration: none !important;
+                        color: #000 !important;
+                    }
+                }
+                
+                li {
+                    list-style: none;
+                    display: flex;
+                    padding: 1px 0;
+                    border-bottom: 1px solid #9c9c9c;
+                    align-items: center;
+                }
+                
+                li img {
+                    object-fit: contain;
+                    max-width: 40px;
+                    max-height: 40px;
+                    border-radius: 50%;
+                    margin-right: 15px;
+                }
+                    #qr-code {
+mix-blend-mode: normal;
+    background: linear-gradient(47deg, #206958, #05a581, #206958);
+
+    color: #fff;
+    border-radius: 15px;
+}
+
+.descricao {
+    font-size: 12px;
+    font-family: helvetica;
+    text-align: center;
+    color: #000;
+}
+
+.rodape {
+    height: auto;
+    font-size: 14px;
+    font-family: helvetica;
+    margin-top: 15px;
+    border-radius: 15px;
+    text-align: center;
+    padding: 20px;
+    color: #000;
+}
+
+.rodape a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.rodape a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.rodape p {
+    margin: 10px 0;
+    font-size: 0.9em;
+}
+
+.rodape strong {
+    color: #000000;
+}
+
+.rodape .redes-sociais {
+    margin-top: 20px;
+}
+
+.rodape .redes-sociais a {
+    display: inline-block;
+    margin: 0 15px;
+    font-size: 1.4em;
+    color: #fff;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.rodape .redes-sociais a:hover {
+    transform: translateY(-3px);
+    color: #e67e22;
+    text-decoration: none;
+}
+            </style>
+        </head>
+        <body>
+            <div class="order-container">
+                <img src="${logotipo}" alt="${nomedaloja}" class="logo">
+                <h2>${nomedaloja}</h2>
+                <div class="descricao">
+                ${descricao ? `<strong>${descricao}</strong>` : ``}
+                </div>
+                <h3>Pedido #${order.id}</h3>
+
+                <h2>Status do Pedido: ${order.Pagamento}</h2>
+
+                <div class="order-details">
+                    <div class="order-info">
+                        <p><strong>Nome:</strong> ${order.address?.name}</p>
+                        <p><strong>Email:</strong> ${order.address?.email}</p>
+                        <p><strong>Telefone:</strong> ${order.address?.phone}</p>
+                        <p><strong>Data:</strong> ${new Date(order.timestamp).toLocaleString()}</p>
+                        <p><strong>Informações Adicionais:</strong> ${order.address?.additionalInfo}</p>
+                        ${addressDisplay ? addressDisplay : buttonRetirada}
+                        ${order.Enviado ? `<ul>${order.Enviado}</ul>` : ''}
+                    </div>
+                </div>
+                
+                <h4>Itens Comprados:</h4>
+                <ul>
+                    ${itemsList}
+                </ul>
+
+                <p class="total"><strong>Total:</strong> R$ ${order.total}</p>
+                <footer class="rodape">
+                <p> ${whatsapp ? `📞 Contato: ${whatsapp}` : ``} ${emailEndereco ? `| ✉️ E-mail: ${emailEndereco},` : ``}</p>
+                <p><strong>📍 Endereço:</strong></p>
+                 <p><strong>🏠 ${Endereço1 ? `${Endereço1},` : ``}</strong></p>
+                 <p><strong>🏙️ ${Endereço2 ? `${Endereço2}` : ``}</strong></p>
+                 <p><strong>📮 ${meucep ? `CEP: ${meucep}` : ``}</strong></p>
+                 </footer>
+                </div>
+        </body>
+        </html>
+    `);
+
+    printWindow.document.close();
+    setTimeout(() => {printWindow.print(); }, 500); 
+}
+
+async function verificarPagamento(index) {
+    const history = JSON.parse(localStorage.getItem(blog)) || [];
+
+    if (!blog) {
+        showNotification("Blog não definido. Verifique as configurações.", 'error');
+        return;
+    }
+
+    if (index >= 0 && index < history.length) {
+        const order = history[index];
+        const paymentHash = order.paymentHash;
+        const iddopagamento = order.id;
+
+        // Obter os dados da API do Blogger
+        const script = document.createElement('script');
+        script.src = 'https://www.blogger.com/feeds/' + blog + '/pages/default?alt=json-in-script&callback=processarVerificacaoPagamento';
+        script.onerror = () => {
+            showNotification("Erro ao obter os dados de pagamento.", 'error');
+        };
+
+        window.processarVerificacaoPagamento = (data) => {
+            if (data && data.feed && data.feed.entry) {
+                let paymentFound = false;
+
+                // Iterar sobre as entradas do feed
+                data.feed.entry.forEach(entry => {
+                    if (entry.content && entry.content.$t) {
+                        const lines = entry.content.$t.split('\n').map(line => line.replace(/<[^>]*>/g, '').trim());
+
+                        for (const line of lines) {
+                            const match = line.match(new RegExp(`${paymentHash}\\s+(\\w+)`));
+
+                            if (match) {
+                                const status = match[1].trim();
+
+                                if (status === 'Cancelado') {
+                                        history[index].StatusButton = false;
+                                        history[index].StatusPedido = 'Cancelado';
+                                        history[index].Enviado = ' ';
+                                        history[index].Pagamento = ' ';
+                                        history[index].Entregue = ' ';
+                                        history[index].isPago = false;
+                                        showNotification(`Pedido #${iddopagamento} foi Cancelado.`, 'error');
+                                        paymentFound = true;
+                                        //deleteOrderFromHistory(index);
+                                        //return;
+                                } if (order.Entregue === '') {
+                                    console.log('1', order.Entregue);
+                                    if (status === 'Entregue') {
+                                        history[index].Entregue = 'Entregue';
+                                        history[index].Pagamento = 'Pago';
+                                        history[index].StatusPedido = 'Pago';
+                                        history[index].isPago = true;
+                                        showNotification(`Pedido #${iddopagamento} Pago e foi entregue.`, 'atualizado');
+                                        paymentFound = true;
+
+                                    }
+                                 } if (order.Enviado === '') {
+                                    console.log('2', order.Enviado);
+                                    if (status === 'Enviado') {
+                                        history[index].Enviado = 'Enviado';
+                                        history[index].Pagamento = 'Pago';
+                                        history[index].StatusPedido = 'Pago';
+                                        history[index].isPago = true;
+                                        showNotification(`Pedido #${iddopagamento} Pago e foi enviado.`, 'atualizado');
+                                        paymentFound = true;
+
+                                    }
+                                 } if (order.StatusPedido === 'Aguardando Pagamento') {
+                                    if (status === 'Pago') { 
+                                        history[index].isPago = true;
+                                        history[index].Pagamento = 'Pago';
+                                        history[index].StatusPedido = 'Pago';
+                                        showNotification(`Pagamento #${iddopagamento} concluído com sucesso!`, 'success');
+                                        paymentFound = true;
+                                    }
+                                    
+                                }
+                                
+                            }
+                        }
+                    }
+                });
+
+                // Se o pagamento não foi encontrado
+                if (!paymentFound && order.StatusPedido === "Aguardando Pagamento") {
+                    showNotification(`Estamos aguardando a confirmação do seu pagamento #${iddopagamento}. Assim que recebermos a confirmação, você será notificado.`, 'aguardando'); // 'info' em vez de 'aguardando'
+                }
+
+                localStorage.setItem(blog, JSON.stringify(history)); // Salva as mudanças no localStorage
+                updateOrderHistoryDisplay(); // Atualiza a interface
+            } else {
+                showNotification("Erro ao processar os dados da API.", 'error');
+            }
+        };
+
+        document.body.appendChild(script);
+
+        // Adicionando um tempo de espera (simulação) para poder ver o fluxo mais claramente
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Espera 2 segundos entre as verificações
+    }
+}
+
+
+
 function goToAddress() {
     const addressElement = document.querySelector('.rodape');
 
@@ -2721,7 +3162,7 @@ function showPixQrCode(index) {
 function generatePaymentId() {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let paymentId = 'Pagamento';
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 6; i++) {
     paymentId += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     return paymentId;
@@ -2868,17 +3309,41 @@ function updatePaginationButtons() {
 function showNotification(message, type = 'success') {
     const notificationContainer = document.getElementById('notification-container');
 
+    if (!notificationContainer) {
+        console.error("Elemento 'notification-container' não encontrado!");
+        return;
+    }
+
     const notification = document.createElement('div');
     notification.classList.add('notification', type);
     notification.textContent = message;
 
+    // Adiciona notificação ao container
     notificationContainer.appendChild(notification);
 
+    // Exibe a notificação
+    setTimeout(() => notification.classList.add('show'), 30);
 
-    setTimeout(() => { notification.classList.add('show');
-    setTimeout(() => { notification.classList.remove('show'); 
-    setTimeout(() => { notificationContainer.removeChild(notification); }, 300);}, 3000);}, 10);
-    }
+    // Remove a notificação após o tempo determinado
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            if (notificationContainer.contains(notification)) {
+                notificationContainer.removeChild(notification);
+            }
+        }, 500);
+    }, 4000);
+
+    // Remove notificação ao clicar nela
+    notification.onclick = () => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            if (notificationContainer.contains(notification)) {
+                notificationContainer.removeChild(notification);
+            }
+        }, 500);
+    };
+}
 
     // --- Carrossel ---
     function initializeCarousel() {
