@@ -555,7 +555,7 @@ button:hover {
 
 .form-group input[type="text"],
 .form-group input[type="Email"],
-.form-group input[type="whatsapp"],
+.form-group input[type="number"],
 .form-group input[type="Nome"],
 .form-group textarea,
 .form-group select {
@@ -1541,7 +1541,7 @@ to {
 
         <div class="form-group">
         <label for="WhatsApp" class="required">WhatsApp</label>
-        <input type="whatsapp" id="WhatsApp" name="WhatsApp" placeholder="Seu WhatsApp" required>
+        <input type="number" id="WhatsApp" name="WhatsApp" placeholder="Seu WhatsApp" required>
         </div>
 
         <div class="form-group">
@@ -1556,7 +1556,7 @@ to {
         <div id="addressFields" style="display:none;">
         <div class="form-group">
         <label for="CEP" class="required">CEP</label>
-        <input type="text" id="CEP" name="CEP" placeholder="CEP">
+        <input type="number" id="CEP" name="CEP" placeholder="CEP">
         </div>
 
         <div class="form-group">
@@ -2462,7 +2462,7 @@ function updateCartDisplay() {
     li.innerHTML = `
       <img src="${item.imageUrl}" alt="${item.name}">
             
-      <span>${item.name} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} ${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(subtotal.toFixed(2))}</span>
+      <span>${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(subtotal.toFixed(2))}</span>
       <button class="remove-button" onclick="removeFromCart(${index})"><i class="fas fa-trash-alt"></i></i></button>
     `;
 
@@ -2471,7 +2471,7 @@ function updateCartDisplay() {
     li1.innerHTML = `
       <img src="${item.imageUrl}" alt="${item.name}">
       
-      <span>${item.name} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''}${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(subtotal.toFixed(2))}</span>
+      <span>${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(subtotal.toFixed(2))}</span>
     `;
 
     // Adiciona o item na lista do carrinho
@@ -2617,7 +2617,7 @@ async function generatePix() {
             `Informações Adicionais: ${order.address.additionalInfo}\n\n` +
             (deliveryOption === 'delivery' ? `Endereço: ${order.address.address}, ${order.address.city} - ${order.address.bairro}, ${order.address.postcode}\n\n` : 'Retirada no Local\n\n') +
             `Itens do Pedido:\n` +
-            order.items.map(item => `${item.name} ${item.selectedsabor ? '(Tamanho: ' + item.selectedsabor + ')' : ''} ${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR((item.price * item.quantity).toFixed(2))}`).join('\n') +
+            order.items.map(item => `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR((item.price * item.quantity).toFixed(2))}`).join('\n') +
             `\n\nTotal: ${realBR(valor)}\nData da Compra: ${dataCompra}`;
 
         const whatsappLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
@@ -2671,14 +2671,14 @@ function updateOrderHistoryDisplay() {
 
         // Verificações de segurança para evitar erros
         const addressData = order.address || {};
-        const nomeCliente = addressData.name || 'Nome não disponível';
-        const enderecoCompleto = addressData.address ? `${addressData.address}, ${addressData.city || 'Cidade não disponível'} - ${addressData.bairro || 'Bairro não disponível'}, ${addressData.postcode || 'CEP não disponível'}` : 'Endereço não disponível';
+        const nomeCliente = addressData.name;
+        const enderecoCompleto = addressData.address ? `${addressData.address}, ${addressData.city} - ${addressData.bairro}, ${addressData.postcode}` : 'Endereço não disponível';
 
         let itemsList = "";
         if (order.items && order.items.length > 0) {
         itemsList = order.items.map(item => {
         const itemTotal = item.price * item.quantity;
-        return `<li style="list-style:none;"><img src="${item.imageUrl}" alt="${item.name}" width="40" height="40"> ${item.name} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}</li>`;}).join('\n    ');
+        return `<li style="list-style:none;"><img src="${item.imageUrl}" alt="${item.name}" width="40" height="40"> ${item.name} (Qtd: ${item.quantity}) ${item.selectedSize ? `(Tamanho: ${item.selectedSize})` : ``} ${item.selectedsabor ? `(sabor: ${item.selectedsabor})` : ``} - ${realBR(itemTotal.toFixed(2))}</li>`;}).join('\n    ');
         } else {
         itemsList = "Nenhum item no pedido.";
         }
@@ -2716,9 +2716,7 @@ function updateOrderHistoryDisplay() {
         <ul>
         ${itemsList}
         </ul>
-
-          ${Retiranolocal} 
-
+        ${Retiranolocal} 
         <div class="status">
         <h4>Status do Pedido: ${cancelado} ${order.Entregue ? `${order.Entregue}` : `${order.Enviado ? `${order.Enviado}` : `${order.Pagamento ? `${order.Pagamento}` : `Aguardando Pagamentos`}`}`} </h4>
         </div>
@@ -2795,7 +2793,7 @@ function printOrder(index) {
                 <li>
                     <img src="${item.imageUrl}" alt="${item.name}" width="40" height="40" />
                     <div style="word-break: break-word;">
-                        ${item.name} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}
+                     ${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}
                     </div>
                 </li>`;
         }).join('\n');
@@ -3178,8 +3176,6 @@ async function verificarPagamento(index) {
     }
 }
 
-
-
 function goToAddress() {
     const addressElement = document.querySelector('.rodape');
 
@@ -3264,7 +3260,7 @@ function resendWhatsappMessage(index) {
     if (order.items && order.items.length > 0) {
     itemsList = order.items.map(item => {
         const itemTotal = item.price * item.quantity;
-        return `${item.name} ${item.selectedsabor ? '(Tamanho: ' + item.selectedsabor + ')' : ''} ${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}`;}).join('\n  ');
+        return `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}`;}).join('\n  ');
     } else {
     itemsList = "Nenhum item no pedido.";
     }
