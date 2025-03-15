@@ -1565,8 +1565,8 @@ to {
         </div>
 
         <div class="form-group">
-        <label for="cidade" class="required">Cidade</label>
-        <input type="text" id="cidade" name="cidade" placeholder="Cidade">
+        <label for="Cidade" class="required">Cidade</label>
+        <input type="text" id="Cidade" name="Cidade" placeholder="Cidade">
         </div>
 
         <div class="form-group">
@@ -2541,7 +2541,7 @@ async function generatePix() {
     let requiredFields = ['Nome', 'Email', 'WhatsApp'];
     
     if (deliveryOption === 'delivery') {
-        requiredFields = requiredFields.concat(['CEP', 'Endereço', 'cidade', 'Bairro']);
+        requiredFields = requiredFields.concat(['CEP', 'Endereço', 'Cidade', 'Bairro']);
     }
 
     const missingFields = requiredFields.filter(field => !document.getElementById(field).value);
@@ -2597,9 +2597,9 @@ async function generatePix() {
             address: {
                 name: document.getElementById('Nome').value,
                 address: document.getElementById('Endereço').value,
-                city: document.getElementById('cidade').value,
+                city: document.getElementById('Cidade').value,
                 bairro: document.getElementById('Bairro').value,
-                postcode: document.getElementById('cep').value,
+                postcode: document.getElementById('CEP').value,
                 email: document.getElementById('Email').value,
                 phone: document.getElementById('WhatsApp').value,
                 additionalInfo: document.getElementById('additionalInfo').value
@@ -2743,10 +2743,10 @@ function updateOrderHistoryDisplay() {
         orderHistoryList.appendChild(li);
         document.getElementById('Nome').value = '';
         document.getElementById('Endereço').value = '';
-        document.getElementById('cidade').value = '';
+        document.getElementById('Cidade').value = '';
         document.getElementById('Email').value = '';
         document.getElementById('WhatsApp').value = '';
-        document.getElementById('cep').value = '';
+        document.getElementById('CEP').value = '';
         document.getElementById('Bairro').value = '';
         document.getElementById('additionalInfo').value = '';
         document.getElementById('deliveryOption').value = '';
@@ -3666,22 +3666,22 @@ document.getElementById("CEP").addEventListener("blur", async function () {
     if (deliveryOption === 'delivery') {
     addressFields.style.display = 'block';
     // Adiciona o atributo 'required' aos campos de endereço
-    document.getElementById('cep').setAttribute('required', '');
+    document.getElementById('CEP').setAttribute('required', '');
     document.getElementById('Endereço').setAttribute('required', '');
-    document.getElementById('cidade').setAttribute('required', '');
+    document.getElementById('Cidade').setAttribute('required', '');
     document.getElementById('Bairro').setAttribute('required', '');
     } else {
     addressFields.style.display = 'none';
     // Remove o atributo 'required' dos campos de endereço
-    document.getElementById('cep').removeAttribute('required');
+    document.getElementById('CEP').removeAttribute('required');
     document.getElementById('Endereço').removeAttribute('required');
-    document.getElementById('cidade').removeAttribute('required');
+    document.getElementById('Cidade').removeAttribute('required');
     document.getElementById('Bairro').removeAttribute('required');
 
     // Limpa os campos de endereço
-    document.getElementById('cep').value = '';
+    document.getElementById('CEP').value = '';
     document.getElementById('Endereço').value = '';
-    document.getElementById('cidade').value = '';
+    document.getElementById('Cidade').value = '';
     document.getElementById('Bairro').value = '';
     }
 }
