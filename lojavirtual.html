@@ -11,7 +11,7 @@
     <meta property="og:locale" content="pt_BR">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#ffa200e0">
-    
+
     <link rel="icon" href="pagamentos.files/imagens/favicon.png" type="image/png">
     <link href="pagamentos.files/imagens/favicon.png" rel="shortcut icon" type="image/png">
     <title>Meu Pix - Loja online</title>
@@ -554,8 +554,9 @@ button:hover {
 }
 
 .form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="tel"],
+.form-group input[type="Email"],
+.form-group input[type="whatsapp"],
+.form-group input[type="Nome"],
 .form-group textarea,
 .form-group select {
     width: 100%;
@@ -1529,18 +1530,18 @@ to {
         <h2>Detalhes da Entrega</h2>
         <form id="checkoutForm">
         <div class="form-group">
-        <label for="name" class="required">Nome Completo</label>
-        <input type="text" id="name" name="name" placeholder="Nome Completo" required>
+        <label for="Nome" class="required">Nome Completo</label>
+        <input type="Nome" id="Nome" name="Nome" placeholder="Nome Completo" required>
         </div>
 
         <div class="form-group">
-        <label for="email" class="required">Email</label>
-        <input type="email" id="email" name="email" placeholder="Seu Email" required>
+        <label for="Email" class="required">Email</label>
+        <input type="Email" id="Email" name="Email" placeholder="Seu Email" required>
         </div>
 
         <div class="form-group">
-        <label for="phone" class="required">Telefone</label>
-        <input type="tel" id="phone" name="phone" placeholder="Seu Telefone" required>
+        <label for="WhatsApp" class="required">WhatsApp</label>
+        <input type="whatsapp" id="WhatsApp" name="WhatsApp" placeholder="Seu WhatsApp" required>
         </div>
 
         <div class="form-group">
@@ -1554,23 +1555,23 @@ to {
 
         <div id="addressFields" style="display:none;">
         <div class="form-group">
-        <label for="postcode" class="required">CEP</label>
-        <input type="text" id="postcode" name="postcode" placeholder="CEP">
+        <label for="CEP" class="required">CEP</label>
+        <input type="text" id="CEP" name="CEP" placeholder="CEP">
         </div>
 
         <div class="form-group">
-        <label for="address" class="required">Endereço</label>
-        <input type="text" id="address" name="address" placeholder="Endereço Completo">
+        <label for="Endereço" class="required">Endereço</label>
+        <input type="text" id="Endereço" name="Endereço" placeholder="Endereço Completo">
         </div>
 
         <div class="form-group">
-        <label for="city" class="required">Cidade</label>
-        <input type="text" id="city" name="city" placeholder="Cidade">
+        <label for="cidade" class="required">Cidade</label>
+        <input type="text" id="cidade" name="cidade" placeholder="Cidade">
         </div>
 
         <div class="form-group">
-        <label for="bairro" class="required">Bairro</label>
-        <input type="text" id="bairro" name="bairro" placeholder="Bairro">
+        <label for="Bairro" class="required">Bairro</label>
+        <input type="text" id="Bairro" name="Bairro" placeholder="Bairro">
         </div>
         </div>
 
@@ -2152,6 +2153,7 @@ function fetchProducts() {
         let imageUrl = '';
         let price = 0;
         let sizes = [];
+        let sabor = [];
         let quantity = 0;
         let discount = 0;
         let isCarousel = false; // Variável para indicar se o produto deve ir para o carrossel
@@ -2163,16 +2165,18 @@ function fetchProducts() {
         entry.category.forEach(cat => {
         const term = cat.term;
         if (term.startsWith('R$')) {
-        price = parseFloat(term.replace('R$ ', '').replace(',', '.'));
-    } else if (term.toLowerCase().startsWith('tamanho/')) {
-        sizes = term.substring('tamanho/'.length).split('/');
-    } else if (term.toLowerCase().startsWith('quantidade/')) {
-        quantity = parseInt(term.substring('quantidade/'.length));
-    } else if (term.toLowerCase().startsWith('desconto/')) {
-        discount = parseInt(term.substring('desconto/'.length));
-    }
-    });
-    }
+         price = parseFloat(term.replace('R$ ', '').replace(',', '.'));
+        } else if (term.toLowerCase().startsWith('tamanho/')) {
+         sizes = term.substring('tamanho/'.length).split('/');
+        } else if (term.toLowerCase().startsWith('sabor/')) {
+         sabor = term.substring('sabor/'.length).split('/');
+        } else if (term.toLowerCase().startsWith('quantidade/')) {
+         quantity = parseInt(term.substring('quantidade/'.length));
+        } else if (term.toLowerCase().startsWith('desconto/')) {
+         discount = parseInt(term.substring('desconto/'.length));
+        }
+        });
+        }
 
         const imgRegex = /<img.*?src="(.*?)"/;
         const imgMatch = content.match(imgRegex);
@@ -2188,6 +2192,7 @@ function fetchProducts() {
         originalPrice: price,
         imageUrl: imageUrl,
         sizes: sizes,
+        sabor: sabor,
         quantity: quantity,
         discount: discount,
         available: quantity > 0
@@ -2202,7 +2207,6 @@ function fetchProducts() {
 });
 
     displayProducts();
-     // Inicializa o carrossel após carregar os produtos
 
 } catch (error) {}
 }
@@ -2225,11 +2229,13 @@ function fetchProducts() {
 }
 
     let sizesHTML = '';
+    let saborHTML = '';
     let quantityHTML = '';
     let discountBadgeHTML = '';
-    let sizeSelectId = `sizeSelect_${product.name}`;
-    let quantitySelectId = `quantitySelect_${product.name}`;
 
+
+
+    let sizeSelectId = `sizeSelect_${product.name}`;
     if (product.sizes && product.sizes.length > 0) {
         sizesHTML = `
         <label for="${sizeSelectId}">Tamanho:</label>
@@ -2237,8 +2243,19 @@ function fetchProducts() {
         ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
         </select>
         `;
-}
+    }
 
+    let saborSelectId = `saborSelect_${product.name}`;
+    if (product.sabor && product.sabor.length > 0) {
+        saborHTML = `
+        <label for="${saborSelectId}">Sabor:</label>
+        <select id="${saborSelectId}" class="custom-select">
+        ${product.sabor.map(size => `<option value="${size}">${size}</option>`).join('')}
+        </select>
+        `;
+    }
+
+    let quantitySelectId = `quantitySelect_${product.name}`;
     quantityHTML = `
         <label for="${quantitySelectId}">Quantidade:</label>
         <select id="${quantitySelectId}" class="custom-select">
@@ -2257,8 +2274,9 @@ function fetchProducts() {
         <p>${product.discount > 0 ? `De <strike class="backgroundred">R$ ${product.originalPrice.toFixed(2)}</strike> Por <span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>` : `<span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`}</p>
            <div class="button-group-carousel">
         ${sizesHTML}
+        ${saborHTML}
         ${quantityHTML}
-       <button class="add-to-cart-button" onclick="addToCart('${product.name}', ${product.price}, '${product.imageUrl}', document.getElementById('${sizeSelectId}') ? document.getElementById('${sizeSelectId}').value : '', document.getElementById('${quantitySelectId}').value)">Adicionar ao Carrinho</button>
+       <button class="add-to-cart-button" onclick="addToCart('${product.name}', ${product.price}, '${product.imageUrl}', document.getElementById('${sizeSelectId}') ? document.getElementById('${sizeSelectId}').value : '', document.getElementById('${saborSelectId}') ? document.getElementById('${saborSelectId}').value : '', document.getElementById('${quantitySelectId}').value)">Adicionar ao Carrinho</button>
        </div>
        `;
     productDiv.appendChild(createBuyNowButton(product)); // Adiciona o botão "Comprar Agora"
@@ -2283,6 +2301,7 @@ function fetchProducts() {
 
     // Função para lidar com a compra direta
 function buyNow(product) {
+    const selectedsabor = document.getElementById(`saborSelect_${product.name}`) ? document.getElementById(`saborSelect_${product.name}`).value : '';
     const selectedSize = document.getElementById(`sizeSelect_${product.name}`) ? document.getElementById(`sizeSelect_${product.name}`).value : '';
     const selectedQuantity = document.getElementById(`quantitySelect_${product.name}`) ? document.getElementById(`quantitySelect_${product.name}`).value : 1;
 
@@ -2294,7 +2313,18 @@ function buyNow(product) {
     if (selectedSize === "") {
     showNotification("Por favor, selecione um tamanho.", 'error');
     return;
+    }
 }
+
+if (product.sabor && Array.isArray(product.sabor) && product.sabor.length > 0) {
+
+    const saborSelect = document.getElementById(`saborSelect_${product.name}`);
+    const selectedsabor = saborSelect ? saborSelect.value : "";
+
+     if (selectedsabor === "") {
+    showNotification("Por favor, selecione um Sabor.", 'error');
+    return;
+    }
 }
 
     if (!selectedQuantity) {
@@ -2302,12 +2332,12 @@ function buyNow(product) {
     return;
 }
 
-    const existingItemIndex = cart.findIndex(item => item.name === product.name && item.selectedSize === selectedSize);
+    const existingItemIndex = cart.findIndex(item => item.name === product.name && item.selectedSize === selectedSize && item.selectedsabor === selectedsabor);
 
      // Verifica se o produto já existe no carrinho
      if (existingItemIndex > -1) {
      // O produto já existe no carrinho, então verifica se a quantidade é a mesma
-     const existingItem = cart.find(item => item.name === product.name && item.selectedSize === selectedSize && item.quantity === parseInt(selectedQuantity));
+     const existingItem = cart.find(item => item.name === product.name && item.selectedSize === selectedSize && item.selectedsabor === selectedsabor && item.quantity === parseInt(selectedQuantity));
 
      if (existingItem) {
     showNotification("Produto já adicionado no carrinho!", 'error');
@@ -2324,7 +2354,8 @@ function buyNow(product) {
       price: product.price,
       quantity: parseInt(selectedQuantity),
       imageUrl: product.imageUrl,
-      selectedSize: selectedSize
+      selectedSize: selectedSize,
+      saborSelect: selectedsabor,
    });
 
        showNotification("Produto adicionado ao carrinho", 'success');
@@ -2339,7 +2370,7 @@ function buyNow(product) {
     showTab('checkout');
 }
 
-function addToCart(name, price, imageUrl, selectedSize, selectedQuantity) {
+function addToCart(name, price, imageUrl, selectedSize, selectedsabor, selectedQuantity) {
     const product = products.find(p => p.name === name);
     if (!product) {
     showNotification("Produto não encontrado.", 'error');
@@ -2351,14 +2382,19 @@ function addToCart(name, price, imageUrl, selectedSize, selectedQuantity) {
     return;
 }
 
+if (selectedsabor === "" && product.sizes && product.sizes.length > 0) {
+    showNotification("Por favor, selecione um Sabor.", 'error');
+    return;
+}
+
     if (!selectedQuantity) {
     showNotification("Por favor, selecione uma quantidade.", 'error');
     return;
 }
 
     // Verifica se o produto já existe no carrinho com a MESMA quantidade
-    const existingItemSameQuantity = cart.find(item => item.name === name && item.price === price && item.imageUrl === imageUrl && item.selectedSize === selectedSize && item.quantity === parseInt(selectedQuantity));
-    const existingItemIndex = cart.findIndex(item => item.name === name && item.price === price && item.imageUrl === imageUrl && item.selectedSize === selectedSize);
+    const existingItemSameQuantity = cart.find(item => item.name === name && item.price === price && item.imageUrl === imageUrl && item.selectedSize === selectedSize && item.selectedsabor === selectedsabor && item.quantity === parseInt(selectedQuantity));
+    const existingItemIndex = cart.findIndex(item => item.name === name && item.price === price && item.imageUrl === imageUrl && item.selectedSize === selectedSize && item.selectedsabor === selectedsabor);
 
     if (existingItemIndex > -1) {
     // O produto já existe no carrinho
@@ -2377,7 +2413,8 @@ function addToCart(name, price, imageUrl, selectedSize, selectedQuantity) {
     price,
     quantity: parseInt(selectedQuantity),
     imageUrl,
-    selectedSize
+    selectedSize,
+    selectedsabor
 });
     showNotification("Item adicionado ao carrinho!", 'success');
 }
@@ -2424,7 +2461,8 @@ function updateCartDisplay() {
     li.classList.add('cart-item');
     li.innerHTML = `
       <img src="${item.imageUrl}" alt="${item.name}">
-      <span>${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(subtotal.toFixed(2))}</span>
+            
+      <span>${item.name} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} ${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(subtotal.toFixed(2))}</span>
       <button class="remove-button" onclick="removeFromCart(${index})"><i class="fas fa-trash-alt"></i></i></button>
     `;
 
@@ -2432,7 +2470,8 @@ function updateCartDisplay() {
     li1.classList.add('cart-item');
     li1.innerHTML = `
       <img src="${item.imageUrl}" alt="${item.name}">
-      <span>${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(subtotal.toFixed(2))}</span>
+      
+      <span>${item.name} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''}${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(subtotal.toFixed(2))}</span>
     `;
 
     // Adiciona o item na lista do carrinho
@@ -2499,10 +2538,10 @@ async function generateHash(value) {
 
 async function generatePix() {
     const deliveryOption = document.getElementById('deliveryOption').value;
-    let requiredFields = ['name', 'email', 'phone'];
+    let requiredFields = ['Nome', 'Email', 'WhatsApp'];
     
     if (deliveryOption === 'delivery') {
-        requiredFields = requiredFields.concat(['postcode', 'address', 'city', 'bairro']);
+        requiredFields = requiredFields.concat(['CEP', 'Endereço', 'cidade', 'Bairro']);
     }
 
     const missingFields = requiredFields.filter(field => !document.getElementById(field).value);
@@ -2512,7 +2551,7 @@ async function generatePix() {
     }
 
     if (deliveryOption === 'delivery') {
-        const postcode = document.getElementById('postcode').value;
+        const postcode = document.getElementById('CEP').value;
         if (!(await isCepValido(postcode))) {
             showNotification("CEP fora da área de entrega!", 'error');
             return;
@@ -2549,19 +2588,20 @@ async function generatePix() {
                 quantity: item.quantity,
                 imageUrl: item.imageUrl,
                 selectedSize: item.selectedSize || '',
+                selectedsabor: item.selectedsabor || '',
             })),
             total: valor,
             pixUrl: pixUrl,
             timestamp: Date.now(),
             deliveryOption: deliveryOption,
             address: {
-                name: document.getElementById('name').value,
-                address: document.getElementById('address').value,
-                city: document.getElementById('city').value,
-                bairro: document.getElementById('bairro').value,
-                postcode: document.getElementById('postcode').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
+                name: document.getElementById('Nome').value,
+                address: document.getElementById('Endereço').value,
+                city: document.getElementById('cidade').value,
+                bairro: document.getElementById('Bairro').value,
+                postcode: document.getElementById('cep').value,
+                email: document.getElementById('Email').value,
+                phone: document.getElementById('WhatsApp').value,
                 additionalInfo: document.getElementById('additionalInfo').value
             }
         };
@@ -2577,7 +2617,7 @@ async function generatePix() {
             `Informações Adicionais: ${order.address.additionalInfo}\n\n` +
             (deliveryOption === 'delivery' ? `Endereço: ${order.address.address}, ${order.address.city} - ${order.address.bairro}, ${order.address.postcode}\n\n` : 'Retirada no Local\n\n') +
             `Itens do Pedido:\n` +
-            order.items.map(item => `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR((item.price * item.quantity).toFixed(2))}`).join('\n') +
+            order.items.map(item => `${item.name} ${item.selectedsabor ? '(Tamanho: ' + item.selectedsabor + ')' : ''} ${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR((item.price * item.quantity).toFixed(2))}`).join('\n') +
             `\n\nTotal: ${realBR(valor)}\nData da Compra: ${dataCompra}`;
 
         const whatsappLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
@@ -2701,13 +2741,13 @@ function updateOrderHistoryDisplay() {
         `;
 
         orderHistoryList.appendChild(li);
-        document.getElementById('name').value = '';
-        document.getElementById('address').value = '';
-        document.getElementById('city').value = '';
-        document.getElementById('email').value = '';
-        document.getElementById('phone').value = '';
-        document.getElementById('postcode').value = '';
-        document.getElementById('bairro').value = '';
+        document.getElementById('Nome').value = '';
+        document.getElementById('Endereço').value = '';
+        document.getElementById('cidade').value = '';
+        document.getElementById('Email').value = '';
+        document.getElementById('WhatsApp').value = '';
+        document.getElementById('cep').value = '';
+        document.getElementById('Bairro').value = '';
         document.getElementById('additionalInfo').value = '';
         document.getElementById('deliveryOption').value = '';
         toggleAddressFields();
@@ -3224,7 +3264,7 @@ function resendWhatsappMessage(index) {
     if (order.items && order.items.length > 0) {
     itemsList = order.items.map(item => {
         const itemTotal = item.price * item.quantity;
-        return `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}`;}).join('\n  ');
+        return `${item.name} ${item.selectedsabor ? '(Tamanho: ' + item.selectedsabor + ')' : ''} ${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}`;}).join('\n  ');
     } else {
     itemsList = "Nenhum item no pedido.";
     }
@@ -3410,7 +3450,7 @@ function showNotification(message, type = 'success') {
     let sizesHTML = '';
     let quantityHTML = '';
     let discountBadgeHTML = '';
-
+    let saborHTML = '';
     carouselProducts.forEach(product => {
     if (!product.available) return;
 
@@ -3422,6 +3462,14 @@ function showNotification(message, type = 'success') {
     <label for="${sizeSelectId}">Tamanho:</label>
     <select id="${sizeSelectId}" class="custom-select">
     ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
+    </select>
+    ` : '';
+
+    let saborSelectId = `carouselsaborSelect_${product.name}`;
+    const saborHTML = product.sabor && product.sabor.length > 0 ? `
+    <label for="${saborSelectId}">Sabor:</label>
+    <select id="${saborSelectId}" class="custom-select">
+    ${product.sabor.map(size => `<option value="${size}">${size}</option>`).join('')}
     </select>
     ` : '';
 
@@ -3442,9 +3490,10 @@ function showNotification(message, type = 'success') {
     <p>${product.discount > 0 ? `De <strike class="backgroundred">R$ ${product.originalPrice.toFixed(2)}</strike> Por <span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>` : `<span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`}</p>
     <div class="button-group-carousel">
     ${sizesHTML}
+    ${saborHTML}
     ${quantityHTML}
-    <button class="add-to-cart-button" onclick="addToCart('${product.name}', ${product.price}, '${product.imageUrl}', document.getElementById('${sizeSelectId}') ? document.getElementById('${sizeSelectId}').value : '', document.getElementById('${quantitySelectId}').value)">Adicionar ao Carrinho</button>
-    <button class="buy-now-button" onclick="buyNowCarousel(this, '${product.name}')">Comprar Agora</button>
+       <button class="add-to-cart-button" onclick="addToCart('${product.name}', ${product.price}, '${product.imageUrl}', document.getElementById('${sizeSelectId}') ? document.getElementById('${sizeSelectId}').value : '', document.getElementById('${saborSelectId}') ? document.getElementById('${saborSelectId}').value : '', document.getElementById('${quantitySelectId}').value)">Adicionar ao Carrinho</button>
+       <button class="buy-now-button" onclick="buyNowCarousel(this, '${product.name}')">Comprar Agora</button>
    </div>
     `;
 
@@ -3462,32 +3511,38 @@ function buyNowCarousel(button, productName) {
     showNotification("Produto não encontrado.", 'error');
     return;
     }
-
+  
     const sizeSelectId = `carouselSizeSelect_${product.name}`;
-    const quantitySelectId = `carouselQuantitySelect_${product.name}`;
-
     const sizeSelectElement = document.getElementById(sizeSelectId);
-    const quantitySelectElement = document.getElementById(quantitySelectId);
-
     const selectedSize = sizeSelectElement ? sizeSelectElement.value : "";
-    const selectedQuantity = quantitySelectElement ? quantitySelectElement.value : 1;
-
     if (product.sizes && Array.isArray(product.sizes) && product.sizes.length > 0 && !selectedSize) {
     showNotification("Por favor, selecione um tamanho.", 'error');
     return;
     }
+
+    const saborSelectId = `carouselsaborSelect_${product.name}`;
+    const saborSelectElement = document.getElementById(saborSelectId);
+    const selectedsabor = saborSelectElement ? saborSelectElement.value : "";
+    if (product.sabor && Array.isArray(product.sabor) && product.sabor.length > 0 && !selectedsabor) {
+    showNotification("Por favor, selecione um sabor.", 'error');
+    return;
+    }
+
+    const quantitySelectId = `carouselQuantitySelect_${product.name}`;
+    const quantitySelectElement = document.getElementById(quantitySelectId);
+    const selectedQuantity = quantitySelectElement ? quantitySelectElement.value : 1;
 
     if (!selectedQuantity) {
     showNotification("Por favor, selecione uma quantidade.", 'error');
     return;
     }
 
-    const existingItemIndex = cart.findIndex(item => item.name === product.name && item.selectedSize === selectedSize);
+    const existingItemIndex = cart.findIndex(item => item.name === product.name && item.selectedSize === selectedSize && item.selectedsabor === selectedsabor);
 
 
     if (existingItemIndex > -1) {
 
-    const existingItem = cart.find(item => item.name === product.name && item.selectedSize === selectedSize && item.quantity === parseInt(selectedQuantity));
+    const existingItem = cart.find(item => item.name === product.name && item.selectedSize === selectedSize && item.selectedsabor === selectedsabor && item.quantity === parseInt(selectedQuantity));
 
     if (existingItem) {
        showNotification("Produto já adicionado no carrinho!", 'error');
@@ -3502,7 +3557,8 @@ function buyNowCarousel(button, productName) {
      price: product.price,
      quantity: parseInt(selectedQuantity),
      imageUrl: product.imageUrl,
-     selectedSize: selectedSize
+     selectedSize: selectedSize,
+     selectedsabor: selectedsabor,
     });
 
       showNotification("Produto adicionado ao carrinho", 'success');
@@ -3553,7 +3609,7 @@ async function isCepValido(cep) {
     }
 }
 
-document.getElementById("postcode").addEventListener("blur", async function () {
+document.getElementById("CEP").addEventListener("blur", async function () {
     let cep = this.value.replace(/\D/g, ''); // Remove caracteres não numéricos
 
     if (cep.length === 8) {
@@ -3579,17 +3635,17 @@ document.getElementById("postcode").addEventListener("blur", async function () {
     }
 
         if (valid) {
-        document.getElementById("address").value = data.logradouro + ', casa:';
-        document.getElementById("bairro").value = data.bairro;
-        document.getElementById("city").value = data.localidade;
+        document.getElementById("Endereço").value = data.logradouro + ', casa:';
+        document.getElementById("Bairro").value = data.bairro;
+        document.getElementById("Cidade").value = data.localidade;
     } else {
         errorMessage += restrictions.join(", ");
         errorMessage += " são aceitos!";
         showNotification(errorMessage, 'error');
         this.value = "";
-        document.getElementById("address").value = "";
-        document.getElementById("bairro").value = "";
-        document.getElementById("city").value = "";
+        document.getElementById("Endereço").value = "";
+        document.getElementById("Bairro").value = "";
+        document.getElementById("Cidade").value = "";
     }
 
     } else {
@@ -3610,23 +3666,23 @@ document.getElementById("postcode").addEventListener("blur", async function () {
     if (deliveryOption === 'delivery') {
     addressFields.style.display = 'block';
     // Adiciona o atributo 'required' aos campos de endereço
-    document.getElementById('postcode').setAttribute('required', '');
-    document.getElementById('address').setAttribute('required', '');
-    document.getElementById('city').setAttribute('required', '');
-    document.getElementById('bairro').setAttribute('required', '');
+    document.getElementById('cep').setAttribute('required', '');
+    document.getElementById('Endereço').setAttribute('required', '');
+    document.getElementById('cidade').setAttribute('required', '');
+    document.getElementById('Bairro').setAttribute('required', '');
     } else {
     addressFields.style.display = 'none';
     // Remove o atributo 'required' dos campos de endereço
-    document.getElementById('postcode').removeAttribute('required');
-    document.getElementById('address').removeAttribute('required');
-    document.getElementById('city').removeAttribute('required');
-    document.getElementById('bairro').removeAttribute('required');
+    document.getElementById('cep').removeAttribute('required');
+    document.getElementById('Endereço').removeAttribute('required');
+    document.getElementById('cidade').removeAttribute('required');
+    document.getElementById('Bairro').removeAttribute('required');
 
     // Limpa os campos de endereço
-    document.getElementById('postcode').value = '';
-    document.getElementById('address').value = '';
-    document.getElementById('city').value = '';
-    document.getElementById('bairro').value = '';
+    document.getElementById('cep').value = '';
+    document.getElementById('Endereço').value = '';
+    document.getElementById('cidade').value = '';
+    document.getElementById('Bairro').value = '';
     }
 }
 
