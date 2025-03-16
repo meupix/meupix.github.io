@@ -1693,11 +1693,11 @@ const Params = new URLSearchParams(window.location.search);
     // Função para obter e validar o ID da loja
     function obterIdLoja() {
         let blog = Params.get('id'); // Tenta obter o ID da URL
+        
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, document.title, newUrl);
 
         if (blog) {
-            const newUrl = window.location.pathname;
-            window.history.replaceState({}, document.title, newUrl);
-
             const lojaLogada = localStorage.getItem('lojalogada');
 
             if (lojaLogada && lojaLogada !== blog) {
@@ -1706,8 +1706,7 @@ const Params = new URLSearchParams(window.location.search);
                 localStorage.setItem('lojalogada', blog);
             }
         } else {
-            const newUrl = window.location.pathname;
-            window.history.replaceState({}, document.title, newUrl);
+
             blog = localStorage.getItem('lojalogada'); // Tenta obter o ID do localStorage
         }
         return blog;
