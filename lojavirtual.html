@@ -1706,12 +1706,9 @@ const Params = new URLSearchParams(window.location.search);
                 localStorage.setItem('lojalogada', blog);
             }
         } else {
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
             blog = localStorage.getItem('lojalogada'); // Tenta obter o ID do localStorage
-        }
-
-        if (!blog) {
-            exibirModalErro("Nenhum ID de loja encontrado. Adicione o parâmetro ?id na URL ou verifique o localStorage.", true, false, 'error');
-            return null; // Retorna null para interromper a execução
         }
         return blog;
     }
@@ -1745,16 +1742,11 @@ const Params = new URLSearchParams(window.location.search);
     let descricao = '';
 
     document.addEventListener('DOMContentLoaded', function () {
-    const Params = new URLSearchParams(window.location.search); // Correção para obter os parâmetros da URL
 
-    if (!Params || Params.keys().next().done) {
-        // Sem parâmetros encontrados, faça algo aqui (opcional)
-    } else {
-        if (!Params.has('id')) {
-            exibirModalErro("Insira o valor no parâmetro ?id=", false, false, 'error');
+        if (!blog) {
+            exibirModalErro("Nenhum ID de loja encontrado. Adicione o parâmetro ?id=", true, false, 'error');
             return;
         }
-    }
 
     // Função que processa pagamentos sequencialmente
     async function processarPagamentos() {
@@ -1803,20 +1795,22 @@ function exibirModalErro(mensagem, comb, x, tipo = 'error') {
     // Criação do conteúdo do modal
     let conteudo = document.createElement('div');
     conteudo.className = "conteudo";
-
+    formGroupHTML = '';
+    if (comb) {
     // Cria o form-group com input e botão
-    let formGroupHTML = `
+    formGroupHTML = `
         <div class="form-group">
             <input type="text" id="addid" name="ADDid" placeholder="ID Da Loja">
-            <button class="btnInicio" onclick="irParaLoja()">Ir para Loja</button>
         </div>
+        <button class="ButtonFinalizarCompra" onclick="irParaLoja()">Ir para Loja</button>
     `;
+    }
 
     // Adiciona os elementos ao conteúdo
     conteudo.innerHTML = `
         <h3>${tipo === 'error' ? '✖️ Erro' : '✔️ Sucesso'}</h3>
         <p>${mensagem}</p>
-        ${formGroupHTML}
+        ${formGroupHTML ? `${formGroupHTML}` : ``}
     `;
 
     // Adiciona o botão "Como criar um ID?" se `comb` for verdadeiro
@@ -1863,7 +1857,7 @@ function irParaLoja() {
             }
             window.location.href = url;
         } else {
-            showNotification("Por favor, insira um ID de loja.", 'error');
+            showNotification("Por favor, insira o ID de loja.", 'error');
         }
     }
 
