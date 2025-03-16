@@ -1686,10 +1686,41 @@ to {
         </div>
         </div>
 
-    <script>
-    const Params = new URLSearchParams(window.location.search);
-  
-  const blog = Params.get('id');
+<script>
+const Params = new URLSearchParams(window.location.search);
+    let blog; // Declarar 'blog' aqui, sem inicializar
+
+    // Função para obter e validar o ID da loja
+    function obterIdLoja() {
+        let blog = Params.get('id'); // Tenta obter o ID da URL
+
+        if (blog) {
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
+
+            const lojaLogada = localStorage.getItem('lojalogada');
+
+            if (lojaLogada && lojaLogada !== blog) {
+                localStorage.removeItem(lojaLogada + 'cart');
+                localStorage.removeItem(lojaLogada);
+                localStorage.setItem('lojalogada', blog);
+            } else if (!lojaLogada) {
+                localStorage.setItem('lojalogada', blog);
+            }
+        } else {
+            blog = localStorage.getItem('lojalogada'); // Tenta obter o ID do localStorage
+        }
+
+        if (!blog) {
+            exibirModalErro("Nenhum ID de loja encontrado. Adicione o parâmetro ?id na URL ou verifique o localStorage.", true, false, 'error');
+            return null; // Retorna null para interromper a execução
+        }
+        return blog;
+    }
+
+    // Obtém e valida o ID da loja
+    blog = obterIdLoja();
+
   let cart = JSON.parse(localStorage.getItem(blog + 'cart')) || [];
   let orderHistory = JSON.parse(localStorage.getItem(blog)) || [];
     let products = [];
@@ -1774,9 +1805,20 @@ function exibirModalErro(mensagem, comb, x, tipo = 'error') {
     // Criação do conteúdo do modal
     let conteudo = document.createElement('div');
     conteudo.className = "conteudo";
+
+    // Cria o form-group com input e botão
+    let formGroupHTML = `
+        <div class="form-group">
+            <input type="text" id="addid" name="ADDid" placeholder="ID Da Loja">
+            <button class="btnInicio" onclick="irParaLoja()">Ir para Loja</button>
+        </div>
+    `;
+
+    // Adiciona os elementos ao conteúdo
     conteudo.innerHTML = `
         <h3>${tipo === 'error' ? '✖️ Erro' : '✔️ Sucesso'}</h3>
         <p>${mensagem}</p>
+        ${formGroupHTML}
     `;
 
     // Adiciona o botão "Como criar um ID?" se `comb` for verdadeiro
@@ -1805,13 +1847,30 @@ function exibirModalErro(mensagem, comb, x, tipo = 'error') {
     }
 
     // Adiciona a classe do tipo ao modal
-    modal2.classList.add(tipo); // Adiciona 'success' ou 'error'
-
+    modal2.classList.add(tipo);
     modal2.appendChild(conteudo);
     document.body.appendChild(modal2);
 }
 
+function irParaLoja() {
+        const idLoja = document.getElementById('addid').value;
+        if (idLoja) {
+            // Remove o 'id=' existente da URL
+            let url = window.location.href.replace(/[?&]id=[^&#]+/i, '');
+            // Adiciona o novo ID como parâmetro
+            if (url.indexOf('?') > -1) {
+                url += '&id=' + idLoja;
+            } else {
+                url += '?id=' + idLoja;
+            }
+            window.location.href = url;
+        } else {
+            showNotification("Por favor, insira um ID de loja.", 'error');
+        }
+    }
+
 function verificarStatusDaLoja() {
+
     const script = document.createElement('script');
     script.src = 'https://www.blogger.com/feeds/' + blog + '/pages/default?start-index=1&max-results=500&alt=json-in-script&callback=processarStatusDaLoja';
     
