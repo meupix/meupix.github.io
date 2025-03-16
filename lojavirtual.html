@@ -1701,8 +1701,6 @@ const Params = new URLSearchParams(window.location.search);
             const lojaLogada = localStorage.getItem('lojalogada');
 
             if (lojaLogada && lojaLogada !== blog) {
-                localStorage.removeItem(lojaLogada + 'cart');
-                localStorage.removeItem(lojaLogada);
                 localStorage.setItem('lojalogada', blog);
             } else if (!lojaLogada) {
                 localStorage.setItem('lojalogada', blog);
