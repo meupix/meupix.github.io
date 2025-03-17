@@ -258,6 +258,7 @@ body {
     background: linear-gradient(47deg, #206958, #05a581, #206958);
     box-shadow: 0 0 15px #05a581;
 }
+
 #qr-data-placa {
     color: #fff;
     border-radius: 15px;
@@ -2016,6 +2017,7 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
     margin-top: 0px;
     box-shadow: 0 0 15px #0afc00d1;
 }
+
 .keypad-button.enter {
   grid-column: span 3;
 }
@@ -2031,6 +2033,39 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
   letter-spacing: 1px; 
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); 
   transition: color 0.3s ease-in-out;
+}
+
+#itemList {
+    list-style-type: none;
+    padding: 0;
+    font-weight: 600;
+}
+
+#itemList li {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(24deg, #ff000078, #4800ff80);
+    box-shadow: 0 0 8px rgb(0 0 0 / 41%);
+}
+
+#itemList li img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 81%);
+}
+
+#itemList li span {
+    font-weight: bold;
+}
+
+#container {
+    margin-top: 20px;
 }
 </style>
 </head>
@@ -2235,7 +2270,7 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
 
 		 <div class="floating-label">
 		 <input type="text" id="add-logo" placeholder=" ">
-		 <label for="add-logo">Add Logo: <b><span class="infor">Ex: https://meupix.github.io/logo.png (450x450)</span></b></label>
+		 <label for="add-logo">Add Logo: <b><span class="infor">Ex: https://meu-pix.onrender.com/logo.png (450x450)</span></b></label>
 		 </div>
 		 
 		 <span class="showError" id="showError"></span><br />
@@ -2319,9 +2354,15 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
                 <h3 class="f4 fw8 mb0">Use o QR Code do Pix para pagar</h3>
                 <p class= "mb4 ph5-ns">Abra o app em que vai fazer a transferência, escaneie a imagem ou cole o código do QR Code</p>
                 <canvas id="qr-code" class="ba pa2 br3 bw1 pa0-ns bw3-ns br3-ns center flex items-center justify-center overflow-hidden" height="270" width="270"></canvas>
+                
+                <div id="container">
+                  <ul id="itemList"></ul>
+                </div>
+
                 <p class="f3">
-                    <strong> <strong id="valor2"></strong></strong>
+                    <strong> <strong id="valor2"></strong>Davi2</strong>
                 </p>
+
                 <a id="copy-qr" class="copy-button copy-icon db tc no-underline br3 fw6 ttn-ns" onclick="copiarqrpix();">Copiar QR Code</a>
 
                 <div class="w-100 flex-ns flex-column ba-ns b--black-10 ph5-ns pt4-ns pt0 pb4" style="font-weight: 600;">
@@ -2362,6 +2403,13 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
             <div id="Botaowhat1" class="fw9 w-100 mt3-l db-l dn pt4-ns pb4-ns ph5-ns ph3">
                 <span class="comprovante-button db tc no-underline fw6 ttn-ns" onclick="EnviarComprovante();">Envia Comprovante <span class="logo-what"></span></span>
             </div>
+
+            <div id="Botaowhatpedido2" class="dn-l w-100 flex-ns flex-column pt4-ns pb4-ns ph5-ns ph3">
+              <span class="comprovante-button db tc no-underline fw6 ttn-ns" onclick="EnviarPedido();">Envia pedido <span class="logo-what"></span></span>
+          </div>
+          <div id="Botaowhatpedido1" class="fw9 w-100 mt3-l db-l dn pt4-ns pb4-ns ph5-ns ph3">
+              <span class="comprovante-button db tc no-underline fw6 ttn-ns" onclick="EnviarPedido();">Envia pedido <span class="logo-what"></span></span>
+          </div>
 			
 <div id="whatswidget-pre-wrapper" class="">
     <div id="whatswidget-widget-wrapper" class="whatswidget-widget-wrapper" style="all:revert;">
@@ -2417,6 +2465,8 @@ if (!urlParams || urlParams.keys().next().done) {
         $('#Carregando').html('<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-pix.png" alt="">');
     }
 }
+
+
 
 function CompartilharPix() {
   // Obtém os valores dos campos do formulário
@@ -2475,19 +2525,19 @@ function CompartilharPix() {
       const meupixsalvo = "?schave=" + pixkey + (amount ? "&valor=" + amount : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagem=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + CPFLink + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
       const textoOriginal = "?chave=" + pixkey + (amount ? "&valor=" + amount.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagem=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + CPFLink + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
       const LinkCriptografado = btoa(textoOriginal); 
-      GerarLinkCurto("https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado), "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado)); // Função para gerar link curto (não implementada aqui)
-      document.getElementById('linkcodificador').value = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado);
-      document.getElementById('urlpix').value = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20');
-      document.getElementById('salva-meu-pix').value = "https://meupix.github.io" + meupixsalvo.replace(/\ /g, '%20');
+      GerarLinkCurto("https://meu-pix.onrender.com?codepix=" + encodeURIComponent(LinkCriptografado), "https://meu-pix.onrender.com?codepix=" + encodeURIComponent(LinkCriptografado)); // Função para gerar link curto (não implementada aqui)
+      document.getElementById('linkcodificador').value = "https://meu-pix.onrender.com?codepix=" + encodeURIComponent(LinkCriptografado);
+      document.getElementById('urlpix').value = "https://meu-pix.onrender.com" + textoOriginal.replace(/\ /g, '%20');
+      document.getElementById('salva-meu-pix').value = "https://meu-pix.onrender.com" + meupixsalvo.replace(/\ /g, '%20');
 
     } else if (cpf.length === 14) {
       const meupixsalvo = "?schave=" + pixkey + (amount ? "&valor=" + amount : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagem=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + cpf + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
       const textoOriginal = "?chave=" + pixkey + (amount ? "&valor=" + amount.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagem=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + cpf + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
       const LinkCriptografado = btoa(textoOriginal);
-      GerarLinkCurto('https://meupix.github.io?codepix=' + encodeURIComponent(LinkCriptografado));
-      document.getElementById('linkcodificador').value = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado);
-      document.getElementById('urlpix').value = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20');
-      document.getElementById('salva-meu-pix').value = "https://meupix.github.io" + meupixsalvo.replace(/\ /g, '%20');
+      GerarLinkCurto('https://meu-pix.onrender.com?codepix=' + encodeURIComponent(LinkCriptografado));
+      document.getElementById('linkcodificador').value = "https://meu-pix.onrender.com?codepix=" + encodeURIComponent(LinkCriptografado);
+      document.getElementById('urlpix').value = "https://meu-pix.onrender.com" + textoOriginal.replace(/\ /g, '%20');
+      document.getElementById('salva-meu-pix').value = "https://meu-pix.onrender.com" + meupixsalvo.replace(/\ /g, '%20');
     }
   }
 
@@ -2708,7 +2758,7 @@ function gerarplacapix() {
   const txid = (document.getElementById('txid-placa').value).substring(0, 20) || '';
   const banco = document.getElementById('banco-placa').value || '';
   const cpf = (document.getElementById('documento-placa').value.replace(/\D/g, '')).substring(0, 18) || '';
-  const minhalogo = document.getElementById('add-logo-placa').value || 'https://meupix.github.io/pagamentos.files/imagens/logo.png';
+  const minhalogo = document.getElementById('add-logo-placa').value || 'https://meu-pix.onrender.com/pagamentos.files/imagens/logo.png';
 
 // Valida os parâmetros obrigatórios
   if (pixkey === '') {
@@ -2869,11 +2919,11 @@ function gerarplacapix() {
 
     // Gera o link do Pix criptografado e redireciona
 	const LinkCriptografado = btoa(ParamsChaves);
-	document.getElementById('link-placa-gerada').value = 'https://meupix.github.io/?criaplaca=' + encodeURIComponent(LinkCriptografado);
+	document.getElementById('link-placa-gerada').value = 'https://meu-pix.onrender.com/?criaplaca=' + encodeURIComponent(LinkCriptografado);
  }
 }
 
- function generateQRCode(logoUrl, corqr, payload) {
+ function generateQRCode(logoUrl, payload) {
       var qr = new QRious({
           element: document.getElementById('qr-code-placa'),
           value: payload,
@@ -2902,6 +2952,9 @@ document.addEventListener('DOMContentLoaded', function () {
   // Obtém a URL atual e seus parâmetros
   var url = window.location.href;		 
   const Params = new URLSearchParams(window.location.search);
+
+
+
   // Verifica se existem parâmetros na URL
   if (!Params || Params.keys().next().done) {return;} // Se não houver parâmetros, sai da função
   if (!Params.has('codepix')) {
@@ -3275,10 +3328,10 @@ const handleKeypadInput = (value) => {
 
     // Adicionar o link ao localStorage
 	const LinkCriptografado = btoa(textoOriginal); 
-	    const paramschaves = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20').trim();
+	    const paramschaves = "https://meu-pix.onrender.com" + textoOriginal.replace(/\ /g, '%20').trim();
     const gerarPix = encodeURIComponent(LinkCriptografado).trim();
     const editarPix = meupixsalvo.replace(/\ /g, '%20').trim();
-    const compartilharPix = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado).trim();
+    const compartilharPix = "https://meu-pix.onrender.com?codepix=" + encodeURIComponent(LinkCriptografado).trim();
 
 //os dados completos dos produtos na transação
     const transaction = {
@@ -3350,7 +3403,7 @@ const handleKeypadInput = (value) => {
         btnCompartilhar.onclick = function() {
           document.getElementById('linkcodificador').value = transaction.compartilharPix;
           document.getElementById('urlpix').value = transaction.paramschaves;
-          document.getElementById('salva-meu-pix').value = "https://meupix.github.io" + transaction.editarPix;
+          document.getElementById('salva-meu-pix').value = "https://meu-pix.onrender.com" + transaction.editarPix;
           $('#mainContent').addClass('overlay');
           $('#compartilhar').show();
           $('#close-check').show();
@@ -3565,10 +3618,10 @@ const handleDeleteProduct = (event) => {
         }
 
         const LinkCriptografado = btoa(textoOriginal);
-        const paramschaves = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20').trim();
+        const paramschaves = "https://meu-pix.onrender.com" + textoOriginal.replace(/\ /g, '%20').trim();
         const gerarPix = encodeURIComponent(LinkCriptografado).trim();
         const editarPix = meupixsalvo.replace(/\ /g, '%20').trim();
-        const compartilharPix = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado).trim();
+        const compartilharPix = "https://meu-pix.onrender.com?codepix=" + encodeURIComponent(LinkCriptografado).trim();
 
         const transaction = {
           gerarPix: gerarPix, 
@@ -3638,14 +3691,14 @@ const handleDeleteProduct = (event) => {
     }
 
 	  const LinkCriptografado = btoa(textoOriginal); 
-	  const paramschaves = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20').trim();
+	  const paramschaves = "https://meu-pix.onrender.com" + textoOriginal.replace(/\ /g, '%20').trim();
     const gerarPix = encodeURIComponent(LinkCriptografado).trim();
     const editarPix = meupixsalvo.replace(/\ /g, '%20').trim();
-    const compartilharPix = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado).trim();
+    const compartilharPix = "https://meu-pix.onrender.com?codepix=" + encodeURIComponent(LinkCriptografado).trim();
 
     $('#linkcodificador').val(compartilharPix);
     $('#urlpix').val(paramschaves);
-    $('#salva-meu-pix').val("https://meupix.github.io" + editarPix);
+    $('#salva-meu-pix').val("https://meu-pix.onrender.com" + editarPix);
 
     addDevendoTransaction();
 
@@ -4007,7 +4060,7 @@ function GeraQRCodePix(payload, minhalogo) {
     </div>
     `);
 
-   document.getElementById('link-placa-gerada').value = 'https://meupix.github.io/?criaplaca=' + Params.get('criaplaca');
+   document.getElementById('link-placa-gerada').value = 'https://meu-pix.onrender.com/?criaplaca=' + Params.get('criaplaca');
   ParamsPix = new URLSearchParams(Paramsdescriptografado); // Obtém a URL atual e seus  ex:?criaplaca=P2NoYXZlPVN1YUNoYXZlJnZhbG9yPTAwLjAwJm5vbWU9U2V1Tm9tZSZjaWRhZGU9U3VhQ2lkYWRlJm1lbnNhZ2VuPU1pbmhhIExvamEmdHhpZD1JRGRvUGFnYW1lbnRvJmJhbmNvPSoqKiZjcGY9U2V1RlBGb3VDTlBKJndoYXRzYXBwPXRydWUmdm9sdGFyPXRydWUmbG9nbz1odHRwczovL2ZmY29kaWd1aW4udmVyY2VsLmFwcC92ZXJpZmljYWRvci9pbWFnZW5zL0xvZ29fbm92YS5wbmc=
   
   const pixkey = ParamsPix.get('chave') || '';
@@ -4018,7 +4071,7 @@ function GeraQRCodePix(payload, minhalogo) {
   const txid = (ParamsPix.get('txid') || '').substring(0, 20);
   const banco = ParamsPix.get('banco') || '';
   const cpf = (ParamsPix.get('cpf') || '').substring(0, 14);
-  const minhalogo = ParamsPix.get('logo') || 'https://meupix.github.io/pagamentos.files/imagens/logo.png';
+  const minhalogo = ParamsPix.get('logo') || 'https://meu-pix.onrender.com/pagamentos.files/imagens/logo.png';
   
   const cor1 = ParamsPix.get('cor1') || '#ff5d00';
   const cor2 = ParamsPix.get('cor2') || '#ffa200';
@@ -4227,6 +4280,8 @@ function GeraQRCodePix(payload, minhalogo) {
   }
   
   } else {
+
+
   const Paramsdescriptografado = atob(Params.get('codepix'));
   if (Paramsdescriptografado === '') {
   exibirErro('Insira o valor no parâmetros &codepix=');
@@ -4246,6 +4301,9 @@ function GeraQRCodePix(payload, minhalogo) {
   const whatsapp = ParamsPix.get('whatsapp') || '';
   const voltar = ParamsPix.get('voltar') || '';
   const minhalogo = ParamsPix.get('logo') || 'pagamentos.files/imagens/logo.png';
+  const produtos = ParamsPix.get('produtos') || '';
+  pedidowhatsapp = atob(ParamsPix.get('pedidowhatsapp') || '');
+
 		 // Valida os parâmetros obrigatórios
   if (pixkey === '') {
     exibirErro('Insira o valor no parâmetros &chave=');
@@ -4291,6 +4349,10 @@ function GeraQRCodePix(payload, minhalogo) {
     document.getElementById('Botaowhat1').style.display = 'none';
     document.getElementById('Botaowhat2').style.display = 'none';
     document.getElementById('whatswidget-pre-wrapper').style.display = 'none';
+  }
+  if (pedidowhatsapp === '') {
+    document.getElementById('Botaowhatpedido1').style.display = 'none';
+    document.getElementById('Botaowhatpedido2').style.display = 'none';
   }
   if (voltar === '') {
     document.getElementById('BotaoVoltar1').style.display = 'none';
@@ -4361,12 +4423,33 @@ function GeraQRCodePix(payload, minhalogo) {
   } else { 
         var imagemContainer = document.getElementById('minhalogo');
         var imagemElemento = document.createElement('img');
-        imagemElemento.setAttribute('src', 'https://meupix.github.io/pagamentos.files/imagens/logo.png');
+        imagemElemento.setAttribute('src', 'https://meu-pix.onrender.com/pagamentos.files/imagens/logo.png');
         imagemElemento.setAttribute('width', '200');
         imagemElemento.setAttribute('height', '200');
         imagemContainer.appendChild(imagemElemento);
   }
-  
+  if (produtos) {
+
+        const items = JSON.parse(produtos);
+        const itemList = document.getElementById('itemList');
+        const container = document.getElementById('container');
+        const h1 = document.createElement('strong');
+        h1.classList.add("lh-copy", "tc", "center", "mb4", "db-ns", "f5");
+        h1.textContent = "Produtos do Pedido:";
+        container.insertBefore(h1, itemList);
+
+            items.forEach(item => {
+              const li = document.createElement('li');
+              li.innerHTML = `
+                  <img src="${encodeURI(item.imageUrl)}" alt="${item.name}"> 
+                  ${item.name} (Qtd: ${item.quantity}) 
+                  ${item.selectedSize ? `(Tamanho: ${item.selectedSize})` : ''} 
+                  ${item.selectedsabor ? `(Sabor: ${item.selectedsabor})` : ''} 
+                  - ${formatarReal(item.price.toFixed(2))}
+              `;
+                itemList.appendChild(li);
+            });
+  }
    } else {
     const code = 'erro';
     new QRious({
@@ -4489,10 +4572,10 @@ function salvameupix() {
 
     // Adicionar o link ao localStorage
 	const LinkCriptografado = btoa(textoOriginal); 
-	    const paramschaves = "https://meupix.github.io" + textoOriginal.replace(/\ /g, '%20').trim();
+	    const paramschaves = "https://meu-pix.onrender.com" + textoOriginal.replace(/\ /g, '%20').trim();
     const gerarPix = encodeURIComponent(LinkCriptografado).trim();
     const editarPix = meupixsalvo.replace(/\ /g, '%20').trim();
-    const compartilharPix = "https://meupix.github.io?codepix=" + encodeURIComponent(LinkCriptografado).trim();
+    const compartilharPix = "https://meu-pix.onrender.com?codepix=" + encodeURIComponent(LinkCriptografado).trim();
     let links = JSON.parse(localStorage.getItem('links')) || [];
     // Verifica se o link já existe
     if (links.some(item => item.titulo === titulo)) {
@@ -4589,7 +4672,7 @@ function mostrarLinks() {
         btnCompartilhar.onclick = function() {
           document.getElementById('linkcodificador').value = links[j].compartilharPix; 
           document.getElementById('urlpix').value = links[j].paramschaves; 
-          document.getElementById('salva-meu-pix').value = "https://meupix.github.io" + links[j].editarPix; 
+          document.getElementById('salva-meu-pix').value = "https://meu-pix.onrender.com" + links[j].editarPix; 
           $('#mainContent').addClass('overlay'); 
           $('#compartilhar').show(); 
           $('#close-check').show(); 
@@ -4876,7 +4959,7 @@ function atualizarAba(abaIndex) {
       btnCompartilhar.onclick = function() {
         document.getElementById('linkcodificador').value = links[j].compartilharPix;
         document.getElementById('urlpix').value = links[j].paramschaves;
-        document.getElementById('salva-meu-pix').value = "https://meupix.github.io" + links[j].editarPix;
+        document.getElementById('salva-meu-pix').value = "https://meu-pix.onrender.com" + links[j].editarPix;
         $('#mainContent').addClass('overlay');
         $('#compartilhar').show();
         $('#close-check').show();
@@ -5231,6 +5314,10 @@ const voltar = document.getElementById('voltar').textContent;
         } else {
          location.href = voltar;
     }
+}
+let pedidowhatsapp = '';
+function EnviarPedido() {
+ window.open(pedidowhatsapp, '_blank');
 }
 
 function EnviarComprovante() {
