@@ -844,7 +844,7 @@ to {
 
 .rodape p {
     margin: 10px 0;
-    font-size: 0.9em;
+    font-size: 1.2em;
 }
 
 .rodape strong {
@@ -1381,7 +1381,7 @@ to {
    .horariosModal {
             display: none;
             position: fixed;
-            z-index: 2;
+            z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
@@ -1391,21 +1391,32 @@ to {
         }
 
         .modal-contenthorarios {
-            background: linear-gradient(120deg, #206958b3, #05a582ba);
-            margin: 15% auto;
-            padding: 20px;
-            width: 84%;
-            position: relative;
-            border-radius: 15px;
+            display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
         }
 
-        .close {
-            position: absolute;
-            top: 0;
-            right: 0;
-            padding: 10px;
-            cursor: pointer;
-        }
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    unicode-bidi: isolate;
+    background: linear-gradient(153deg, #206958, #05a582);
+}
+
+.close {
+    position: absolute;
+    top: -22px;
+    right: 24px;
+    cursor: pointer;
+    display: block;
+    font-size: 5em;
+}
 
         /* Estilos para a tabela de horários */
         .schedule-table-container {
@@ -1442,10 +1453,6 @@ to {
 
         .schedule-table tbody tr:nth-child(even) {
             background-color: #f9f9f9;
-        }
-
-        .schedule-table tbody tr:last-child {
-            border-bottom: 2px solid #343a40;
         }
 
         /* Responsivo para telas menores */
@@ -1618,7 +1625,7 @@ to {
 
     <footer class="rodape">
     <div>
-    <p id="contatoParagrafo">📞 Contato: <a id="whatsappLink2" href="#" target="_blank">WhatsApp</a> | ✉️ <a id="emailLink" href="#">E-mail</a></p>
+    <p id="contatorodape"></p>
 
     <p id="sigaNosParagrafo">Siga-nos:</p>
     <div id="redesSociaisDiv" class="redes-sociais">
@@ -1631,9 +1638,9 @@ to {
     </div>
 
     <p><strong>📍 Endereço:</strong></p>
-    <p id="Endereço1">Carregando...</p>
-    <p id="Endereço2">Carregando...</p>
-    <p id="meucep">Carregando...</p>
+    <p id="Endereço1"></p>
+    <p id="Endereço2"></p>
+    <p id="meucep"></p>
 
     <div>
     <div><strong>Formas de Pagamento:</strong></div>
@@ -1706,7 +1713,6 @@ const Params = new URLSearchParams(window.location.search);
                 localStorage.setItem('lojalogada', blog);
             }
         } else {
-
             blog = localStorage.getItem('lojalogada'); // Tenta obter o ID do localStorage
         }
         return blog;
@@ -1903,6 +1909,10 @@ function processarStatusDaLoja(data) {
         MeuPix = Pix.replace(/&amp;/g, "&");
     } else if (line.startsWith('whatsapp')) {
         whatsapp = line.split('=')[1].trim();
+        const contatorodape = document.getElementById("contatorodape");
+        contatorodape.innerHTML = `
+         ${whatsapp ? `<p>📞 Contato: <a href="https://wa.me/${whatsapp}" target="_blank">WhatsApp</a> ${emailEndereco ? ` | ✉️ <a href="mailto:${emailEndereco}">E-mail</a></p>` : ``}` : `${whatsapp ? ` | ` : ``} ${emailEndereco ? `✉️ <a href="mailto:${emailEndereco}">E-mail</a></p>` : ``}`}
+        `;
     } else if (line.startsWith('nome')) {
         nome = line.split('=')[1].trim();
         document.getElementById('nome1').textContent = nome;
@@ -1918,13 +1928,22 @@ function processarStatusDaLoja(data) {
         imagemContainer.appendChild(imagemElemento);
     } else if (line.startsWith('Endereço1')) {
         Endereço1 = line.split('Endereço1 =')[1].trim();
-        document.getElementById('Endereço1').textContent = '🏠 ' + Endereço1;
+        const Endereço1id = document.getElementById("Endereço1");
+        Endereço1id.innerHTML = `
+         ${Endereço1 ? `<p>🏠 ${Endereço1}</p>` : `🏠 Carregando...`}
+        `;
     } else if (line.startsWith('Endereço2')) {
         Endereço2 = line.split('Endereço2 =')[1].trim();
-        document.getElementById('Endereço2').textContent = '🏙️ ' + Endereço2;
+        const Endereço2id = document.getElementById("Endereço2");
+        Endereço2id.innerHTML = `
+         ${Endereço2 ? `<p>🏙️ ${Endereço2}</p>` : `🏙️ Carregando...`}
+         `;
     } else if (line.startsWith('meucep')) {
         meucep = line.split('meucep =')[1].trim();
-        document.getElementById('meucep').textContent = '📮 CEP: ' + meucep;
+        const meucepid = document.getElementById("meucep");
+        meucepid.innerHTML = `
+        ${meucep ? `<p>📮 CEP: ${meucep}</p>` : `📮 CEP: Carregando...`}
+        `;
     } else if (line.startsWith('unidadefederativa')) {
         unidadefederativa = line.split('unidadefederativa =')[1].trim();
     } else if (line.startsWith('cidade')) {
@@ -1952,16 +1971,13 @@ function processarStatusDaLoja(data) {
         });
 
         atualizarInterface(fechada, manutencao, ativahorario);
-                // Elementos HTML
-        const whatsappLink2 = document.getElementById("whatsappLink2");
-        const emailLink = document.getElementById("emailLink");
+
         const instagramLink = document.getElementById("instagramLink");
         const facebookLink = document.getElementById("facebookLink");
         const twitterLink = document.getElementById("twitterLink");
         const politicaPrivacidadeLink = document.getElementById("politicaPrivacidadeLink");
         const termosUsoLink = document.getElementById("termosUsoLink");
 
-        const contatoParagrafo = document.getElementById("contatoParagrafo");
         const sigaNosParagrafo = document.getElementById("sigaNosParagrafo");
         const redesSociaisDiv = document.getElementById("redesSociaisDiv");
         const instagramSeparator = document.getElementById("instagramSeparator");
@@ -1989,26 +2005,6 @@ function processarStatusDaLoja(data) {
         separatorElement.parentNode.removeChild(separatorElement);
     }
     }
-    }
-
-        if (!isEmpty(whatsapp)) {
-        whatsappLink2.href = `https://wa.me/${whatsapp}`;
-        contatoAdicionado = true;
-    } else {
-        removerRedeSocial(whatsappLink2, null);
-    }
-
-        // Atualiza o link do E-mail, se o endereço for válido
-        if (!isEmpty(emailEndereco)) {
-        emailLink.href = `mailto:${emailEndereco}`;
-        contatoAdicionado = true;
-    } else {
-        removerRedeSocial(emailLink, null);
-    }
-
-        //Remove o contato caso nenhum contato seja adicionado
-        if (!contatoAdicionado) {
-        removerRedeSocial(contatoParagrafo, null);
     }
 
         // Atualiza o link do Instagram, se o usuário for válido
@@ -2351,10 +2347,9 @@ function fetchProducts() {
 
     // Função para lidar com a compra direta
 function buyNow(product) {
-    const selectedsabor = document.getElementById(`saborSelect_${product.name}`) ? document.getElementById(`saborSelect_${product.name}`).value : '';
-    const selectedSize = document.getElementById(`sizeSelect_${product.name}`) ? document.getElementById(`sizeSelect_${product.name}`).value : '';
     const selectedQuantity = document.getElementById(`quantitySelect_${product.name}`) ? document.getElementById(`quantitySelect_${product.name}`).value : 1;
 
+    const selectedSize = document.getElementById(`sizeSelect_${product.name}`) ? document.getElementById(`sizeSelect_${product.name}`).value : '';
     // Validação do tamanho, se necessário
     if (product.sizes && Array.isArray(product.sizes) && product.sizes.length > 0) {
     const sizeSelect = document.getElementById(`sizeSelect_${product.name}`);
@@ -2364,10 +2359,10 @@ function buyNow(product) {
     showNotification("Por favor, selecione um tamanho.", 'error');
     return;
     }
-}
+    }
 
-if (product.sabor && Array.isArray(product.sabor) && product.sabor.length > 0) {
-
+    const selectedsabor = document.getElementById(`saborSelect_${product.name}`) ? document.getElementById(`saborSelect_${product.name}`).value : '';
+    if (product.sabor && Array.isArray(product.sabor) && product.sabor.length > 0) {
     const saborSelect = document.getElementById(`saborSelect_${product.name}`);
     const selectedsabor = saborSelect ? saborSelect.value : "";
 
@@ -2375,7 +2370,7 @@ if (product.sabor && Array.isArray(product.sabor) && product.sabor.length > 0) {
     showNotification("Por favor, selecione um Sabor.", 'error');
     return;
     }
-}
+    }
 
     if (!selectedQuantity) {
     showNotification("Por favor, selecione uma quantidade.", 'error');
@@ -2432,7 +2427,7 @@ function addToCart(name, price, imageUrl, selectedSize, selectedsabor, selectedQ
     return;
 }
 
-if (selectedsabor === "" && product.sizes && product.sizes.length > 0) {
+if (selectedsabor === "" && product.sabor && product.sabor.length > 0) {
     showNotification("Por favor, selecione um Sabor.", 'error');
     return;
 }
@@ -2589,7 +2584,7 @@ async function generateHash(value) {
 async function generatePix() {
     const deliveryOption = document.getElementById('deliveryOption').value;
     let requiredFields = ['Nome', 'Email', 'WhatsApp'];
-    
+
     if (deliveryOption === 'delivery') {
         requiredFields = requiredFields.concat(['CEP', 'Endereço', 'Cidade', 'Bairro']);
     }
@@ -2619,9 +2614,29 @@ async function generatePix() {
         //const paymentHash = await generateHash(String(idPagamentos));
         const valor = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
         const dataCompra = new Date().toLocaleDateString();
-        const paramschaves = `${MeuPix}&valor=${valor}&txid=${idPagamentos}`;
+
+        const produtosnopix = JSON.stringify(cart.map(item => ({
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            imageUrl: item.imageUrl,
+            selectedSize: item.selectedSize || '',
+            selectedsabor: item.selectedsabor || '',
+        })));
+
+        let whatsappMessage = `Novo pedido #${idPagamentos}\n\n` +
+            `Dados do Cliente:\nNome: ${document.getElementById('Nome').value}\nEmail: ${document.getElementById('Email').value}\nTelefone: ${document.getElementById('WhatsApp').value}\n` +
+            `Informações Adicionais: ${document.getElementById('additionalInfo').value}\n\n` +
+            (deliveryOption === 'delivery' ? `Endereço: ${document.getElementById('Endereço').value}, ${document.getElementById('Cidade').value} - ${document.getElementById('Bairro').value}, ${document.getElementById('CEP').value}\n\n` : 'Retirada no Local\n\n') +
+            `Itens do Pedido:\n` +
+            cart.map(item => `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR((item.price * item.quantity).toFixed(2))}`).join('\n') +
+            `\n\nTotal: ${realBR(valor)}\nData da Compra: ${dataCompra}
+        `;
+
+        const pedidowhatsapp = `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
+        const paramschaves = `${MeuPix}&valor=${valor}&txid=${idPagamentos}&produtos=${produtosnopix}&pedidowhatsapp=${btoa(pedidowhatsapp)}`;
         const dadospix = btoa(paramschaves);
-        const pixUrl = `https://meupix.github.io/?codepix=${dadospix}`;
+        const pixUrl = `index.html?codepix=${dadospix}`;
 
         const order = {
             id: idPagamentos,
@@ -2660,18 +2675,7 @@ async function generatePix() {
         localStorage.setItem(blog, JSON.stringify(orderHistory));
 
         document.getElementById('myModal').classList.add('fullscreen');
-        document.getElementById('qrCode').innerHTML = `<iframe src='${order.pixUrl}' style="width:100%; height:100%; border:none;"></iframe>`;
-
-        let whatsappMessage = `Novo pedido #${idPagamentos}\n\n` +
-            `Dados do Cliente:\nNome: ${order.address.name}\nEmail: ${order.address.email}\nTelefone: ${order.address.phone}\n` +
-            `Informações Adicionais: ${order.address.additionalInfo}\n\n` +
-            (deliveryOption === 'delivery' ? `Endereço: ${order.address.address}, ${order.address.city} - ${order.address.bairro}, ${order.address.postcode}\n\n` : 'Retirada no Local\n\n') +
-            `Itens do Pedido:\n` +
-            order.items.map(item => `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR((item.price * item.quantity).toFixed(2))}`).join('\n') +
-            `\n\nTotal: ${realBR(valor)}\nData da Compra: ${dataCompra}`;
-
-        const whatsappLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
-        window.open(whatsappLink, '_blank');
+        document.getElementById('qrCode').innerHTML = `<iframe src='${pixUrl}' style="width:100%; height:100%; border:none;"></iframe>`;
 
         showNotification("QR Code Pix gerado e dados enviados para o WhatsApp!", 'success');
         clearCart();
@@ -2682,7 +2686,6 @@ async function generatePix() {
         showNotification("Erro ao gerar QR Code Pix. Tente novamente.", 'error');
     }
 }
-
 
 function openModal() {
     document.getElementById('myModal').style.display = 'block';
@@ -2744,9 +2747,7 @@ function updateOrderHistoryDisplay() {
             if (order.StatusButton === false) {
                 cancelado = `<span class='loja-fechada'>Cancelado</span>`;
             } else {
-                Retiranolocal = `
-                <h3>Total: ${realBR(order.total)}</h3>
-                <h3>(Retirada no Local)</h3>`;
+                Retiranolocal = `<h3>Total: ${realBR(order.total)}</h3><h3>(Retirada no Local)</h3>`;
                 buttonRetirada = `<button onclick="goToAddress()">Endereço de Retirada</button>`;
             }
 
