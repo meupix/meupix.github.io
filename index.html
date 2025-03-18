@@ -2923,7 +2923,7 @@ function gerarplacapix() {
  }
 }
 
- function generateQRCode(logoUrl, payload) {
+ function generateQRCode(logoUrl, corqr, payload) {
       var qr = new QRious({
           element: document.getElementById('qr-code-placa'),
           value: payload,
