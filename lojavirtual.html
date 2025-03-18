@@ -1480,11 +1480,33 @@ tbody {
     font-size: 1.57em;
     font-weight: bold;
 }
+        /* Estilos para o botão de compartilhar */
+#shareButton {
+    position: absolute;
+    top: 10px;
+    background: linear-gradient(120deg, #206958, #05a582);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+}
+
+#shareButton:hover {
+    background-color: #2980b9; /* Azul mais escuro no hover */
+    transform: translateY(-2px); /* Levemente elevado no hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra mais intensa no hover */
+}
     </style>
 </head>
 
 <body>
-    <header>
+    <header style="position: relative;">
+<!-- Botão de Compartilhar -->
+<button id="shareButton">
+    <span style="font-size: 18px;">🔗Compartilhar loja</span> 
+</button>
     <div id="minhalogo"></div>
     <h1 id="NomeDaLoja">Carregando...</h1>
     <p id="descricao">Carregando...</p>
@@ -1892,6 +1914,26 @@ function processarStatusDaLoja(data) {
         document.getElementById('NomeDaLoja').textContent = nomedaloja;
         document.getElementById('rodapedaloja').textContent = '© 2025 ' + nomedaloja + ' - Todos os direitos reservados.';
         
+        const shareButton = document.getElementById('shareButton');
+        shareButton.addEventListener('click', function() {
+        const baseUrl = window.location.search; // Obtém a URL base da página
+        const shareUrl = `${baseUrl}?id=${blog}`;
+
+        if (navigator.share) {
+        navigator.share({
+        title: nomedaloja,
+        text: descricao,
+        url: shareUrl
+        }).then(() => {
+        showNotification("Link de compartilhamento Gerado!", 'success');
+        }).catch((error) => {
+        showNotification("Erro ao compartilhar: ", 'error');
+        });
+        } else {
+        showNotification("Erro ao compartilhar: ", 'error');
+        }
+        });
+
         data.feed.entry.forEach(entry => {
         if (entry.content && entry.content.$t) {
         const lines = entry.content.$t.split('\n');
@@ -2066,10 +2108,12 @@ function processarStatusDaLoja(data) {
         if (privacidadeTermosParagrafo) {
         removerRedeSocial(privacidadeTermosParagrafo, null);
     }
-   }
+    }
     }
     
     fetchProducts();
+
+    
 }
 
 function atualizarInterface(fechada, manutencao, ativahorario) {
