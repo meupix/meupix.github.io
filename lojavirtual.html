@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -1284,13 +1285,17 @@ to {
             background-color: #007BFF;
             color: white;
         }
-        #modalErro .botaoFechar {
+        #modalErro.botaoFechar {
             background-color: #ff0000;
+            color: white;
+        }
+        #modalErro.trocaid .conteudo {
+            background: linear-gradient(153deg, #d8131388, #1900ff85);
             color: white;
         }
         /* Estilos para os tipos de mensagem */
         #modalErro.success .conteudo {
-            background: linear-gradient(153deg, #4CAF50, #028329);
+            background: linear-gradient(153deg, #096d1a, #08ad08);
             color: white;
         }
         #modalErro.error .conteudo {
@@ -1482,18 +1487,43 @@ tbody {
 }
         /* Estilos para o botão de compartilhar */
 #shareButton {
-    position: absolute;
-    top: 10px;
-    background: linear-gradient(120deg, #206958, #05a582);
+    background: linear-gradient(120deg, #851616cc, #1e05a5db);
     color: white;
     padding: 10px 15px;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    display: flex;
+}
+
+#openModalhorarios {
+    background: linear-gradient(120deg, #851616cc, #1e05a5db);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+#openModalhorarios {
+    background-color: #2980b9; /* Azul mais escuro no hover */
+    transform: translateY(-2px); /* Levemente elevado no hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra mais intensa no hover */
 }
 
 #shareButton:hover {
+    background-color: #2980b9; /* Azul mais escuro no hover */
+    transform: translateY(-2px); /* Levemente elevado no hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra mais intensa no hover */
+}
+#sairdaloja {
+    background: linear-gradient(60deg, #851616cc, #1e05a5db);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#sairdaloja:hover {
     background-color: #2980b9; /* Azul mais escuro no hover */
     transform: translateY(-2px); /* Levemente elevado no hover */
     box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra mais intensa no hover */
@@ -1503,14 +1533,16 @@ tbody {
 
 <body>
     <header style="position: relative;">
-<!-- Botão de Compartilhar -->
-<button id="shareButton">
-    <span style="font-size: 18px;">🔗Compartilhar loja</span> 
-</button>
     <div id="minhalogo"></div>
     <h1 id="NomeDaLoja">Carregando...</h1>
     <p id="descricao">Carregando...</p>
     <div id="statusLoja"></div>
+
+    <div style="display: flex;flex-direction: row-reverse;justify-content: space-between;">
+        <button id="sairdaloja"><span>Troca id da loja</span></button>
+        <button id="shareButton"><span>🔗Compartilhar</span></button>
+    </div>
+
     </header>
 
     <div class="tela-ativada">
@@ -1646,6 +1678,7 @@ tbody {
     </div>
 
     <footer class="rodape">
+        
     <div>
     <p id="contatorodape"></p>
 
@@ -1676,9 +1709,8 @@ tbody {
     <span id="privacidadeTermosSeparator"> | </span>
     <a id="termosUsoLink" href="#" target="_blank">Termos de Uso</a>
     </p>
-    <div><strong>Horário de funcionamento:</strong></div>
-    <button id="openModalhorarios" onclick="openModalhorarios()">Ver Horários⏳</button>
-
+    
+        <button id="openModalhorarios" onclick="openModalhorarios()"><span>Horário de funcionamento</span></button>
     <p id="avisonorodape">⚠️ Todas as vendas são feitas sob encomenda e conforme disponibilidade ⚠️</p>
     <p id="rodapedaloja">Todos os direitos reservados.</p>
     
@@ -1767,6 +1799,7 @@ const Params = new URLSearchParams(window.location.search);
     const productsPerPage = 10;
     let nomedaloja = '';
     let descricao = '';
+    let logotipo = '';
 
     document.addEventListener('DOMContentLoaded', function () {
 
@@ -1806,6 +1839,11 @@ const Params = new URLSearchParams(window.location.search);
     updateMiniCartCount();
     updateFloatingCartCount();
     updateFloatingCartAccessibilityLabel(); // Inicializa a label ARIA
+
+    const trocaid = document.getElementById('sairdaloja');
+        trocaid.addEventListener('click', function() {
+        exibirModalErro("Digitar o id da loja", true, true, 'trocaid');
+    });
 });
 
 function exibirModalErro(mensagem, comb, x, tipo = 'error') {
@@ -1835,7 +1873,7 @@ function exibirModalErro(mensagem, comb, x, tipo = 'error') {
 
     // Adiciona os elementos ao conteúdo
     conteudo.innerHTML = `
-        <h3>${tipo === 'error' ? '✖️ Erro' : '✔️ Sucesso'}</h3>
+        <h3>${tipo === 'error' ? '✖️ Erro' : '' || tipo === 'success' ? '✔️ Sucesso' : '' || tipo === 'trocaid' ? '🏪' : ''} </h3>
         <p>${mensagem}</p>
         ${formGroupHTML ? `${formGroupHTML}` : ``}
     `;
@@ -2168,7 +2206,7 @@ function atualizarInterface(fechada, manutencao, ativahorario) {
     } else {
     isOpen = true;
     const LojaAberta = document.getElementById('statusLoja');
-    LojaAberta.innerHTML = '<p class="loja-aberta">Loja Aberta! Boas compras!</p>';
+    LojaAberta.innerHTML = '<p class="loja-aberta">Loja aberta, Boas compras!</p>';
 
     // Loja aberta
     if (document.querySelector('.desativado')) {
@@ -2366,10 +2404,12 @@ function fetchProducts() {
         ${sizesHTML}
         ${saborHTML}
         ${quantityHTML}
-       <button class="add-to-cart-button" onclick="addToCart('${product.name}', ${product.price}, '${product.imageUrl}', document.getElementById('${sizeSelectId}') ? document.getElementById('${sizeSelectId}').value : '', document.getElementById('${saborSelectId}') ? document.getElementById('${saborSelectId}').value : '', document.getElementById('${quantitySelectId}').value)">Adicionar ao Carrinho</button>
        </div>
        `;
-    productDiv.appendChild(createBuyNowButton(product)); // Adiciona o botão "Comprar Agora"
+
+       productDiv.appendChild(CriaBotaoAdicionarAoCarrinho(product)); // Adiciona o botão "Adicionar ao Carrinho"
+       productDiv.appendChild(CriaBotaoComprarAgora(product)); // Adiciona o botão "Comprar Agora"
+
     productListElement.appendChild(productDiv);
 
     const spacer = document.createElement('div');
@@ -2380,139 +2420,107 @@ function fetchProducts() {
     updatePaginationButtons();
 }
 
-    // Função para criar o botão "Comprar Agora"
-    function createBuyNowButton(product) {
+    // Função para criar o botão "Adicionar ao Carrinho"
+    function CriaBotaoAdicionarAoCarrinho(product) {
     const button = document.createElement('button');
-    button.classList.add('buy-now-button');
-    button.textContent = 'Comprar Agora';
-    button.onclick = () => buyNow(product); // Chama a função buyNow
+    button.classList.add('add-to-cart-button');
+    button.textContent = 'Adicionar ao Carrinho';
+    button.onclick = () => AdicionaraoCarrinho(product); // Chama a função Adicionar ao Carrinho
     return button;
 }
 
-    // Função para lidar com a compra direta
-function buyNow(product) {
+function AdicionaraoCarrinho(product) {
+    // Obtém as opções selecionadas dos selects
     const selectedQuantity = document.getElementById(`quantitySelect_${product.name}`) ? document.getElementById(`quantitySelect_${product.name}`).value : 1;
-
     const selectedSize = document.getElementById(`sizeSelect_${product.name}`) ? document.getElementById(`sizeSelect_${product.name}`).value : '';
-    // Validação do tamanho, se necessário
-    if (product.sizes && Array.isArray(product.sizes) && product.sizes.length > 0) {
-    const sizeSelect = document.getElementById(`sizeSelect_${product.name}`);
-    const selectedSize = sizeSelect ? sizeSelect.value : "";
+    const selectedSabor = document.getElementById(`saborSelect_${product.name}`) ? document.getElementById(`saborSelect_${product.name}`).value : '';
 
-    if (selectedSize === "") {
-    showNotification("Por favor, selecione um tamanho.", 'error');
-    return;
-    }
-    }
-
-    const selectedsabor = document.getElementById(`saborSelect_${product.name}`) ? document.getElementById(`saborSelect_${product.name}`).value : '';
-    if (product.sabor && Array.isArray(product.sabor) && product.sabor.length > 0) {
-    const saborSelect = document.getElementById(`saborSelect_${product.name}`);
-    const selectedsabor = saborSelect ? saborSelect.value : "";
-
-     if (selectedsabor === "") {
-    showNotification("Por favor, selecione um Sabor.", 'error');
-    return;
-    }
-    }
-
-    if (!selectedQuantity) {
-    showNotification("Por favor, selecione uma quantidade.", 'error');
-    return;
+    handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, false);
+}
+    // Função para criar o botão "Comprar Agora"
+function CriaBotaoComprarAgora(product) {
+    const button = document.createElement('button');
+    button.classList.add('buy-now-button');
+    button.textContent = 'Comprar Agora';
+    button.onclick = () => ComprarAgora(product); // Chama a função buyNow
+    return button;
 }
 
-    const existingItemIndex = cart.findIndex(item => item.name === product.name && item.selectedSize === selectedSize && item.selectedsabor === selectedsabor);
+function ComprarAgora(product) {
+    // Obtém as opções selecionadas dos selects
+    const selectedQuantity = document.getElementById(`quantitySelect_${product.name}`) ? document.getElementById(`quantitySelect_${product.name}`).value : 1;
+    const selectedSize = document.getElementById(`sizeSelect_${product.name}`) ? document.getElementById(`sizeSelect_${product.name}`).value : '';
+    const selectedSabor = document.getElementById(`saborSelect_${product.name}`) ? document.getElementById(`saborSelect_${product.name}`).value : '';
 
-     // Verifica se o produto já existe no carrinho
-     if (existingItemIndex > -1) {
-     // O produto já existe no carrinho, então verifica se a quantidade é a mesma
-     const existingItem = cart.find(item => item.name === product.name && item.selectedSize === selectedSize && item.selectedsabor === selectedsabor && item.quantity === parseInt(selectedQuantity));
-
-     if (existingItem) {
-    showNotification("Produto já adicionado no carrinho!", 'error');
-  }
-     else {
-    // Se a quantidade for diferente, atualiza a quantidade
-    cart[existingItemIndex].quantity  = parseInt(selectedQuantity);
-    showNotification("Quantidade do produto atualizada!", 'atualizado');
- }
- } else {
-      // O produto não existe no carrinho, então adicione-o
-       cart.push({
-      name: product.name,
-      price: product.price,
-      quantity: parseInt(selectedQuantity),
-      imageUrl: product.imageUrl,
-      selectedSize: selectedSize,
-      saborSelect: selectedsabor,
-   });
-
-       showNotification("Produto adicionado ao carrinho", 'success');
- }
-
-    localStorage.setItem(blog + 'cart', JSON.stringify(cart));
-    updateCartDisplay();
-    updateMiniCartCount();
-    updateFloatingCartCount();
-    updateFloatingCartAccessibilityLabel();
-
-    showTab('checkout');
+    // Chama a função auxiliar, indicando para redirecionar para o checkout
+    handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, true);
 }
 
-function addToCart(name, price, imageUrl, selectedSize, selectedsabor, selectedQuantity) {
-    const product = products.find(p => p.name === name);
+// Função auxiliar para padronizar a adição/atualização do carrinho
+function handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, redirectToCheckout = false) {
     if (!product) {
-    showNotification("Produto não encontrado.", 'error');
-    return;
-}
+        showNotification("Produto não encontrado.", 'error');
+        return;
+    }
 
-    if (selectedSize === "" && product.sizes && product.sizes.length > 0) {
-    showNotification("Por favor, selecione um tamanho.", 'error');
-    return;
-}
+    // Validações
+    if (product.sizes && product.sizes.length > 0 && selectedSize === "") {
+        showNotification("Por favor, selecione um tamanho.", 'error');
+        return;
+    }
 
-if (selectedsabor === "" && product.sabor && product.sabor.length > 0) {
-    showNotification("Por favor, selecione um Sabor.", 'error');
-    return;
-}
+    if (product.sabor && product.sabor.length > 0 && selectedSabor === "") {
+        showNotification("Por favor, selecione um Sabor.", 'error');
+        return;
+    }
 
-    if (!selectedQuantity) {
-    showNotification("Por favor, selecione uma quantidade.", 'error');
-    return;
-}
+    if (!selectedQuantity || parseInt(selectedQuantity) <= 0) {
+        showNotification("Por favor, selecione uma quantidade válida.", 'error');
+        return;
+    }
 
-    // Verifica se o produto já existe no carrinho com a MESMA quantidade
-    const existingItemSameQuantity = cart.find(item => item.name === name && item.price === price && item.imageUrl === imageUrl && item.selectedSize === selectedSize && item.selectedsabor === selectedsabor && item.quantity === parseInt(selectedQuantity));
-    const existingItemIndex = cart.findIndex(item => item.name === name && item.price === price && item.imageUrl === imageUrl && item.selectedSize === selectedSize && item.selectedsabor === selectedsabor);
+    selectedQuantity = parseInt(selectedQuantity);
+
+    // Encontra o índice de um item *com as mesmas características*
+    const existingItemIndex = cart.findIndex(item =>
+        item.name === product.name &&
+        item.selectedSize === selectedSize &&
+        item.selectedsabor === selectedSabor
+    );
 
     if (existingItemIndex > -1) {
-    // O produto já existe no carrinho
-    if (existingItemSameQuantity) {
-    // Se a quantidade for a mesma, notifica o usuário
-    showNotification("Produto já adicionado no carrinho!", 'error');
-} else {
-    // Se a quantidade for diferente, atualiza a quantidade
-    cart[existingItemIndex].quantity = parseInt(selectedQuantity);
-    showNotification("Quantidade do produto atualizada!", 'atualizado');
-}
-} else {
-    // O produto não existe no carrinho, então adicione-o
-    cart.push({
-    name,
-    price,
-    quantity: parseInt(selectedQuantity),
-    imageUrl,
-    selectedSize,
-    selectedsabor
-});
-    showNotification("Item adicionado ao carrinho!", 'success');
-}
+        // O produto já existe no carrinho com as mesmas opções de tamanho e sabor
+        const existingItem = cart[existingItemIndex];
+
+        if (existingItem.quantity === selectedQuantity) {
+            showNotification("Produto já adicionado no carrinho com a mesma quantidade!", 'error');
+        } else {
+            existingItem.quantity = selectedQuantity;
+            showNotification("Quantidade do produto atualizada no carrinho!", 'atualizado');
+        }
+
+    } else {
+        // O produto não existe no carrinho com essas opções, então adicione-o
+        cart.push({
+            name: product.name,
+            price: product.price,
+            quantity: selectedQuantity,
+            imageUrl: product.imageUrl,
+            selectedSize: selectedSize,
+            selectedsabor: selectedSabor
+        });
+        showNotification("Item adicionado ao carrinho!", 'success');
+    }
 
     localStorage.setItem(blog + 'cart', JSON.stringify(cart));
     updateCartDisplay();
     updateMiniCartCount();
     updateFloatingCartCount();
     updateFloatingCartAccessibilityLabel();
+
+    if (redirectToCheckout) {
+        showTab('checkout');
+    }
 }
 
     function removeFromCart(index) {
@@ -2678,7 +2686,7 @@ async function generatePix() {
         `;
 
         const pedidowhatsapp = `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
-        const paramschaves = `${MeuPix}&valor=${valor}&txid=${idPagamentos}&produtos=${produtosnopix}&pedidowhatsapp=${btoa(pedidowhatsapp)}`;
+        const paramschaves = `${MeuPix}&valor=${valor}&txid=${idPagamentos}&logo=${logotipo}&produtos=${produtosnopix}&pedidowhatsapp=${btoa(pedidowhatsapp)}`;
         const dadospix = btoa(paramschaves);
         const pixUrl = `index.html?codepix=${dadospix}`;
 
@@ -3584,9 +3592,9 @@ function showNotification(message, type = 'success') {
     ${sizesHTML}
     ${saborHTML}
     ${quantityHTML}
-       <button class="add-to-cart-button" onclick="addToCart('${product.name}', ${product.price}, '${product.imageUrl}', document.getElementById('${sizeSelectId}') ? document.getElementById('${sizeSelectId}').value : '', document.getElementById('${saborSelectId}') ? document.getElementById('${saborSelectId}').value : '', document.getElementById('${quantitySelectId}').value)">Adicionar ao Carrinho</button>
+       <button class="add-to-cart-button" onclick="carouseladdToCart(this, '${product.name}')">Adicionar ao Carrinho</button>
        <button class="buy-now-button" onclick="buyNowCarousel(this, '${product.name}')">Comprar Agora</button>
-   </div>
+    </div>
     `;
 
     carouselSlide.appendChild(carouselItem);
@@ -3596,71 +3604,50 @@ function showNotification(message, type = 'success') {
     startAutoSlide();
 }
 
+function carouseladdToCart(button, productName) {
+ const product = carouselProducts.find(p => p.name === productName);
+
+    if (!product) {
+        showNotification("Produto não encontrado.", 'error');
+        return;
+    }
+
+    const sizeSelectId = `carouselSizeSelect_${product.name}`;
+    const sizeSelectElement = document.getElementById(sizeSelectId);
+    const selectedSize = sizeSelectElement ? sizeSelectElement.value : "";
+
+    const saborSelectId = `carouselsaborSelect_${product.name}`;
+    const saborSelectElement = document.getElementById(saborSelectId);
+    const selectedSabor = saborSelectElement ? saborSelectElement.value : "";
+
+    const quantitySelectId = `carouselQuantitySelect_${product.name}`;
+    const quantitySelectElement = document.getElementById(quantitySelectId);
+    const selectedQuantity = quantitySelectElement ? quantitySelectElement.value : 1;
+    handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, false);
+}
+
 function buyNowCarousel(button, productName) {
     const product = carouselProducts.find(p => p.name === productName);
 
     if (!product) {
-    showNotification("Produto não encontrado.", 'error');
-    return;
+        showNotification("Produto não encontrado.", 'error');
+        return;
     }
-  
+
     const sizeSelectId = `carouselSizeSelect_${product.name}`;
     const sizeSelectElement = document.getElementById(sizeSelectId);
     const selectedSize = sizeSelectElement ? sizeSelectElement.value : "";
-    if (product.sizes && Array.isArray(product.sizes) && product.sizes.length > 0 && !selectedSize) {
-    showNotification("Por favor, selecione um tamanho.", 'error');
-    return;
-    }
 
     const saborSelectId = `carouselsaborSelect_${product.name}`;
     const saborSelectElement = document.getElementById(saborSelectId);
-    const selectedsabor = saborSelectElement ? saborSelectElement.value : "";
-    if (product.sabor && Array.isArray(product.sabor) && product.sabor.length > 0 && !selectedsabor) {
-    showNotification("Por favor, selecione um sabor.", 'error');
-    return;
-    }
+    const selectedSabor = saborSelectElement ? saborSelectElement.value : "";
 
     const quantitySelectId = `carouselQuantitySelect_${product.name}`;
     const quantitySelectElement = document.getElementById(quantitySelectId);
     const selectedQuantity = quantitySelectElement ? quantitySelectElement.value : 1;
 
-    if (!selectedQuantity) {
-    showNotification("Por favor, selecione uma quantidade.", 'error');
-    return;
-    }
-
-    const existingItemIndex = cart.findIndex(item => item.name === product.name && item.selectedSize === selectedSize && item.selectedsabor === selectedsabor);
-
-
-    if (existingItemIndex > -1) {
-
-    const existingItem = cart.find(item => item.name === product.name && item.selectedSize === selectedSize && item.selectedsabor === selectedsabor && item.quantity === parseInt(selectedQuantity));
-
-    if (existingItem) {
-       showNotification("Produto já adicionado no carrinho!", 'error');
-    }
-    else {
-       cart[existingItemIndex].quantity  = parseInt(selectedQuantity);
-       showNotification("Quantidade do produto atualizada!", 'atualizado');
-    }
-    } else {
-      cart.push({
-     name: product.name,
-     price: product.price,
-     quantity: parseInt(selectedQuantity),
-     imageUrl: product.imageUrl,
-     selectedSize: selectedSize,
-     selectedsabor: selectedsabor,
-    });
-
-      showNotification("Produto adicionado ao carrinho", 'success');
-    }
-    showTab('checkout');
-    localStorage.setItem(blog + 'cart', JSON.stringify(cart));
-    updateCartDisplay();
-    updateMiniCartCount();
-    updateFloatingCartCount();
-    updateFloatingCartAccessibilityLabel();
+    // Chama a função auxiliar, indicando para redirecionar para o checkout
+    handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, true);
 }
 
 
@@ -3830,7 +3817,7 @@ function getStoreStatus() {
 
     if (horarioDia && horarioDia.tempo === 'FECHADO') {
     statusLojaDiv.innerHTML = `
-    <p class="loja-fechada">Loja Fechada! Hoje estamos fechados.</p> ${generateScheduleTable(horariosFuncionamento)}`;
+    <p class="loja-fechada">Loja fechada! Hoje estamos fechados.</p> ${generateScheduleTable(horariosFuncionamento)}`;
     desativarInterface();
     clearInterval(intervalID2);
     return;
@@ -3854,12 +3841,12 @@ function getStoreStatus() {
 
     // Exibir mensagem de status da loja
     if (isOpen) {
-    LojaAberta.innerHTML = '<p class="loja-aberta">Loja Aberta! Boas compras!</p>';
+    LojaAberta.innerHTML = '<p class="loja-aberta">Loja aberta, Boas compras!</p>';
     } else {
     const openModalhorarios = document.getElementById("openModalhorarios");
     openModalhorarios.style.display = "none";
     statusLojaDiv.innerHTML = ''; // Limpar mensagens anteriores
-    LojaAberta.innerHTML = '<p class="loja-fechada">Loja Fechada!</p>';
+    LojaAberta.innerHTML = '<p class="loja-fechada">Loja fechada!</p>';
     statusLojaDiv.innerHTML = `<p class="loja-fechada">Horário de funcionamento:</p> ${generateScheduleTable(horariosFuncionamento)}`;
     desativarInterface();
     clearInterval(intervalID2);
