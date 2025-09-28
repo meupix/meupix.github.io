@@ -3223,7 +3223,6 @@ async function verificarPagamento(index) {
                                         //deleteOrderFromHistory(index);
                                         //return;
                                 } if (order.Entregue === '') {
-                                    console.log('1', order.Entregue);
                                     if (status === 'Entregue') {
                                         history[index].Entregue = 'Entregue';
                                         history[index].Pagamento = 'Pago';
@@ -3234,7 +3233,6 @@ async function verificarPagamento(index) {
 
                                     }
                                  } if (order.Enviado === '') {
-                                    console.log('2', order.Enviado);
                                     if (status === 'Enviado') {
                                         history[index].Enviado = 'Enviado';
                                         history[index].Pagamento = 'Pago';
