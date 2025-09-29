@@ -51,9 +51,9 @@
 
 
     /* Header Styles */
-    header {
+header {
     text-align: center;
-    background: linear-gradient(360deg, #ffa200e0, #ff5d00e0);
+    background: linear-gradient(227deg, #05a5826b, #2069586b);
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
@@ -85,7 +85,7 @@
     margin-top: 20px;
     margin-bottom: 20px;
     padding: 20px;
-    box-shadow: 0 0 15px #000000bd;
+    box-shadow: 0 0 15px #05a582a1;
     background: linear-gradient(120deg, #206958b8, #05a582a1);
     border-radius: 15px;
     display: flex;
@@ -112,7 +112,6 @@
 .products h2 {
     font-size: 2em;
     margin-bottom: 15px;
-    color: var(--secondary-color);
 }
 
     /* Lista de Produtos */
@@ -134,7 +133,7 @@
     box-sizing: border-box;
     border-radius: 15px;
     box-shadow: 0 0 10px rgb(0 0 0 / 53%);
-    background: linear-gradient(231deg, #ffa200e0, #ff5d00e0);
+    background: linear-gradient(24deg, #ff00007c, #0004ff86);
 }
 
 .product:nth-child(2n) {
@@ -263,10 +262,10 @@ aside {
 /* Estilo base para os botões */
 button {
     padding: 12px 18px;
-    font-size: 1em;
+
     border: none;
     border-radius: 8px;
-    margin-bottom: 10px;
+
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -381,6 +380,7 @@ button:hover::before {
 .add-to-cart-button {
   background: linear-gradient(120deg, #3498db, #2980b9); /* Gradiente laranja */
   box-shadow: 0 0 15px #3498db70;
+  margin-bottom: 20px;
   color: #fff;
 }
 
@@ -532,10 +532,13 @@ button:hover {
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: center;
 }
 
 .cart-item .remove-button:hover {
-    background-color: darken(#e74c3c, 10%);
+    display: flex;
+    justify-content: center;
 }
 
 #cartTotal {
@@ -820,8 +823,8 @@ to {
 }
 
 .rodape {
-    background: linear-gradient(360deg, #ffa200e0, #ff5d00e0);
-    box-shadow: 0 0 15px #ff670085;
+    background: linear-gradient(120deg, #206958b8, #05a582a1);
+    box-shadow: 0 0 15px #05a582;
     height: auto;
     font-size: 14px;
     font-family: helvetica;
@@ -973,8 +976,8 @@ to {
     text-align: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
-    box-shadow: 0 0 10px rgb(0 0 0);
-    background: linear-gradient(24deg, #ff000078, #4800ff80);
+    box-shadow: 0 0 15px #ff6700;
+    background: linear-gradient(231deg, #ffa200b3, #ff5d00a1);
 }
 
 .loja-fechada-mensagem {
@@ -1084,7 +1087,7 @@ to {
 }
 
 .loja-aberta {
-    color: green;
+    color: #ff7600;
     font-size: 24px;
     font-weight: bold;
 }
@@ -1528,6 +1531,62 @@ tbody {
     transform: translateY(-2px); /* Levemente elevado no hover */
     box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra mais intensa no hover */
 }
+
+.image-slider-container { position: relative; overflow: hidden; width: 100%; }
+
+.image-slider { display: flex; transition: transform 0.35s ease; width: 100%; }
+
+.image-slider .slider-image { flex: 0 0 100%; width: 100%; height: auto; display: block; object-fit: cover; }
+
+.slider-button { 
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    background: linear-gradient(141deg, #ff0000b8, #4800ffba);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    box-shadow: 2px 1px 2px #000000e8;
+}
+
+.slider-button.prev { left: 8px; }
+
+.slider-button.next { right: 8px; }
+
+.fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.fullscreen-image {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.7);
+    cursor: zoom-out;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 40px;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+}
     </style>
 </head>
 
@@ -1597,12 +1656,12 @@ tbody {
 
         <div class="form-group">
         <label for="Email" class="required">Email</label>
-        <input type="Email" id="Email" name="Email" placeholder="Seu Email" required>
+        <input type="email" id="Email" name="Email" placeholder="seu@email.com" required>
         </div>
 
         <div class="form-group">
         <label for="WhatsApp" class="required">WhatsApp</label>
-        <input type="number" id="WhatsApp" name="WhatsApp" placeholder="Seu WhatsApp" required>
+        <input type="text" id="WhatsApp" name="WhatsApp" placeholder="(00) 90000-0000" required maxlength="15">
         </div>
 
         <div class="form-group">
@@ -1617,7 +1676,7 @@ tbody {
         <div id="addressFields" style="display:none;">
         <div class="form-group">
         <label for="CEP" class="required">CEP</label>
-        <input type="number" id="CEP" name="CEP" placeholder="CEP">
+        <input type="text" id="CEP" name="CEP" placeholder="00000-000" maxlength="9">
         </div>
 
         <div class="form-group">
@@ -1627,12 +1686,12 @@ tbody {
 
         <div class="form-group">
         <label for="Cidade" class="required">Cidade</label>
-        <input type="text" id="Cidade" name="Cidade" placeholder="Cidade">
+        <input type="text" id="Cidade" name="Cidade" placeholder="Cidade" disabled>
         </div>
 
         <div class="form-group">
         <label for="Bairro" class="required">Bairro</label>
-        <input type="text" id="Bairro" name="Bairro" placeholder="Bairro">
+        <input type="text" id="Bairro" name="Bairro" placeholder="Bairro" disabled>
         </div>
         </div>
 
@@ -2275,56 +2334,58 @@ function fetchProducts() {
     const minecart = document.getElementById('floating-cart');
 
     try {
-    products = data.feed.entry.map(entry => {
-        const entryTitle = entry.title.$t; // Captura o título do post
-        const content = entry.content.$t; // Captura o conteúdo do post
-        let imageUrl = '';
-        let price = 0;
-        let sizes = [];
-        let sabor = [];
-        let quantity = 0;
-        let discount = 0;
-        let isCarousel = false; // Variável para indicar se o produto deve ir para o carrossel
+        products = data.feed.entry.map(entry => {
+            const entryTitle = entry.title.$t;
+            const content = entry.content.$t;
+            let imageUrls = [];
+            const imgRegex = /<img.*?src="(.*?)"/g;
+            let imgMatch;
 
-        //Verifica se há a label "carousel"
+            while ((imgMatch = imgRegex.exec(content)) !== null) {
+                imageUrls.push(imgMatch[1]);
+            }
+
+            let price = 0;
+            let originalPrice = 0;
+            let discount = 0;
+            let sizes = [];
+            let sabor = [];
+            let quantity = 0;
+            let isCarousel = false;
+
+            // Extract data from categories
         if (entry.category && Array.isArray(entry.category)) {
-        isCarousel = entry.category.some(cat => cat.term.toLowerCase() === 'carousel');
-
-        entry.category.forEach(cat => {
-        const term = cat.term;
-        if (term.startsWith('R$')) {
-         price = parseFloat(term.replace('R$ ', '').replace(',', '.'));
-        } else if (term.toLowerCase().startsWith('tamanho/')) {
-         sizes = term.substring('tamanho/'.length).split('/');
-        } else if (term.toLowerCase().startsWith('sabor/')) {
-         sabor = term.substring('sabor/'.length).split('/');
-        } else if (term.toLowerCase().startsWith('quantidade/')) {
-         quantity = parseInt(term.substring('quantidade/'.length));
-        } else if (term.toLowerCase().startsWith('desconto/')) {
-         discount = parseInt(term.substring('desconto/'.length));
+            isCarousel = entry.category.some(cat => cat.term.toLowerCase() === 'carousel');
+         entry.category.forEach(cat => {
+          const term = cat.term;
+          if (term.startsWith('R$')) {
+           price = parseFloat(term.replace('R$ ', '').replace(',', '.'));
+          } else if (term.toLowerCase().startsWith('tamanho/')) {
+           sizes = term.substring('tamanho/'.length).split('/');
+          } else if (term.toLowerCase().startsWith('sabor/')) {
+           sabor = term.substring('sabor/'.length).split('/');
+          } else if (term.toLowerCase().startsWith('quantidade/')) {
+           quantity = parseInt(term.substring('quantidade/'.length));
+          } else if (term.toLowerCase().startsWith('desconto/')) {
+           discount = parseInt(term.substring('desconto/'.length));
+          }
+         });
         }
-        });
-        }
 
-        const imgRegex = /<img.*?src="(.*?)"/;
-        const imgMatch = content.match(imgRegex);
-        if (imgMatch && imgMatch[1]) {
-        imageUrl = imgMatch[1];
-    }
+            // Calculate discounted price
+            const discountedPrice = price * (1 - (discount / 100));
 
-        const discountedPrice = price * (1 - (discount / 100));
-
-        const product = {
-        name: entryTitle, // Usa o título do post
-        price: discountedPrice,
-        originalPrice: price,
-        imageUrl: imageUrl,
-        sizes: sizes,
-        sabor: sabor,
-        quantity: quantity,
-        discount: discount,
-        available: quantity > 0
-    };
+            const product = {
+                name: entryTitle,
+                price: discountedPrice,
+                originalPrice: price,
+                imageUrls: imageUrls,
+                sizes: sizes,
+                sabor: sabor,
+                quantity: quantity,
+                discount: discount,
+                available: quantity > 0
+            };
 
         if (isCarousel) {
         carouselProducts.push(product); // Adiciona ao array do carrossel
@@ -2339,7 +2400,7 @@ function fetchProducts() {
 } catch (error) {}
 }
 
-    function displayProducts() {
+function displayProducts() {
     const productListElement = document.getElementById('productList');
     productListElement.innerHTML = '';
 
@@ -2348,78 +2409,125 @@ function fetchProducts() {
     const currentProducts = products.slice(startIndex, endIndex);
 
     currentProducts.forEach(product => {
-    if (!product.available) return;
+        if (!product.available) return;
 
-    const productDiv = document.createElement('div');
-    productDiv.classList.add('product');
-    if (!product.available) {
-        productDiv.classList.add('unavailable');
-}
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product');
 
-    let sizesHTML = '';
-    let saborHTML = '';
-    let quantityHTML = '';
-    let discountBadgeHTML = '';
+       // --- Image Slider ---
+const imageSliderContainer = document.createElement('div');
+imageSliderContainer.classList.add('image-slider-container');
 
+const imageSlider = document.createElement('div');
+imageSlider.classList.add('image-slider');
+imageSlider.dataset.currentSlide = 0; // controle individual
 
-
-    let sizeSelectId = `sizeSelect_${product.name}`;
-    if (product.sizes && product.sizes.length > 0) {
-        sizesHTML = `
-        <label for="${sizeSelectId}">Tamanho:</label>
-        <select id="${sizeSelectId}" class="custom-select">
-        ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
-        </select>
-        `;
-    }
-
-    let saborSelectId = `saborSelect_${product.name}`;
-    if (product.sabor && product.sabor.length > 0) {
-        saborHTML = `
-        <label for="${saborSelectId}">Sabor:</label>
-        <select id="${saborSelectId}" class="custom-select">
-        ${product.sabor.map(size => `<option value="${size}">${size}</option>`).join('')}
-        </select>
-        `;
-    }
-
-    let quantitySelectId = `quantitySelect_${product.name}`;
-    quantityHTML = `
-        <label for="${quantitySelectId}">Quantidade:</label>
-        <select id="${quantitySelectId}" class="custom-select">
-         ${Array.from({ length: product.quantity }, (_, i) => i + 1).map(qty => `<option value="${qty}">${qty}</option>`).join('')}
-        </select>
-    `;
-
-    if (product.discount > 0) {
-        discountBadgeHTML = `<div class="discount-badge">-${product.discount}%</div>`;
-}
-
-    productDiv.innerHTML = `
-        ${discountBadgeHTML}
-        <img src="${product.imageUrl}" alt="${product.name}">
-        <h3>${product.name}</h3>
-        <p>${product.discount > 0 ? `De <strike class="backgroundred">R$ ${product.originalPrice.toFixed(2)}</strike> Por <span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>` : `<span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`}</p>
-           <div class="button-group-carousel">
-        ${sizesHTML}
-        ${saborHTML}
-        ${quantityHTML}
-       </div>
-       `;
-
-       productDiv.appendChild(CriaBotaoAdicionarAoCarrinho(product)); // Adiciona o botão "Adicionar ao Carrinho"
-       productDiv.appendChild(CriaBotaoComprarAgora(product)); // Adiciona o botão "Comprar Agora"
-
-    productListElement.appendChild(productDiv);
-
-    const spacer = document.createElement('div');
-    spacer.style.marginBottom = '20px';
-    productListElement.appendChild(spacer);
+product.imageUrls.forEach(imageUrl => {
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    img.alt = product.name;
+    img.classList.add('slider-image');
+    img.addEventListener('click', () => openFullscreenImage(imageUrl));
+    imageSlider.appendChild(img);
 });
+
+// Só cria botões se tiver mais de uma imagem
+if (product.imageUrls.length > 1) {
+    const prevButton = document.createElement('button');
+    prevButton.classList.add('slider-button', 'prev');
+    prevButton.textContent = '<';
+    prevButton.addEventListener('click', () => prevSlide(imageSlider));
+
+    const nextButton = document.createElement('button');
+    nextButton.classList.add('slider-button', 'next');
+    nextButton.textContent = '>';
+    nextButton.addEventListener('click', () => nextSlide(imageSlider));
+    
+    imageSliderContainer.appendChild(prevButton);
+    imageSliderContainer.appendChild(nextButton);
+}
+    imageSliderContainer.appendChild(imageSlider);
+    productDiv.appendChild(imageSliderContainer);
+
+        // --- restante dos selects/textos (usar insertAdjacentHTML para não reconstruir o DOM) ---
+    const sizesHTML = (product.sizes?.length > 0) ? `
+            <label for="sizeSelect_${sanitizeId(product.name)}">Tamanho:</label>
+            <select id="sizeSelect_${sanitizeId(product.name)}" class="custom-select">
+                ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
+            </select>` : '';
+
+        const saborHTML = (product.sabor?.length > 0) ? `
+            <label for="saborSelect_${sanitizeId(product.name)}">Sabor:</label>
+            <select id="saborSelect_${sanitizeId(product.name)}" class="custom-select">
+                ${product.sabor.map(s => `<option value="${s}">${s}</option>`).join('')}
+            </select>` : '';
+
+        const quantityHTML = `
+            <label for="quantitySelect_${sanitizeId(product.name)}">Quantidade:</label>
+            <select id="quantitySelect_${sanitizeId(product.name)}" class="custom-select">
+                ${Array.from({ length: product.quantity }, (_, i) => i + 1).map(qty => `<option value="${qty}">${qty}</option>`).join('')}
+            </select>`;
+
+        const discountBadgeHTML = product.discount > 0 ? `<div class="discount-badge">-${product.discount}%</div>` : '';
+
+        const infoHTML = `
+            ${discountBadgeHTML}
+            <h3>${product.name}</h3>
+            <p>${
+                product.discount > 0
+                    ? `De <strike class="backgroundred">R$ ${product.originalPrice.toFixed(2)}</strike> Por <span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`
+                    : `<span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`
+            }</p>
+            <div class="button-group-carousel">
+                ${sizesHTML}
+                ${saborHTML}
+                ${quantityHTML}
+            </div>
+        `;
+
+        // usa insertAdjacentHTML para NÃO recriar os elementos já anexados (o slider)
+        productDiv.insertAdjacentHTML('beforeend', infoHTML);
+
+        const productDivs = document.createElement('div');
+        productDivs.classList.add('button-group-carousel');
+        
+        productDivs.appendChild(CriaBotaoAdicionarAoCarrinho(product));
+        productDivs.appendChild(CriaBotaoComprarAgora(product));
+        productDiv.appendChild(productDivs);
+
+        productListElement.appendChild(productDiv);
+
+        const spacer = document.createElement('div');
+        spacer.style.marginBottom = '20px';
+        productListElement.appendChild(spacer);
+    });
 
     updatePaginationButtons();
 }
 
+// --- Slider Functions (com checagem e dataset por slider) ---
+function nextSlide(slider) {
+    const images = slider.querySelectorAll('.slider-image');
+    if (images.length === 0) return;
+    let currentSlide = parseInt(slider.dataset.currentSlide, 10) || 0;
+    currentSlide = (currentSlide + 1) % images.length;
+    slider.dataset.currentSlide = currentSlide;
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+}
+
+function prevSlide(slider) {
+    const images = slider.querySelectorAll('.slider-image');
+    if (images.length === 0) return;
+    let currentSlide = parseInt(slider.dataset.currentSlide, 10) || 0;
+    currentSlide = (currentSlide - 1 + images.length) % images.length;
+    slider.dataset.currentSlide = currentSlide;
+    slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+}
+
+// --- utilitário para ids seguros (substitui espaços e chars inválidos) ---
+function sanitizeId(name) {
+    return String(name).replace(/\s+/g, '_').replace(/[^A-Za-z0-9_\-]/g, '');
+}
     // Função para criar o botão "Adicionar ao Carrinho"
     function CriaBotaoAdicionarAoCarrinho(product) {
     const button = document.createElement('button');
@@ -2429,11 +2537,37 @@ function fetchProducts() {
     return button;
 }
 
+function openFullscreenImage(imageUrl) {
+    // Cria o overlay
+    const overlay = document.createElement('div');
+    overlay.classList.add('fullscreen-overlay');
+
+    // Cria a imagem em fullscreen
+    const fullscreenImg = document.createElement('img');
+    fullscreenImg.src = imageUrl;
+    fullscreenImg.classList.add('fullscreen-image');
+
+    // Botão fechar
+    const closeBtn = document.createElement('span');
+    closeBtn.classList.add('close-btn');
+    closeBtn.innerHTML = '&times;';
+    closeBtn.addEventListener('click', () => overlay.remove());
+
+    // Fecha clicando fora da imagem também
+    overlay.addEventListener('click', e => {
+        if (e.target === overlay) overlay.remove();
+    });
+
+    overlay.appendChild(fullscreenImg);
+    overlay.appendChild(closeBtn);
+    document.body.appendChild(overlay);
+}
+
 function AdicionaraoCarrinho(product) {
     // Obtém as opções selecionadas dos selects
-    const selectedQuantity = document.getElementById(`quantitySelect_${product.name}`) ? document.getElementById(`quantitySelect_${product.name}`).value : 1;
-    const selectedSize = document.getElementById(`sizeSelect_${product.name}`) ? document.getElementById(`sizeSelect_${product.name}`).value : '';
-    const selectedSabor = document.getElementById(`saborSelect_${product.name}`) ? document.getElementById(`saborSelect_${product.name}`).value : '';
+    const selectedQuantity = document.getElementById(`quantitySelect_${sanitizeId(product.name)}`) ? document.getElementById(`quantitySelect_${sanitizeId(product.name)}`).value : 1;
+    const selectedSize = document.getElementById(`sizeSelect_${sanitizeId(product.name)}`) ? document.getElementById(`sizeSelect_${sanitizeId(product.name)}`).value : '';
+    const selectedSabor = document.getElementById(`saborSelect_${sanitizeId(product.name)}`) ? document.getElementById(`saborSelect_${sanitizeId(product.name)}`).value : '';
 
     handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, false);
 }
@@ -2448,9 +2582,9 @@ function CriaBotaoComprarAgora(product) {
 
 function ComprarAgora(product) {
     // Obtém as opções selecionadas dos selects
-    const selectedQuantity = document.getElementById(`quantitySelect_${product.name}`) ? document.getElementById(`quantitySelect_${product.name}`).value : 1;
-    const selectedSize = document.getElementById(`sizeSelect_${product.name}`) ? document.getElementById(`sizeSelect_${product.name}`).value : '';
-    const selectedSabor = document.getElementById(`saborSelect_${product.name}`) ? document.getElementById(`saborSelect_${product.name}`).value : '';
+    const selectedQuantity = document.getElementById(`quantitySelect_${sanitizeId(product.name)}`) ? document.getElementById(`quantitySelect_${sanitizeId(product.name)}`).value : 1;
+    const selectedSize = document.getElementById(`sizeSelect_${sanitizeId(product.name)}`) ? document.getElementById(`sizeSelect_${sanitizeId(product.name)}`).value : '';
+    const selectedSabor = document.getElementById(`saborSelect_${sanitizeId(product.name)}`) ? document.getElementById(`saborSelect_${sanitizeId(product.name)}`).value : '';
 
     // Chama a função auxiliar, indicando para redirecionar para o checkout
     handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, true);
@@ -2505,7 +2639,7 @@ function handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, select
             name: product.name,
             price: product.price,
             quantity: selectedQuantity,
-            imageUrl: product.imageUrl,
+            imageUrl: product.imageUrls[0],
             selectedSize: selectedSize,
             selectedsabor: selectedSabor
         });
@@ -3543,59 +3677,79 @@ function showNotification(message, type = 'success') {
         });
 
 
-    function loadCarouselProducts() {
+function loadCarouselProducts() {
     carouselSlide.innerHTML = '';
     let sizesHTML = '';
     let quantityHTML = '';
     let discountBadgeHTML = '';
     let saborHTML = '';
     carouselProducts.forEach(product => {
-    if (!product.available) return;
+        if (!product.available) return;
 
-    const carouselItem = document.createElement('div');
-    carouselItem.classList.add('carousel-item');
+        const carouselItem = document.createElement('div');
+        carouselItem.classList.add('carousel-item');
 
-    let sizeSelectId = `carouselSizeSelect_${product.name}`;
-    const sizesHTML = product.sizes && product.sizes.length > 0 ? `
-    <label for="${sizeSelectId}">Tamanho:</label>
-    <select id="${sizeSelectId}" class="custom-select">
-    ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
-    </select>
-    ` : '';
+        // --- Selects de tamanho ---
+        let sizeSelectId = `carouselSizeSelect_${product.name}`;
+        const sizesHTML = product.sizes && product.sizes.length > 0 ? `
+            <label for="${sizeSelectId}">Tamanho:</label>
+            <select id="${sizeSelectId}" class="custom-select">
+                ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
+            </select>
+        ` : '';
 
-    let saborSelectId = `carouselsaborSelect_${product.name}`;
-    const saborHTML = product.sabor && product.sabor.length > 0 ? `
-    <label for="${saborSelectId}">Sabor:</label>
-    <select id="${saborSelectId}" class="custom-select">
-    ${product.sabor.map(size => `<option value="${size}">${size}</option>`).join('')}
-    </select>
-    ` : '';
+        // --- Selects de sabor ---
+        let saborSelectId = `carouselsaborSelect_${product.name}`;
+        const saborHTML = product.sabor && product.sabor.length > 0 ? `
+            <label for="${saborSelectId}">Sabor:</label>
+            <select id="${saborSelectId}" class="custom-select">
+                ${product.sabor.map(s => `<option value="${s}">${s}</option>`).join('')}
+            </select>
+        ` : '';
 
-    let quantitySelectId = `carouselQuantitySelect_${product.name}`;
-    const quantityHTML = `
-    <label for="${quantitySelectId}">Quantidade:</label>
-    <select id="${quantitySelectId}" class="custom-select">
-      ${Array.from({ length: product.quantity }, (_, i) => i + 1).map(qty => `<option value="${qty}">${qty}</option>`).join('')}
-    </select>
-    `;
+        // --- Select de quantidade ---
+        let quantitySelectId = `carouselQuantitySelect_${product.name}`;
+        const quantityHTML = `
+            <label for="${quantitySelectId}">Quantidade:</label>
+            <select id="${quantitySelectId}" class="custom-select">
+              ${Array.from({ length: product.quantity }, (_, i) => i + 1)
+                .map(qty => `<option value="${qty}">${qty}</option>`).join('')}
+            </select>
+        `;
 
-    const discountBadgeHTML = product.discount > 0 ? `<div class="discount-carrossel">-${product.discount}%</div>` : '';
+        // --- Desconto ---
+        const discountBadgeHTML = product.discount > 0
+            ? `<div class="discount-carrossel">-${product.discount}%</div>`
+            : '';
 
-    carouselItem.innerHTML = `
-    ${discountBadgeHTML}
-    <img src="${product.imageUrl}">
-    <h3>${product.name}</h3>
-    <p>${product.discount > 0 ? `De <strike class="backgroundred">R$ ${product.originalPrice.toFixed(2)}</strike> Por <span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>` : `<span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`}</p>
-    <div class="button-group-carousel">
-    ${sizesHTML}
-    ${saborHTML}
-    ${quantityHTML}
-       <button class="add-to-cart-button" onclick="carouseladdToCart(this, '${product.name}')">Adicionar ao Carrinho</button>
-       <button class="buy-now-button" onclick="buyNowCarousel(this, '${product.name}')">Comprar Agora</button>
-    </div>
-    `;
+        // --- Estrutura do item ---
+        carouselItem.innerHTML = `
+            ${discountBadgeHTML}
+            <img src="${product.imageUrls[0] || ''}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>${
+                product.discount > 0
+                ? `De <strike class="backgroundred">R$ ${product.originalPrice.toFixed(2)}</strike>
+                   Por <span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`
+                : `<span class="backgroundverde">${realBR(product.price.toFixed(2))}</span>`
+            }</p>
+            <div class="button-group-carousel">
+                ${sizesHTML}
+                ${saborHTML}
+                ${quantityHTML}
+                <button class="add-to-cart-button" onclick="carouseladdToCart(this, '${product.name}')">Adicionar ao Carrinho</button>
+                <button class="buy-now-button" onclick="buyNowCarousel(this, '${product.name}')">Comprar Agora</button>
+            </div>
+        `;
 
-    carouselSlide.appendChild(carouselItem);
+        // --- Adiciona no carrossel ---
+        carouselSlide.appendChild(carouselItem);
+
+        // --- Evento de fullscreen na imagem ---
+        const img = carouselItem.querySelector('img');
+        if (img) {
+            img.addEventListener('click', () => openFullscreenImage(product.imageUrls[0]));
+        }
     });
     }
     loadCarouselProducts();
@@ -3648,118 +3802,128 @@ function buyNowCarousel(button, productName) {
     handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, true);
 }
 
-
-function createBuyNowButton(product) {
-    const button = document.createElement('button');
-    button.classList.add('buy-now-button');
-    button.textContent = 'Comprar Agora';
-    button.onclick = () => buyNow(product);
-    return button;
-}
-
+// Função para validar CEP
 async function isCepValido(cep) {
     let cepLimpo = cep.replace(/\D/g, '');
     if (cepLimpo.length !== 8) return false;
 
     try {
-    let response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
-    let data = await response.json();
-    if (data.erro) return false;
+        let response = await fetch(`https://viacep.com.br/ws/${cepLimpo}/json/`);
+        let data = await response.json();
+        if (data.erro) return false;
 
-    let isValid = true;
+        let isValid = true;
 
-    if (unidadefederativa && data.uf !== unidadefederativa) {
-        isValid = false;
-    }
-    if (cidade && data.localidade !== cidade) {
-        isValid = false;
-    }
-    if (bairro && data.bairro !== bairro) {
-        isValid = false;
-    }
+        // Converte as strings em listas
+        let ufList = unidadefederativa ? unidadefederativa.split(/\s+/).map(u => u.toUpperCase()) : [];
+        let cidadesList = cidade ? cidade.split(/\s+/).map(c => c.toLowerCase()) : [];
+        let bairrosList = bairro ? bairro.split(/\s+/).map(b => b.toLowerCase()) : [];
 
-    return isValid;
+        // Verificação UF
+        if (ufList.length > 0 && !ufList.includes(data.uf.toUpperCase())) {
+            isValid = false;
+        }
+
+        // Verificação Cidade
+        if (cidadesList.length > 0 && !cidadesList.includes(data.localidade.toLowerCase())) {
+            isValid = false;
+        }
+
+        // Verificação Bairro
+        if (bairrosList.length > 0 && data.bairro && !bairrosList.includes(data.bairro.toLowerCase())) {
+            isValid = false;
+        }
+
+        return isValid;
 
     } catch (error) {
-    console.error("Erro ao buscar o CEP:", error);
-    return false;
+        console.error("Erro ao buscar o CEP:", error);
+        return false;
     }
 }
 
+// Evento ao perder foco do campo CEP
 document.getElementById("CEP").addEventListener("blur", async function () {
     let cep = this.value.replace(/\D/g, ''); // Remove caracteres não numéricos
 
     if (cep.length === 8) {
-    try {
-        let response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-        let data = await response.json();
-        if (!data.erro) {
-        let valid = true;
-        let errorMessage = "Apenas CEPs ";
-        let restrictions = [];
+        try {
+            let response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+            let data = await response.json();
+            if (!data.erro) {
+                let valid = true;
+                let errorMessage = "Apenas CEPs ";
+                let restrictions = [];
 
-        if (unidadefederativa && data.uf !== unidadefederativa) {
-        valid = false;
-        restrictions.push("do cidade " + unidadefederativa);
-    }
-        if (cidade && data.localidade !== cidade) {
-        valid = false;
-        restrictions.push("da cidade " + cidade);
-    }
-        if (bairro && data.bairro !== bairro) {
-        valid = false;
-        restrictions.push("do bairro " + bairro);
-    }
+                // Listas
+                let ufList = unidadefederativa ? unidadefederativa.split(/\s+/).map(u => u.toUpperCase()) : [];
+                let cidadesList = cidade ? cidade.split(/\s+/).map(c => c.toLowerCase()) : [];
+                let bairrosList = bairro ? bairro.split(/\s+/).map(b => b.toLowerCase()) : [];
 
-        if (valid) {
-        document.getElementById("Endereço").value = data.logradouro + ', casa:';
-        document.getElementById("Bairro").value = data.bairro;
-        document.getElementById("Cidade").value = data.localidade;
+                // UF
+                if (ufList.length > 0 && !ufList.includes(data.uf.toUpperCase())) {
+                    valid = false;
+                    restrictions.push("da UF " + unidadefederativa);
+                }
+
+                // Cidade
+                if (cidadesList.length > 0 && !cidadesList.includes(data.localidade.toLowerCase())) {
+                    valid = false;
+                    restrictions.push("da cidade " + cidade);
+                }
+
+                // Bairro
+                if (bairrosList.length > 0 && data.bairro && !bairrosList.includes(data.bairro.toLowerCase())) {
+                    valid = false;
+                    restrictions.push("do bairro " + bairro);
+                }
+
+                if (valid) {
+                    document.getElementById("Endereço").value = data.logradouro + ', casa:';
+                    document.getElementById("Bairro").value = data.bairro;
+                    document.getElementById("Cidade").value = data.localidade;
+                } else {
+                    errorMessage += restrictions.join(", ");
+                    errorMessage += " são aceitos!";
+                    showNotification(errorMessage, 'error');
+                    this.value = "";
+                    document.getElementById("Endereço").value = "";
+                    document.getElementById("Bairro").value = "";
+                    document.getElementById("Cidade").value = "";
+                }
+
+            } else {
+                showNotification("CEP não encontrado!", 'error');
+            }
+        } catch (error) {
+            console.error("Erro ao buscar o CEP:", error);
+        }
     } else {
-        errorMessage += restrictions.join(", ");
-        errorMessage += " são aceitos!";
-        showNotification(errorMessage, 'error');
-        this.value = "";
-        document.getElementById("Endereço").value = "";
-        document.getElementById("Bairro").value = "";
-        document.getElementById("Cidade").value = "";
+        showNotification("CEP inválido!", 'error');
     }
+});
 
-    } else {
-        showNotification("CEP não encontrado!", 'error');
-    }
-    } catch (error) {
-        console.error("Erro ao buscar o CEP:", error);
-    }
-    } else {
-    showNotification("CEP inválido!", 'error');
-    }
-    });
-
-    function toggleAddressFields() {
+function toggleAddressFields() {
     const deliveryOption = document.getElementById('deliveryOption').value;
     const addressFields = document.getElementById('addressFields');
 
     if (deliveryOption === 'delivery') {
-    addressFields.style.display = 'block';
-    // Adiciona o atributo 'required' aos campos de endereço
-    document.getElementById('CEP').setAttribute('required', '');
-    document.getElementById('Endereço').setAttribute('required', '');
-    document.getElementById('Cidade').setAttribute('required', '');
-    document.getElementById('Bairro').setAttribute('required', '');
+        addressFields.style.display = 'block';
+        document.getElementById('CEP').setAttribute('required', '');
+        document.getElementById('Endereço').setAttribute('required', '');
+        document.getElementById('Cidade').setAttribute('required', '');
+        document.getElementById('Bairro').setAttribute('required', '');
     } else {
-    addressFields.style.display = 'none';
-    // Remove o atributo 'required' dos campos de endereço
-    document.getElementById('CEP').removeAttribute('required');
-    document.getElementById('Endereço').removeAttribute('required');
-    document.getElementById('Cidade').removeAttribute('required');
-    document.getElementById('Bairro').removeAttribute('required');
+        addressFields.style.display = 'none';
+        document.getElementById('CEP').removeAttribute('required');
+        document.getElementById('Endereço').removeAttribute('required');
+        document.getElementById('Cidade').removeAttribute('required');
+        document.getElementById('Bairro').removeAttribute('required');
 
-    // Limpa os campos de endereço
-    document.getElementById('CEP').value = '';
-    document.getElementById('Endereço').value = '';
-    document.getElementById('Cidade').value = '';
-    document.getElementById('Bairro').value = '';
+        document.getElementById('CEP').value = '';
+        document.getElementById('Endereço').value = '';
+        document.getElementById('Cidade').value = '';
+        document.getElementById('Bairro').value = '';
     }
 }
 
@@ -3924,6 +4088,84 @@ function realBR(input) { //R$ 325.325.232,53
 function AbrirWhatsapp() {
     window.open("https://api.whatsapp.com/send?phone=" + encodeURIComponent(whatsapp), '_blank');
 }
+
+    // --- SELECIONA OS ELEMENTOS DO FORMULÁRIO ---
+    const inputCep = document.getElementById('CEP');
+    const inputEmail = document.getElementById('Email');
+    const inputWhatsApp = document.getElementById('WhatsApp');
+
+    // --- FORMATADOR DE CEP ---
+    // Adiciona o evento 'input' que é acionado a cada vez que o usuário digita algo.
+    if (inputCep) {
+        inputCep.addEventListener('input', () => {
+            // 1. Remove tudo que não for dígito usando uma expressão regular.
+            let cep = inputCep.value.replace(/\D/g, '');
+
+            // 2. Limita a 8 caracteres.
+            cep = cep.substring(0, 8);
+
+            // 3. Aplica a máscara XXXXX-XXX se houver mais de 5 dígitos.
+            cep = cep.replace(/(\d{5})(\d)/, '$1-$2');
+
+            // 4. Atualiza o valor do campo no formulário.
+            inputCep.value = cep;
+        });
+    }
+
+    // --- VALIDADOR DE EMAIL ---
+    // Adiciona o evento 'blur', que é acionado quando o usuário clica fora do campo.
+    if (inputEmail) {
+        inputEmail.addEventListener('blur', () => {
+            const email = inputEmail.value;
+            // Expressão regular simples para validar a estrutura de um email.
+            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+            // Testa se o valor corresponde à expressão regular.
+            if (emailRegex.test(email)) {
+                // Se for válido, remove a classe de erro (caso exista).
+                inputEmail.style.borderColor = ''; // Volta à cor padrão
+            } else {
+                // Se for inválido e o campo não estiver vazio, aplica um estilo de erro.
+                if (email.length > 0) {
+                   inputEmail.style.borderColor = 'red';
+                } else {
+                    // Se estiver vazio, remove o estilo de erro.
+                    inputEmail.style.borderColor = '';
+                }
+            }
+        });
+    }
+
+    // --- FORMATADOR DE WHATSAPP ---
+    // Adiciona o evento 'input' para formatar em tempo real.
+    if (inputWhatsApp) {
+        inputWhatsApp.addEventListener('input', () => {
+            // 1. Remove tudo que não for dígito.
+            let whatsapp = inputWhatsApp.value.replace(/\D/g, '');
+            
+            // 2. Limita o tamanho para 11 dígitos (DDD + 9 + número).
+            whatsapp = whatsapp.substring(0, 11);
+
+            // 3. Aplica a máscara dinamicamente conforme o usuário digita.
+            if (whatsapp.length > 10) {
+                // Celular com 9º dígito: (XX) 9XXXX-XXXX
+                whatsapp = whatsapp.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+            } else if (whatsapp.length > 11) {
+                // Fixo ou celular em digitação: (XX) XXXX-XXXX
+                whatsapp = whatsapp.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
+            } else if (whatsapp.length > 2) {
+                // Apenas o DDD e o começo do número: (XX) XXXX
+                whatsapp = whatsapp.replace(/^(\d{2})(\d*)$/, '($1) $2');
+            } else if (whatsapp.length > 0) {
+                // Apenas o DDD sendo digitado: (XX
+                whatsapp = whatsapp.replace(/^(\d*)$/, '($1');
+            }
+            
+            // 4. Atualiza o valor no campo.
+            inputWhatsApp.value = whatsapp;
+        });
+    }
+
 const button = document.getElementById("whatswidget-button");
     const conversation = document.getElementById("whatswidget-conversation");
     let chatOpen = false;
