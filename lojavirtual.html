@@ -2747,7 +2747,6 @@ function updateCartDisplay() {
         totalFinal += taxadeenvio;
         taxaEnvioEl.textContent = realBR(taxadeenvio);
         linhaTaxaEnvioEl.style.display = 'flex'; // Mostra a linha da taxa
-        exibirModalErro("Atenção: Será aplicada uma taxa de entrega no valor de " + realBR(taxadeenvio) + ".", false, true, 'aviso');
     } else {
         linhaTaxaEnvioEl.style.display = 'none'; // Esconde a linha da taxa
     }
@@ -3977,6 +3976,7 @@ function toggleAddressFields() {
             // Mostra o aviso fixo
             avisoTaxaEl.textContent = `Atenção: Será aplicada uma taxa de entrega no valor de ${realBR(taxadeenvio)}.`;
             avisoTaxaEl.style.display = 'block';
+            exibirModalErro("Atenção: Será aplicada uma taxa de entrega no valor de " + realBR(taxadeenvio) + ".", false, true, 'aviso');
         } else {
             // Se a taxa for 0 ou não definida, avisa que a entrega é grátis
             avisoTaxaEl.textContent = 'A entrega em domicílio é gratuita!';
