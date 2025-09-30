@@ -624,7 +624,7 @@ button:hover {
     padding: 9px;
     margin-bottom: 10px;
     border-radius: 12px;
-    background-color: #ffab0096;
+    background-color: #ffffff96;
     color: #000000;
 }
 
@@ -1295,10 +1295,17 @@ to {
         #modalErro.trocaid .conteudo {
             background: linear-gradient(153deg, #d8131388, #1900ff85);
             color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         /* Estilos para os tipos de mensagem */
         #modalErro.success .conteudo {
             background: linear-gradient(153deg, #096d1a, #08ad08);
+            color: white;
+        }
+        #modalErro.aviso .conteudo {
+            background: linear-gradient(153deg, #6d5e09, #7e7101);
             color: white;
         }
         #modalErro.error .conteudo {
@@ -1587,6 +1594,16 @@ tbody {
     cursor: pointer;
     user-select: none;
 }
+.aviso-taxa {
+    background-color: #fffbe6; /* Amarelo claro */
+    border-left: 5px solid #f59e0b; /* Borda amarela/laranja */
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #854d0e; /* Cor do texto mais escura */
+    font-weight: 500;
+}
     </style>
 </head>
 
@@ -1671,6 +1688,7 @@ tbody {
         <option value="">Retirar no Local</option>
         <option value="delivery">Entrega em Domicílio</option>
         </select>
+        <div id="avisoTaxaEntrega" class="aviso-taxa" style="display: none;"></div>
         </div>
 
         <div id="addressFields" style="display:none;">
@@ -1701,9 +1719,15 @@ tbody {
         placeholder="Informações Adicionais (opcional)"></textarea>
         </div>
         <div id="carrinhocheckout">
-        <h2>Produtos</h2>
+        <h3>Resumo do Pedido</h3>
         <ul id="cartListCheckout"></ul>
-        <p>Total do pedido: <span id="TotalcartCheckout">R$ 0,00</span></p>
+        <hr>
+        <!-- MODIFIQUE A SEÇÃO DO TOTAL PARA ISTO -->
+        <p class="resumo-linha">Subtotal: <span id="TotalcartCheckout">R$ 0,00</span></p>
+        <p id="linhaTaxaEnvio" class="resumo-linha" style="display: none;">Taxa de Entrega: <span id="taxaEnvioCheckout"> R$ 0,00</span>
+        </p>
+        <h3 class="resumo-linha total-final">Total Final: <span id="totalFinalCheckout">R$ 0,00</span></h3>
+        <!-- FIM DA MODIFICAÇÃO -->
         </div>
         <div class="button-group">
         <button class="btnInicio" type="button" onclick="generatePix()" id="generatePixButton">Gerar QR Code Pix</button>
@@ -1859,11 +1883,12 @@ const Params = new URLSearchParams(window.location.search);
     let nomedaloja = '';
     let descricao = '';
     let logotipo = '';
+    let taxadeenvio = 0;
 
     document.addEventListener('DOMContentLoaded', function () {
 
         if (!blog) {
-            exibirModalErro("Nenhum ID de loja encontrado. Adicione o parâmetro ?id=", true, false, 'error');
+            exibirModalErro("Digitar o id da loja", true, false, 'trocaid');
             return;
         }
 
@@ -1932,7 +1957,7 @@ function exibirModalErro(mensagem, comb, x, tipo = 'error') {
 
     // Adiciona os elementos ao conteúdo
     conteudo.innerHTML = `
-        <h3>${tipo === 'error' ? '✖️ Erro' : '' || tipo === 'success' ? '✔️ Sucesso' : '' || tipo === 'trocaid' ? '🏪' : ''} </h3>
+        <h3>${tipo === 'error' ? '✖️ Erro' : '' || tipo === 'success' ? '✔️ Sucesso' : '' || tipo === 'trocaid' ? '🏪' : '' || tipo === 'aviso' ? '⚠️' : ''} </h3>
         <p>${mensagem}</p>
         ${formGroupHTML ? `${formGroupHTML}` : ``}
     `;
@@ -1991,7 +2016,7 @@ function verificarStatusDaLoja() {
     script.src = 'https://www.blogger.com/feeds/' + blog + '/pages/default?start-index=1&max-results=500&alt=json-in-script&callback=processarStatusDaLoja';
     
     script.onerror = function () {
-            exibirModalErro("ID do blog inválido. ?id=", true, false, 'error');
+            exibirModalErro("ID do blog inválido.", true, false, 'error');
         };
     
     document.body.appendChild(script);
@@ -2101,6 +2126,9 @@ function processarStatusDaLoja(data) {
         politicaPrivacidadeURL = line.split('politicaPrivacidadeURL =')[1].trim();
     } else if (line.startsWith('termosUsoURL')) {
         termosUsoURL = line.split('termosUsoURL =')[1].trim();
+    } else if (line.startsWith('taxadeenvio ')) {
+    const valorTaxa = line.split('taxadeenvio =')[1].trim();
+    taxadeenvio = parseFloat(valorTaxa.replace('R$', '').replace(',', '.').trim());
     } else if (line.startsWith('avisonorodape')) {
         avisonorodape = line.split('avisonorodape =')[1].trim();
         document.getElementById('avisonorodape').textContent = avisonorodape;
@@ -2668,64 +2696,74 @@ function handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, select
 }
 
 function updateCartDisplay() {
-  const cartList = document.getElementById('cartList');
-  const cartTotalElement = document.getElementById('cartTotal');
-  const cartListCheckout = document.getElementById('cartListCheckout');
-  const TotalcartCheckout = document.getElementById('TotalcartCheckout');
-  const proceedToCheckoutButton = document.getElementById('proceedToCheckoutButton');
-  const clearCartButton = document.getElementById('clearCartButton');
-  const carrinhoCheckoutDiv = document.getElementById('carrinhocheckout'); 
-  const generatePixButton = document.getElementById('generatePixButton');
-  // Limpa as listas
-  cartList.innerHTML = '';
-  cartListCheckout.innerHTML = '';
+    const cartList = document.getElementById('cartList');
+    const cartTotalElement = document.getElementById('cartTotal');
+    const cartListCheckout = document.getElementById('cartListCheckout');
+    
+    // Elementos do resumo do checkout
+    const subtotalCheckoutEl = document.getElementById('TotalcartCheckout');
+    const linhaTaxaEnvioEl = document.getElementById('linhaTaxaEnvio');
+    const taxaEnvioEl = document.getElementById('taxaEnvioCheckout');
+    const totalFinalEl = document.getElementById('totalFinalCheckout');
 
-  let total = 0;
+    const proceedToCheckoutButton = document.getElementById('proceedToCheckoutButton');
+    const clearCartButton = document.getElementById('clearCartButton');
+    const carrinhoCheckoutDiv = document.getElementById('carrinhocheckout');
+    const generatePixButton = document.getElementById('generatePixButton');
+    
+    cartList.innerHTML = '';
+    cartListCheckout.innerHTML = '';
 
-  // Adiciona cada item do carrinho
-  cart.forEach((item, index) => {
-    const subtotal = item.price * item.quantity;
-    total += subtotal;
+    let subtotal = 0;
 
-    // Cria o elemento <li> para cada item
-    const li = document.createElement('li');
-    li.classList.add('cart-item');
-    li.innerHTML = `
-      <img src="${item.imageUrl}" alt="${item.name}">
-            
-      <span>${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(subtotal.toFixed(2))}</span>
-      <button class="remove-button" onclick="removeFromCart(${index})"><i class="fas fa-trash-alt"></i></i></button>
-    `;
+    cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
 
-    const li1 = document.createElement('li');
-    li1.classList.add('cart-item');
-    li1.innerHTML = `
-      <img src="${item.imageUrl}" alt="${item.name}">
-      
-      <span>${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(subtotal.toFixed(2))}</span>
-    `;
+        const li = document.createElement('li');
+        li.classList.add('cart-item');
+        li.innerHTML = `
+            <img src="${item.imageUrl}" alt="${item.name}">
+            <span>${item.name} ${item.selectedSize ? `(Tamanho: ${item.selectedSize})` : ''} ${item.selectedsabor ? `(Sabor: ${item.selectedsabor})` : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal)}</span>
+            <button class="remove-button" onclick="removeFromCart(${index})"><i class="fas fa-trash-alt"></i></button>
+        `;
 
-    // Adiciona o item na lista do carrinho
-    cartList.appendChild(li);
-    cartListCheckout.appendChild(li1);
-  });
+        const li1 = document.createElement('li');
+        li1.classList.add('cart-item');
+        li1.innerHTML = `
+            <img src="${item.imageUrl}" alt="${item.name}">
+            <span>${item.name} ${item.selectedSize ? `(Tamanho: ${item.selectedSize})` : ''} ${item.selectedsabor ? `(Sabor: ${item.selectedsabor})` : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal)}</span>
+        `;
 
-  // Atualiza o total
-  cartTotalElement.textContent = realBR(total.toFixed(2));
-  TotalcartCheckout.textContent = realBR(total.toFixed(2));
+        cartList.appendChild(li);
+        cartListCheckout.appendChild(li1);
+    });
 
-  // Habilita ou desabilita os botões conforme o carrinho esteja vazio ou não
-  const cartHasItems = cart.length > 0;
-  proceedToCheckoutButton.disabled = !cartHasItems;
-  clearCartButton.disabled = !cartHasItems;
-  generatePixButton.disabled = !cartHasItems;
+    // --- LÓGICA DA TAXA DE ENTREGA ---
+    const deliveryOption = document.getElementById('deliveryOption').value;
+    let totalFinal = subtotal;
 
-  // Mostra ou oculta a div do carrinho de checkout com base nos itens
-  if (cartHasItems) {
-    carrinhoCheckoutDiv.style.display = 'block'; // Mostra a div
-  } else {
-    carrinhoCheckoutDiv.style.display = 'none';  // Oculta a div
-  }
+    if (deliveryOption === 'delivery' && taxadeenvio > 0) {
+        totalFinal += taxadeenvio;
+        taxaEnvioEl.textContent = realBR(taxadeenvio);
+        linhaTaxaEnvioEl.style.display = 'flex'; // Mostra a linha da taxa
+        exibirModalErro("Atenção: Será aplicada uma taxa de entrega no valor de " + realBR(taxadeenvio) + ".", false, true, 'aviso');
+    } else {
+        linhaTaxaEnvioEl.style.display = 'none'; // Esconde a linha da taxa
+    }
+
+    // Atualiza os totais na tela
+    cartTotalElement.textContent = realBR(subtotal);
+    subtotalCheckoutEl.textContent = realBR(subtotal);
+    totalFinalEl.textContent = realBR(totalFinal);
+
+    // Habilita/desabilita botões
+    const cartHasItems = cart.length > 0;
+    proceedToCheckoutButton.disabled = !cartHasItems;
+    clearCartButton.disabled = !cartHasItems;
+    generatePixButton.disabled = !cartHasItems;
+
+    carrinhoCheckoutDiv.style.display = cartHasItems ? 'block' : 'none';
 }
 
 function updateMiniCartCount() {
@@ -2797,8 +2835,19 @@ async function generatePix() {
     try {
         const idPagamentos = generatePaymentId();
         const paymentHash = idPagamentos;
-        //const paymentHash = await generateHash(String(idPagamentos));
-        const valor = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
+        
+        // --- CÁLCULO DO VALOR FINAL ---
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        let valorFinal = subtotal;
+        let taxaAplicada = 0;
+
+        if (deliveryOption === 'delivery' && taxadeenvio > 0) {
+            valorFinal += taxadeenvio;
+            taxaAplicada = taxadeenvio;
+        }
+        const valor = valorFinal.toFixed(2);
+        // --- FIM DO CÁLCULO ---
+
         const dataCompra = new Date().toLocaleDateString();
 
         const produtosnopix = JSON.stringify(cart.map(item => ({
@@ -2810,20 +2859,25 @@ async function generatePix() {
             selectedsabor: item.selectedsabor || '',
         })));
 
+        // --- MENSAGEM WHATSAPP ATUALIZADA ---
         let whatsappMessage = `Novo pedido #${idPagamentos}\n\n` +
             `Dados do Cliente:\nNome: ${document.getElementById('Nome').value}\nEmail: ${document.getElementById('Email').value}\nTelefone: ${document.getElementById('WhatsApp').value}\n` +
             `Informações Adicionais: ${document.getElementById('additionalInfo').value}\n\n` +
             (deliveryOption === 'delivery' ? `Endereço: ${document.getElementById('Endereço').value}, ${document.getElementById('Cidade').value} - ${document.getElementById('Bairro').value}, ${document.getElementById('CEP').value}\n\n` : 'Retirada no Local\n\n') +
             `Itens do Pedido:\n` +
-            cart.map(item => `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR((item.price * item.quantity).toFixed(2))}`).join('\n') +
-            `\n\nTotal: ${realBR(valor)}\nData da Compra: ${dataCompra}
-        `;
+            cart.map(item => `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR((item.price * item.quantity))}`).join('\n') +
+            `\n\nSubtotal: ${realBR(subtotal)}` +
+            (taxaAplicada > 0 ? `\nTaxa de Entrega: ${realBR(taxaAplicada)}` : '') +
+            `\nTotal: ${realBR(valor)}\nData da Compra: ${dataCompra}`;
+        // --- FIM DA MENSAGEM WHATSAPP ---
+
 
         const pedidowhatsapp = `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
         const paramschaves = `${MeuPix}&valor=${valor}&txid=${idPagamentos}&logo=${logotipo}&produtos=${produtosnopix}&pedidowhatsapp=${btoa(pedidowhatsapp)}`;
         const dadospix = btoa(paramschaves);
         const pixUrl = `index.html?codepix=${dadospix}`;
 
+        // --- OBJETO DO PEDIDO ATUALIZADO ---
         const order = {
             id: idPagamentos,
             paymentHash: paymentHash,
@@ -2841,7 +2895,9 @@ async function generatePix() {
                 selectedSize: item.selectedSize || '',
                 selectedsabor: item.selectedsabor || '',
             })),
-            total: valor,
+            subtotal: subtotal.toFixed(2), // Salva o subtotal
+            deliveryFee: taxaAplicada.toFixed(2), // Salva a taxa
+            total: valor, // Salva o total final
             pixUrl: pixUrl,
             timestamp: Date.now(),
             deliveryOption: deliveryOption,
@@ -2856,6 +2912,7 @@ async function generatePix() {
                 additionalInfo: document.getElementById('additionalInfo').value
             }
         };
+        // --- FIM DO OBJETO DO PEDIDO ---
 
         orderHistory.push(order);
         localStorage.setItem(blog, JSON.stringify(orderHistory));
@@ -2872,7 +2929,6 @@ async function generatePix() {
         showNotification("Erro ao gerar QR Code Pix. Tente novamente.", 'error');
     }
 }
-
 function openModal() {
     document.getElementById('myModal').style.display = 'block';
 }
@@ -2953,6 +3009,7 @@ function updateOrderHistoryDisplay() {
         <ul>
         ${itemsList}
         </ul>
+        ${order.deliveryFee > 0 ? `<h3>Taxa de Entrega: ${realBR(order.deliveryFee)}</h3>` : ''}
         ${Retiranolocal} 
         <div class="status">
         <h4>Status do Pedido: ${cancelado} ${order.Entregue ? `${order.Entregue}` : `${order.Enviado ? `${order.Enviado}` : `${order.Pagamento ? `${order.Pagamento}` : `Aguardando Pagamentos`}`}`} </h4>
@@ -3292,7 +3349,7 @@ mix-blend-mode: normal;
                 <ul>
                     ${itemsList}
                 </ul>
-
+                ${order.deliveryFee > 0 ? `<p class="total"></strong>Taxa de Entrega:</strong> ${realBR(order.deliveryFee)}</p>` : ''}
                 <p class="total"><strong>Total:</strong> R$ ${order.total}</p>
                 <footer class="rodape">
                 <p> ${whatsapp ? `📞 Contato: ${whatsapp}` : ``} ${emailEndereco ? `| ✉️ E-mail: ${emailEndereco},` : ``}</p>
@@ -3906,6 +3963,7 @@ document.getElementById("CEP").addEventListener("blur", async function () {
 function toggleAddressFields() {
     const deliveryOption = document.getElementById('deliveryOption').value;
     const addressFields = document.getElementById('addressFields');
+    const avisoTaxaEl = document.getElementById('avisoTaxaEntrega'); // Pega o elemento do aviso
 
     if (deliveryOption === 'delivery') {
         addressFields.style.display = 'block';
@@ -3913,8 +3971,24 @@ function toggleAddressFields() {
         document.getElementById('Endereço').setAttribute('required', '');
         document.getElementById('Cidade').setAttribute('required', '');
         document.getElementById('Bairro').setAttribute('required', '');
+
+        // --- LÓGICA DO AVISO ---
+        if (taxadeenvio > 0) {
+            // Mostra o aviso fixo
+            avisoTaxaEl.textContent = `Atenção: Será aplicada uma taxa de entrega no valor de ${realBR(taxadeenvio)}.`;
+            avisoTaxaEl.style.display = 'block';
+        } else {
+            // Se a taxa for 0 ou não definida, avisa que a entrega é grátis
+            avisoTaxaEl.textContent = 'A entrega em domicílio é gratuita!';
+            avisoTaxaEl.style.display = 'block';
+            showNotification('A entrega é gratuita!', 'success');
+        }
+        // --- FIM DA LÓGICA DO AVISO ---
+
     } else {
         addressFields.style.display = 'none';
+        avisoTaxaEl.style.display = 'none'; // Esconde o aviso se for retirada
+        
         document.getElementById('CEP').removeAttribute('required');
         document.getElementById('Endereço').removeAttribute('required');
         document.getElementById('Cidade').removeAttribute('required');
@@ -3925,7 +3999,10 @@ function toggleAddressFields() {
         document.getElementById('Cidade').value = '';
         document.getElementById('Bairro').value = '';
     }
+    
+    updateCartDisplay(); // Mantém esta linha para recalcular o total
 }
+
 
 function getStoreStatus() {
     const now = new Date();
@@ -4078,7 +4155,15 @@ window.onclick = function (event) {
     }
 }
 
-function realBR(input) { //R$ 325.325.232,53
+function realBR(valorNumerico) {
+    const valor = parseFloat(valorNumerico);
+    if (isNaN(valor)) {
+        return "R$ 0,00"; // Retorna um valor padrão se a entrada for inválida
+    }
+    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function realBR2(input) { //R$ 325.325.232,53
     valor = input.replace(/\D/g, '');
     valor = (parseFloat(valor) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     valor = valor.toLocaleString('pt-BR');
