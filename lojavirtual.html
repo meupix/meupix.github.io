@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -1604,6 +1603,37 @@ tbody {
     color: #854d0e; /* Cor do texto mais escura */
     font-weight: 500;
 }
+/* Estilos para Filtros de Categoria */
+#categoryFilters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.category-button {
+    background: linear-gradient(120deg, #206958b8, #05a582a1);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.category-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+.category-button.active {
+    background: linear-gradient(231deg, #ffa200e0, #ff5d00e0);
+    box-shadow: 0 0 15px #ff6700;
+    font-weight: bold;
+}
     </style>
 </head>
 
@@ -1633,6 +1663,8 @@ tbody {
         <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
         </div>
     </div>
+
+    <div id="categoryFilters"></div>
 
     <div id="productList">
         <p id="loadingMessage">Carregando produtos...</p>
@@ -1880,6 +1912,7 @@ const Params = new URLSearchParams(window.location.search);
     let isOpen = false;
     let currentPage = 1;
     const productsPerPage = 10;
+    let currentCategory = 'all';
     let nomedaloja = '';
     let descricao = '';
     let logotipo = '';
@@ -2236,9 +2269,7 @@ function processarStatusDaLoja(data) {
     }
     }
     
-    fetchProducts();
-
-    
+    fetchProducts(); 
 }
 
 function atualizarInterface(fechada, manutencao, ativahorario) {
@@ -2380,25 +2411,28 @@ function fetchProducts() {
             let sabor = [];
             let quantity = 0;
             let isCarousel = false;
+            let categories = []; // Variável para armazenar as categorias do produto
 
             // Extract data from categories
-        if (entry.category && Array.isArray(entry.category)) {
-            isCarousel = entry.category.some(cat => cat.term.toLowerCase() === 'carousel');
-         entry.category.forEach(cat => {
-          const term = cat.term;
-          if (term.startsWith('R$')) {
-           price = parseFloat(term.replace('R$ ', '').replace(',', '.'));
-          } else if (term.toLowerCase().startsWith('tamanho/')) {
-           sizes = term.substring('tamanho/'.length).split('/');
-          } else if (term.toLowerCase().startsWith('sabor/')) {
-           sabor = term.substring('sabor/'.length).split('/');
-          } else if (term.toLowerCase().startsWith('quantidade/')) {
-           quantity = parseInt(term.substring('quantidade/'.length));
-          } else if (term.toLowerCase().startsWith('desconto/')) {
-           discount = parseInt(term.substring('desconto/'.length));
-          }
-         });
-        }
+            if (entry.category && Array.isArray(entry.category)) {
+                isCarousel = entry.category.some(cat => cat.term.toLowerCase() === 'carousel');
+                entry.category.forEach(cat => {
+                    const term = cat.term;
+                    if (term.startsWith('R$')) {
+                        price = parseFloat(term.replace('R$ ', '').replace(',', '.'));
+                    } else if (term.toLowerCase().startsWith('tamanho/')) {
+                        sizes = term.substring('tamanho/'.length).split('/');
+                    } else if (term.toLowerCase().startsWith('sabor/')) {
+                        sabor = term.substring('sabor/'.length).split('/');
+                    } else if (term.toLowerCase().startsWith('quantidade/')) {
+                        quantity = parseInt(term.substring('quantidade/'.length));
+                    } else if (term.toLowerCase().startsWith('desconto/')) {
+                        discount = parseInt(term.substring('desconto/'.length));
+                    } else if (term.toLowerCase().startsWith('categorias/')) { // <<< SUA LÓGICA AQUI
+                        categories = term.substring('categorias/'.length).split('/').filter(c => c.trim() !== ''); // Extrai e divide as categorias
+                    }
+                });
+            }
 
             // Calculate discounted price
             const discountedPrice = price * (1 - (discount / 100));
@@ -2412,29 +2446,91 @@ function fetchProducts() {
                 sabor: sabor,
                 quantity: quantity,
                 discount: discount,
-                available: quantity > 0
+                available: quantity > 0,
+                categories: categories // Adiciona a propriedade de categorias ao objeto do produto
             };
 
-        if (isCarousel) {
-        carouselProducts.push(product); // Adiciona ao array do carrossel
-        initializeCarousel();
+            if (isCarousel) {
+                carouselProducts.push(product);
+                initializeCarousel();
+            }
+
+            return product;
+        });
+
+        displayCategoryFilters(); // Chama a função para criar os botões de filtro
+        displayProducts(); // Exibe os produtos (inicialmente, todos)
+
+    } catch (error) {
+        console.error("Erro ao processar produtos:", error);
     }
+}
 
-        return product;
-});
+// Função para criar e exibir os botões de filtro de categoria
+function displayCategoryFilters() {
+    const filtersContainer = document.getElementById('categoryFilters');
+    if (!filtersContainer) return;
 
-    displayProducts();
+    // Extrai todas as categorias únicas de todos os produtos
+    const allCategories = new Set();
+    products.forEach(p => {
+        if (p.categories && p.categories.length > 0) {
+            p.categories.forEach(cat => allCategories.add(cat));
+        }
+    });
 
-} catch (error) {}
+    // Limpa filtros antigos e cria o botão "Todos"
+    filtersContainer.innerHTML = '';
+    const allButton = document.createElement('button');
+    allButton.textContent = 'Todos';
+    allButton.classList.add('category-button', 'active'); // 'Todos' é ativo por padrão
+    allButton.onclick = () => filterByCategory('all');
+    filtersContainer.appendChild(allButton);
+
+    // Cria um botão para cada categoria encontrada
+    allCategories.forEach(category => {
+        const button = document.createElement('button');
+        button.textContent = category;
+        button.classList.add('category-button');
+        button.onclick = () => filterByCategory(category);
+        filtersContainer.appendChild(button);
+    });
+}
+
+// Função para lidar com o clique em um botão de categoria
+function filterByCategory(category) {
+    currentCategory = category; // Atualiza a categoria global
+    currentPage = 1; // Volta para a primeira página ao filtrar
+
+    // Atualiza qual botão está com a classe 'active'
+    document.querySelectorAll('#categoryFilters .category-button').forEach(button => {
+        if (button.textContent === category || (category === 'all' && button.textContent === 'Todos')) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    });
+
+    displayProducts(); // Re-renderiza a lista de produtos com o filtro aplicado
 }
 
 function displayProducts() {
     const productListElement = document.getElementById('productList');
     productListElement.innerHTML = '';
 
+    // Filtra os produtos com base na categoria selecionada e disponibilidade
+    const filteredProducts = products.filter(product => {
+        if (!product.available) return false;
+        if (currentCategory === 'all') {
+            return true; // Mostra todos se a categoria for 'all'
+        }
+        // Verifica se o array de categorias do produto inclui a categoria atual
+        return product.categories && product.categories.includes(currentCategory);
+    });
+
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
-    const currentProducts = products.slice(startIndex, endIndex);
+    const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
     currentProducts.forEach(product => {
         if (!product.available) return;
@@ -2442,43 +2538,41 @@ function displayProducts() {
         const productDiv = document.createElement('div');
         productDiv.classList.add('product');
 
-       // --- Image Slider ---
-const imageSliderContainer = document.createElement('div');
-imageSliderContainer.classList.add('image-slider-container');
+        // --- Image Slider ---
+        const imageSliderContainer = document.createElement('div');
+        imageSliderContainer.classList.add('image-slider-container');
 
-const imageSlider = document.createElement('div');
-imageSlider.classList.add('image-slider');
-imageSlider.dataset.currentSlide = 0; // controle individual
+        const imageSlider = document.createElement('div');
+        imageSlider.classList.add('image-slider');
+        imageSlider.dataset.currentSlide = 0;
 
-product.imageUrls.forEach(imageUrl => {
-    const img = document.createElement('img');
-    img.src = imageUrl;
-    img.alt = product.name;
-    img.classList.add('slider-image');
-    img.addEventListener('click', () => openFullscreenImage(imageUrl));
-    imageSlider.appendChild(img);
-});
+        product.imageUrls.forEach(imageUrl => {
+            const img = document.createElement('img');
+            img.src = imageUrl;
+            img.alt = product.name;
+            img.classList.add('slider-image');
+            img.addEventListener('click', () => openFullscreenImage(imageUrl));
+            imageSlider.appendChild(img);
+        });
 
-// Só cria botões se tiver mais de uma imagem
-if (product.imageUrls.length > 1) {
-    const prevButton = document.createElement('button');
-    prevButton.classList.add('slider-button', 'prev');
-    prevButton.textContent = '<';
-    prevButton.addEventListener('click', () => prevSlide(imageSlider));
+        if (product.imageUrls.length > 1) {
+            const prevButton = document.createElement('button');
+            prevButton.classList.add('slider-button', 'prev');
+            prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
+            prevButton.addEventListener('click', () => prevSlide(imageSlider));
 
-    const nextButton = document.createElement('button');
-    nextButton.classList.add('slider-button', 'next');
-    nextButton.textContent = '>';
-    nextButton.addEventListener('click', () => nextSlide(imageSlider));
-    
-    imageSliderContainer.appendChild(prevButton);
-    imageSliderContainer.appendChild(nextButton);
-}
-    imageSliderContainer.appendChild(imageSlider);
-    productDiv.appendChild(imageSliderContainer);
+            const nextButton = document.createElement('button');
+            nextButton.classList.add('slider-button', 'next');
+            nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
+            nextButton.addEventListener('click', () => nextSlide(imageSlider));
+            
+            imageSliderContainer.appendChild(prevButton);
+            imageSliderContainer.appendChild(nextButton);
+        }
+        imageSliderContainer.appendChild(imageSlider);
+        productDiv.appendChild(imageSliderContainer);
 
-        // --- restante dos selects/textos (usar insertAdjacentHTML para não reconstruir o DOM) ---
-    const sizesHTML = (product.sizes?.length > 0) ? `
+        const sizesHTML = (product.sizes?.length > 0) ? `
             <label for="sizeSelect_${sanitizeId(product.name)}">Tamanho:</label>
             <select id="sizeSelect_${sanitizeId(product.name)}" class="custom-select">
                 ${product.sizes.map(size => `<option value="${size}">${size}</option>`).join('')}
@@ -2513,7 +2607,6 @@ if (product.imageUrls.length > 1) {
             </div>
         `;
 
-        // usa insertAdjacentHTML para NÃO recriar os elementos já anexados (o slider)
         productDiv.insertAdjacentHTML('beforeend', infoHTML);
 
         const productDivs = document.createElement('div');
@@ -2530,7 +2623,7 @@ if (product.imageUrls.length > 1) {
         productListElement.appendChild(spacer);
     });
 
-    updatePaginationButtons();
+    updatePaginationButtons(filteredProducts.length); // Passa o total de produtos filtrados
 }
 
 // --- Slider Functions (com checagem e dataset por slider) ---
@@ -3618,16 +3711,17 @@ function goToPage(page) {
     });
 }
 
-function updatePaginationButtons() {
+function updatePaginationButtons(totalFilteredProducts) { // Modifique aqui
     const btnInicio = document.getElementById('btnInicio');
     const btnAnterior = document.getElementById('btnAnterior');
     const btnProximo = document.getElementById('btnProximo');
 
-    const totalPages = Math.ceil(products.length / productsPerPage);
+    // Modifique aqui para usar o total de produtos filtrados
+    const totalPages = Math.ceil(totalFilteredProducts / productsPerPage);
 
     btnInicio.disabled = currentPage === 1;
     btnAnterior.disabled = currentPage === 1;
-    btnProximo.disabled = currentPage === totalPages || totalPages === 0;
+    btnProximo.disabled = currentPage >= totalPages || totalPages === 0; // Use >= para segurança
 
     btnInicio.onclick = () => goToPage(1);
     btnAnterior.onclick = previousPage;
