@@ -4216,13 +4216,13 @@ function GeraQRCodePix(payload, minhalogo) {
   return;
   
   } else {
-  // Obtém os valores dos parâmetros 'schave', 'nome', 'cidade', 'cpf' e 'banco'
+
   const schave = Params.get('schave') || '';
   const nome = Params.get('nome') || '';
   const cidade = Params.get('cidade') || '';
   const cpf = Params.get('cpf') || '';
   const banco = Params.get('banco') || '';
-  // Valida os parâmetros obrigatórios
+ 
   if (schave === '') {
     exibirErro('Insira o valor no parâmetros &schave=');
     return;
