@@ -1723,6 +1723,36 @@ tbody {
 .clear-search-btn.show {
     display: block;
 }
+
+/* =================================== */
+/*    ESTILOS DO BOTÃO VOLTAR AO TOPO    */
+/* =================================== */
+
+#backToTopBtn {
+    position: fixed;
+    bottom: 102px;
+    right: 25px;
+    z-index: 99;
+    background: var(--floating-cart-bg, linear-gradient(47deg, #ffa200e0, #ff5d00e0));
+    color: white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+    background-color: #e4dcd4 !important;
+    background-repeat: repeat !important;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 40px !important;
+}
+
+#backToTopBtn:hover {
+    /* Escurece um pouco ao passar o mouse */
+    background: linear-gradient(47deg, #e69200, #e05300);
+    transform: translateY(-3px); /* Efeito de elevação */
+}
     </style>
 </head>
 
@@ -1968,6 +1998,7 @@ tbody {
         </div>
         </div>
         </div>
+        <button id="backToTopBtn" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
 
 <script>
 const Params = new URLSearchParams(window.location.search);
@@ -2024,6 +2055,7 @@ const Params = new URLSearchParams(window.location.search);
     let descricao = '';
     let logotipo = '';
     let taxadeenvio = 0;
+    let contatoHTML = '';
 
     document.addEventListener('DOMContentLoaded', function () {
 
@@ -2211,12 +2243,8 @@ function processarStatusDaLoja(data) {
     } else if (line.startsWith('pix')) {
         Pix = line.split('pix =')[1].trim();
         MeuPix = Pix.replace(/&amp;/g, "&");
-    } else if (line.startsWith('whatsapp')) {
+    } if (line.startsWith('whatsapp')) {
         whatsapp = line.split('=')[1].trim();
-        const contatorodape = document.getElementById("contatorodape");
-        contatorodape.innerHTML = `
-         ${whatsapp ? `<p>📞 Contato: <a href="https://wa.me/${whatsapp}" target="_blank">WhatsApp</a> ${emailEndereco ? ` | ✉️ <a href="mailto:${emailEndereco}">E-mail</a></p>` : ``}` : `${whatsapp ? ` | ` : ``} ${emailEndereco ? `✉️ <a href="mailto:${emailEndereco}">E-mail</a></p>` : ``}`}
-        `;
     } else if (line.startsWith('nome')) {
         nome = line.split('=')[1].trim();
         document.getElementById('nome1').textContent = nome;
@@ -2256,6 +2284,25 @@ function processarStatusDaLoja(data) {
         bairro = line.split('bairro =')[1].trim();
     } else if (line.startsWith('emailEndereco')) {
         emailEndereco = line.split('emailEndereco =')[1].trim();
+        const contatorodape = document.getElementById("contatorodape");
+    if (whatsapp) {
+        contatoHTML += `📞 Contato: <a href="https://wa.me/${whatsapp}" target="_blank">WhatsApp</a>`;
+    }
+
+    if (emailEndereco) {
+    if (whatsapp) {
+        contatoHTML += ` | ✉️ E-mail: <a href="mailto:${emailEndereco}">${emailEndereco}</a>`;
+    } else {
+        contatoHTML += `✉️ E-mail: <a href="mailto:${emailEndereco}">${emailEndereco}</a>`;
+    }
+    }
+
+    if (contatoHTML) {
+        contatorodape.innerHTML = `<p>${contatoHTML}</p>`;
+    } else {
+        contatorodape.style.display = 'none';
+    }
+
     } else if (line.startsWith('instagramUsuario')) {
         instagramUsuario = line.split('instagramUsuario =')[1].trim();
     } else if (line.startsWith('facebookPagina')) {
@@ -2890,7 +2937,7 @@ function AdicionaraoCarrinho(product) {
     const selectedSize = document.getElementById(`sizeSelect_${sanitizeId(product.name)}`) ? document.getElementById(`sizeSelect_${sanitizeId(product.name)}`).value : '';
     const selectedSabor = document.getElementById(`saborSelect_${sanitizeId(product.name)}`) ? document.getElementById(`saborSelect_${sanitizeId(product.name)}`).value : '';
 
-    handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, false);
+    ComprarProdutos(product, selectedQuantity, selectedSize, selectedSabor, false);
 }
     // Função para criar o botão "Comprar Agora"
 function CriaBotaoComprarAgora(product) {
@@ -2908,11 +2955,11 @@ function ComprarAgora(product) {
     const selectedSabor = document.getElementById(`saborSelect_${sanitizeId(product.name)}`) ? document.getElementById(`saborSelect_${sanitizeId(product.name)}`).value : '';
 
     // Chama a função auxiliar, indicando para redirecionar para o checkout
-    handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, true);
+    ComprarProdutos(product, selectedQuantity, selectedSize, selectedSabor, true);
 }
 
 // Função auxiliar para padronizar a adição/atualização do carrinho
-function handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, redirectToCheckout = false) {
+function ComprarProdutos(product, selectedQuantity, selectedSize, selectedSabor, redirectToCheckout = false) {
     if (!product) {
         showNotification("Produto não encontrado.", 'error');
         return;
@@ -3186,7 +3233,7 @@ async function generatePix() {
             `\nTotal: ${realBR(valor)}\nData da Compra: ${dataCompra}`;
 
         const pedidowhatsapp = `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
-        const paramschaves = `${MeuPix}&valor=${valor}&txid=${idPagamentos}&logo=${logotipo}&produtos=${produtosnopix}&pedidowhatsapp=${btoa(pedidowhatsapp)}`;
+        const paramschaves = `${MeuPix}&valor=${valor}&txid=${idPagamentos}&logo=${logotipo}&idadaloja=${blog}&iddopagamento=${idPagamentos}`;
         const dadospix = btoa(paramschaves);
         const pixUrl = `index.html?codepix=${dadospix}`;
 
@@ -3199,6 +3246,8 @@ async function generatePix() {
             StatusButton: true,
             StatusPedido: 'Aguardando Pagamento',
             Entregue: '',
+            produtos: produtosnopix,
+            pedidowhatsapp: pedidowhatsapp,
             items: cart.map(item => ({
                 name: item.name,
                 price: item.price,
@@ -3231,7 +3280,7 @@ async function generatePix() {
         document.getElementById('myModal').classList.add('fullscreen');
         document.getElementById('qrCode').innerHTML = `<iframe src='${pixUrl}' style="width:100%; height:100%; border:none;"></iframe>`;
 
-        showNotification("QR Code Pix gerado e dados enviados para o WhatsApp!", 'success');
+        showNotification("QR Code Pix gerado!", 'success');
         clearCart();
         updateOrderHistoryDisplay();
         openModal();
@@ -3240,9 +3289,6 @@ async function generatePix() {
         showNotification("Erro ao gerar QR Code Pix. Tente novamente.", 'error');
     }
 }
-
-
-
 
 function openModal() {
     document.getElementById('myModal').style.display = 'block';
@@ -4148,7 +4194,7 @@ function carouseladdToCart(button, productName) {
     const quantitySelectId = `carouselQuantitySelect_${product.name}`;
     const quantitySelectElement = document.getElementById(quantitySelectId);
     const selectedQuantity = quantitySelectElement ? quantitySelectElement.value : 1;
-    handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, false);
+    ComprarProdutos(product, selectedQuantity, selectedSize, selectedSabor, false);
 }
 
 function buyNowCarousel(button, productName) {
@@ -4172,7 +4218,7 @@ function buyNowCarousel(button, productName) {
     const selectedQuantity = quantitySelectElement ? quantitySelectElement.value : 1;
 
     // Chama a função auxiliar, indicando para redirecionar para o checkout
-    handleAddToCartOrBuyNow(product, selectedQuantity, selectedSize, selectedSabor, true);
+    ComprarProdutos(product, selectedQuantity, selectedSize, selectedSabor, true);
 }
 
 // Função para validar CEP
@@ -4505,14 +4551,10 @@ function generateScheduleTable(horarios) {
     return tableHTML;
 }
 
-// Funções para abrir e fechar o modal
 function openModalhorarios() {
     const modal = document.getElementById("horariosModal");
     const content = document.getElementById("horariosContent");
-
-    // Aqui, "seuHorarioFuncionamento" deve ser substituído pela sua variável real
     content.innerHTML = `<p class="loja-fechada">Horário de funcionamento:</p> ${generateScheduleTable(horariosFuncionamento)}`;
-
     modal.style.display = "block";
 }
 
@@ -4521,7 +4563,6 @@ function closeModalhorarios() {
     modal.style.display = "none";
 }
 
-        // Para fechar o modal ao clicar fora do conteúdo do modal
 window.onclick = function (event) {
     const modal = document.getElementById("horariosModal");
     if (event.target == modal) {
@@ -4532,7 +4573,7 @@ window.onclick = function (event) {
 function realBR(valorNumerico) {
     const valor = parseFloat(valorNumerico);
     if (isNaN(valor)) {
-        return "R$ 0,00"; // Retorna um valor padrão se a entrada for inválida
+        return "R$ 0,00";
     }
     return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
@@ -4549,46 +4590,33 @@ function AbrirWhatsapp() {
 }
 
     // --- SELECIONA OS ELEMENTOS DO FORMULÁRIO ---
-    const inputCep = document.getElementById('CEP');
-    const inputEmail = document.getElementById('Email');
-    const inputWhatsApp = document.getElementById('WhatsApp');
+const inputCep = document.getElementById('CEP');
+const inputEmail = document.getElementById('Email');
+const inputWhatsApp = document.getElementById('WhatsApp');
 
     // --- FORMATADOR DE CEP ---
-    // Adiciona o evento 'input' que é acionado a cada vez que o usuário digita algo.
     if (inputCep) {
         inputCep.addEventListener('input', () => {
-            // 1. Remove tudo que não for dígito usando uma expressão regular.
             let cep = inputCep.value.replace(/\D/g, '');
-
-            // 2. Limita a 8 caracteres.
             cep = cep.substring(0, 8);
-
-            // 3. Aplica a máscara XXXXX-XXX se houver mais de 5 dígitos.
             cep = cep.replace(/(\d{5})(\d)/, '$1-$2');
-
-            // 4. Atualiza o valor do campo no formulário.
             inputCep.value = cep;
         });
     }
 
     // --- VALIDADOR DE EMAIL ---
-    // Adiciona o evento 'blur', que é acionado quando o usuário clica fora do campo.
     if (inputEmail) {
         inputEmail.addEventListener('blur', () => {
             const email = inputEmail.value;
-            // Expressão regular simples para validar a estrutura de um email.
+
             const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
-            // Testa se o valor corresponde à expressão regular.
             if (emailRegex.test(email)) {
-                // Se for válido, remove a classe de erro (caso exista).
-                inputEmail.style.borderColor = ''; // Volta à cor padrão
+                inputEmail.style.borderColor = ''; 
             } else {
-                // Se for inválido e o campo não estiver vazio, aplica um estilo de erro.
                 if (email.length > 0) {
                    inputEmail.style.borderColor = 'red';
                 } else {
-                    // Se estiver vazio, remove o estilo de erro.
                     inputEmail.style.borderColor = '';
                 }
             }
@@ -4596,31 +4624,19 @@ function AbrirWhatsapp() {
     }
 
     // --- FORMATADOR DE WHATSAPP ---
-    // Adiciona o evento 'input' para formatar em tempo real.
     if (inputWhatsApp) {
         inputWhatsApp.addEventListener('input', () => {
-            // 1. Remove tudo que não for dígito.
             let whatsapp = inputWhatsApp.value.replace(/\D/g, '');
-            
-            // 2. Limita o tamanho para 11 dígitos (DDD + 9 + número).
             whatsapp = whatsapp.substring(0, 11);
-
-            // 3. Aplica a máscara dinamicamente conforme o usuário digita.
             if (whatsapp.length > 10) {
-                // Celular com 9º dígito: (XX) 9XXXX-XXXX
                 whatsapp = whatsapp.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
             } else if (whatsapp.length > 11) {
-                // Fixo ou celular em digitação: (XX) XXXX-XXXX
                 whatsapp = whatsapp.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
             } else if (whatsapp.length > 2) {
-                // Apenas o DDD e o começo do número: (XX) XXXX
                 whatsapp = whatsapp.replace(/^(\d{2})(\d*)$/, '($1) $2');
             } else if (whatsapp.length > 0) {
-                // Apenas o DDD sendo digitado: (XX
                 whatsapp = whatsapp.replace(/^(\d*)$/, '($1');
             }
-            
-            // 4. Atualiza o valor no campo.
             inputWhatsApp.value = whatsapp;
         });
     }
@@ -4639,8 +4655,31 @@ function openChat() {
     }
     chatOpen = !chatOpen;
 }
+button.addEventListener("click", openChat);
 
-    button.addEventListener("click", openChat);
+
+const backToTopButton = document.getElementById("backToTopBtn");
+
+function toggleBackToTopButton() {
+    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        backToTopButton.style.display = "block"; 
+    } else {
+        backToTopButton.style.display = "none";
+    }
+}
+
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+window.onscroll = function() {
+    toggleBackToTopButton();
+};
+
+backToTopButton.addEventListener('click', scrollToTop);
 </script>
 
 </body>
