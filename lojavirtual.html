@@ -821,103 +821,133 @@ to {
     display: none;
 }
 
+
+
+
+/* =================================== */
+/*       ESTILOS DO NOVO RODAPÉ        */
+/* =================================== */
+
+/* Estilo principal do rodapé */
 .rodape {
     background: linear-gradient(120deg, #206958b8, #05a582a1);
     box-shadow: 0 0 15px #05a582;
-    height: auto;
-    font-size: 14px;
-    font-family: helvetica;
-    margin-top: 15px;
-    border-radius: 15px;
-    text-align: center;
-    padding: 20px;
     color: #fff;
+    padding: 40px 20px 20px 20px; /* Mais espaço interno */
+    margin-top: 30px;
+    border-radius: 15px;
+    font-size: 0.9em;
 }
 
-.rodape a {
-    color: #3498db;
+/* Container que segura as colunas */
+.footer-content {
+    display: flex;
+    flex-wrap: wrap; /* Permite que as colunas quebrem a linha em telas menores */
+    justify-content: space-between;
+    gap: 30px; /* Espaço entre as colunas */
+    margin-bottom: 30px;
+}
+
+/* Estilo de cada coluna */
+.footer-column {
+    flex: 1; /* Faz as colunas dividirem o espaço */
+    min-width: 250px; /* Largura mínima antes de quebrar a linha */
+}
+
+.footer-column h4 {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #4ecdc4; /* Linha de destaque no título */
+    color: #ffffff;
+}
+
+.footer-column p {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+/* Lista de links úteis */
+.footer-links {
+    list-style: none;
+    padding: 0;
+}
+.footer-links li {
+    margin-bottom: 10px;
+}
+.footer-links a {
+    color: #fff;
     text-decoration: none;
     transition: color 0.3s ease;
 }
-
-.rodape a:hover {
-    color: #fff;
+.footer-links a:hover {
+    color: #4ecdc4;
     text-decoration: underline;
 }
 
-.rodape p {
-    margin: 10px 0;
-    font-size: 1.2em;
-}
-
-.rodape strong {
-    color: #000000;
-}
-
-.rodape .redes-sociais {
-    margin-top: 20px;
-}
-
-.rodape .redes-sociais a {
-    display: inline-block;
-    margin: 0 15px;
-    font-size: 1.4em;
+/* Ícones de redes sociais */
+.social-icons a {
     color: #fff;
+    font-size: 1.8em; /* Ícones maiores */
+    margin-right: 20px;
     transition: transform 0.3s ease, color 0.3s ease;
+    display: inline-block; /* Necessário para o transform */
+}
+.social-icons a:hover {
+    color: #4ecdc4;
+    transform: translateY(-3px); /* Efeito de elevação */
 }
 
-.rodape .redes-sociais a:hover {
-    transform: translateY(-3px);
-    color: #e67e22;
-    text-decoration: none;
-}
-
-.separador-redes-sociais {
-    color: #7f8c8d;
-    margin: 0 5px;
-}
-
-.pix-icon img {
-    width: 50px;
-    transition: transform 0.3s ease;
-}
-
-.pix-icon img:hover {
-    transform: scale(1.1);
-}
-
-.rodape ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
-    @media (max-width: 600px) {
-.rodape {
-    padding: 20px;
-}
-
-.rodape .redes-sociais a {
-    margin: 0 10px;
-    font-size: 1.2em;
-}
-}
-
-.pix-icon {
-    background-color: #fff;
-    border-radius: .125rem;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
-    box-sizing: border-box;
-    height: 1.875rem;
-    margin-bottom: .5rem;
-    margin-right: .5rem;
-    overflow: hidden;
-    padding: .25rem;
-    width: 3.75rem;
+/* Ícone de pagamento */
+.payment-icons .pix-icon {
     display: inline-block;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 5px;
+    margin-top: 10px;
 }
+.payment-icons .pix-icon img {
+    width: 60px;
+    height: auto;
+    display: block;
+}
+
+/* Botão de horários e aviso */
+.footer-column #openModalhorarios {
+    margin-top: 15px;
+    width: 100%; /* Ocupa a largura da coluna */
+}
+.footer-notice {
+    font-size: 0.85em;
+    font-style: italic;
+    margin-top: 15px;
+    opacity: 0.8;
+}
+
+/* Seção inferior do rodapé (copyright) */
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    margin-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2); /* Linha divisória sutil */
+}
+
+/* Media Query para responsividade em celulares */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column; /* Empilha as colunas */
+        text-align: center; /* Centraliza o texto */
+    }
+    .footer-column h4 {
+        border-bottom: none; /* Remove a linha para um visual mais limpo no mobile */
+    }
+    .social-icons {
+        margin-bottom: 20px;
+    }
+}
+
+
+
 
 @media (max-width: 1280px) {
 #featuredProductsCarousel {
@@ -1634,6 +1664,65 @@ tbody {
     box-shadow: 0 0 15px #ff6700;
     font-weight: bold;
 }
+/* Adicione no seu CSS */
+.skeleton {
+    background-color: #3a3a3a;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    height: 400px; /* Altura similar a um card de produto */
+}
+
+.skeleton::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    height: 100%;
+    width: 150%;
+    background: linear-gradient(to right, transparent 0%, #555 50%, transparent 100%);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        left: -150%;
+    }
+    100% {
+        left: 150%;
+    }
+}
+/* Adicione no final do seu CSS */
+.search-container {
+    position: relative; /* Essencial para posicionar o botão dentro dele */
+}
+
+/* Adiciona um espaço à direita no campo de texto para o botão não ficar em cima */
+#searchInput {
+    padding-right: 35px !important; 
+}
+
+.clear-search-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px; /* Distância da borda direita */
+    transform: translateY(-50%); /* Alinha verticalmente no centro */
+    
+    background: none;
+    border: none;
+    cursor: pointer;
+    
+    font-size: 1.5em; /* Tamanho do "X" */
+    color: #ff6600;
+    
+    display: none; /* Escondido por padrão */
+}
+
+/* Classe que vamos adicionar com JS para mostrar o botão */
+.clear-search-btn.show {
+    display: block;
+}
     </style>
 </head>
 
@@ -1663,6 +1752,11 @@ tbody {
         <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
         </div>
     </div>
+
+    <div class="form-group search-container" style="margin-bottom: 25px;">
+    <input type="text" id="searchInput" placeholder="🔎 Pesquisar por nome do produto..." style="width: 100%; color: #000;">
+        <div id="clearSearchBtn" class="clear-search-btn">&times;</div>
+</div>
 
     <div id="categoryFilters"></div>
 
@@ -1792,45 +1886,58 @@ tbody {
         </div>
     </div>
 
-    <footer class="rodape">
-        
-    <div>
-    <p id="contatorodape"></p>
+<footer class="rodape">
+    <div class="footer-content">
+        <!-- Coluna 1: Contato e Endereço -->
+        <div class="footer-column">
+            <h4>Contato e Localização</h4>
+            <div id="contato-info">
+                <!-- O parágrafo de contato será inserido aqui pelo JS -->
+                <p id="contatorodape"></p>
+            </div>
+            <div id="endereco-info">
+                <p><strong>📍 Endereço:</strong></p>
+                <p id="Endereço1"></p>
+                <p id="Endereço2"></p>
+                <p id="meucep"></p>
+            </div>
+        </div>
 
-    <p id="sigaNosParagrafo">Siga-nos:</p>
-    <div id="redesSociaisDiv" class="redes-sociais">
-    <a id="instagramLink" href="#" target="_blank">Instagram</a><span class="separador-redes-sociais"
-        id="instagramSeparator"> | </span>
-    <a id="facebookLink" href="#" target="_blank">Facebook</a><span class="separador-redes-sociais"
-        id="facebookSeparator"> | </span>
-    <a id="twitterLink" href="#" target="_blank">Twitter</a><span class="separador-redes-sociais"
-        id="twitterSeparator"> | </span>
+        <!-- Coluna 2: Links Úteis -->
+        <div class="footer-column">
+            <h4>Links Úteis</h4>
+            <ul class="footer-links">
+                <li><a id="politicaPrivacidadeLink" href="#" target="_blank">Política de Privacidade</a></li>
+                <li><a id="termosUsoLink" href="#" target="_blank">Termos de Uso</a></li>
+            </ul>
+            <h4 style="margin-top: 20px;">Siga-nos</h4>
+            <div id="redesSociaisDiv" class="social-icons">
+                <!-- O JS vai esconder os que não tiverem link -->
+                <a id="instagramLink" href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a id="facebookLink" href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                <a id="twitterLink" href="#" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+
+        <!-- Coluna 3: Informações -->
+        <div class="footer-column">
+            <h4>Pagamento e Horários</h4>
+            <div>
+                <strong>Formas de Pagamento:</strong>
+                <div class="payment-icons">
+                    <div class="pix-icon"><img src="pagamentos.files/imagens/pix-icon.png" alt="Pix"></div>
+                </div>
+            </div>
+            <button id="openModalhorarios" onclick="openModalhorarios()"><span>Horário de funcionamento</span></button>
+            <p id="avisonorodape" class="footer-notice">⚠️ Todas as vendas são feitas sob encomenda e conforme disponibilidade ⚠️</p>
+        </div>
     </div>
 
-    <p><strong>📍 Endereço:</strong></p>
-    <p id="Endereço1"></p>
-    <p id="Endereço2"></p>
-    <p id="meucep"></p>
-
-    <div>
-    <div><strong>Formas de Pagamento:</strong></div>
-    <ul style="list-style: none; padding: 0; display: flex; justify-content: center; gap: 10px;">
-        <li class="pix-icon"><img src="pagamentos.files/imagens/pix-icon.png" alt="Pix"></li>
-    </ul>
+    <!-- Seção Inferior do Rodapé -->
+    <div class="footer-bottom">
+        <p id="rodapedaloja">Todos os direitos reservados.</p>
     </div>
-
-    <p id="privacidadeTermosParagrafo">
-    <a id="politicaPrivacidadeLink" href="#" target="_blank">Política de Privacidade</a>
-    <span id="privacidadeTermosSeparator"> | </span>
-    <a id="termosUsoLink" href="#" target="_blank">Termos de Uso</a>
-    </p>
-    
-        <button id="openModalhorarios" onclick="openModalhorarios()"><span>Horário de funcionamento</span></button>
-    <p id="avisonorodape">⚠️ Todas as vendas são feitas sob encomenda e conforme disponibilidade ⚠️</p>
-    <p id="rodapedaloja">Todos os direitos reservados.</p>
-    
-    </div>
-    </footer>
+</footer>
 
     <div id="notification-container"></div>
 
@@ -2350,120 +2457,204 @@ function atualizarInterface(fechada, manutencao, ativahorario) {
 
 function fetchProducts() {
     if (isOpen) { } else { return;}
-    const loadingMessage = document.getElementById('loadingMessage');
+    const productListElement = document.getElementById('productList');
     const errorMessage = document.getElementById('errorMessage');
-    const minecart = document.getElementById('floating-cart');
 
-    const cartTabButton = document.querySelector('.tab-button[data-tab="cart"]'); // Seleciona o botão "Meu Carrinho"
-    const checkoutTabButton = document.querySelector('.tab-button[data-tab="checkout"]');
-
-    loadingMessage.style.display = 'block';
+    // Limpa a lista e mostra os skeletons
+    productListElement.innerHTML = `
+        <div class="product skeleton"></div>
+        <div class="product skeleton"></div>
+        <div class="product skeleton"></div>
+        <div class="product skeleton"></div>
+    `;
     errorMessage.classList.add('hidden');
 
     const script = document.createElement('script');
     script.src = 'https://www.blogger.com/feeds/' + blog + '/posts/default?start-index=1&max-results=500&alt=json-in-script&callback=processarProdutos';
 
     script.onerror = function () {
-    loadingMessage.style.display = 'none';
-    errorMessage.textContent = 'A loja foi desativada. Verifique novamente mais tarde.';
+        productListElement.innerHTML = ''; // Limpa os skeletons em caso de erro
+        errorMessage.textContent = 'A loja foi desativada ou o ID é inválido. Verifique novamente mais tarde.';
+        errorMessage.classList.remove('hidden');
 
-    // Desativa "Meu Carrinho" e "Checkout"
-    if (cartTabButton) {
-        cartTabButton.classList.add('disabled-tab');
-        cartTabButton.disabled = true;
-        cartTabButton.style.display = 'none';
-        minecart.style.display = 'none';
-        document.getElementById('cart').style.display = 'none';
-}
-    if (checkoutTabButton) {
-        checkoutTabButton.classList.add('disabled-tab');
-        checkoutTabButton.disabled = true;
-        minecart.style.display = 'none';
-        checkoutTabButton.style.display = 'none';
-}
-    if (featuredProductsCarousel) featuredProductsCarousel.style.display = 'none';
-
-};
+        // Desativa abas, etc.
+        const cartTabButton = document.querySelector('.tab-button[data-tab="cart"]');
+        const checkoutTabButton = document.querySelector('.tab-button[data-tab="checkout"]');
+        if (cartTabButton) cartTabButton.style.display = 'none';
+        if (checkoutTabButton) checkoutTabButton.style.display = 'none';
+    };
 
     document.body.appendChild(script);
 }
 
-    function processarProdutos(data) {
+function processarProdutos(data) {
     const loadingMessage = document.getElementById('loadingMessage');
-    const minecart = document.getElementById('floating-cart');
-
+    
     try {
-        products = data.feed.entry.map(entry => {
-            const entryTitle = entry.title.$t;
-            const content = entry.content.$t;
-            let imageUrls = [];
-            const imgRegex = /<img.*?src="(.*?)"/g;
-            let imgMatch;
+        products = []; // Limpa o array de produtos
+        carouselProducts = []; // Limpa o array de produtos do carrossel
 
-            while ((imgMatch = imgRegex.exec(content)) !== null) {
-                imageUrls.push(imgMatch[1]);
-            }
+        data.feed.entry.forEach(entry => {
+            const product = parseProductFromEntry(entry);
+            products.push(product);
 
-            let price = 0;
-            let originalPrice = 0;
-            let discount = 0;
-            let sizes = [];
-            let sabor = [];
-            let quantity = 0;
-            let isCarousel = false;
-            let categories = []; // Variável para armazenar as categorias do produto
-
-            // Extract data from categories
-            if (entry.category && Array.isArray(entry.category)) {
-                isCarousel = entry.category.some(cat => cat.term.toLowerCase() === 'carousel');
-                entry.category.forEach(cat => {
-                    const term = cat.term;
-                    if (term.startsWith('R$')) {
-                        price = parseFloat(term.replace('R$ ', '').replace(',', '.'));
-                    } else if (term.toLowerCase().startsWith('tamanho/')) {
-                        sizes = term.substring('tamanho/'.length).split('/');
-                    } else if (term.toLowerCase().startsWith('sabor/')) {
-                        sabor = term.substring('sabor/'.length).split('/');
-                    } else if (term.toLowerCase().startsWith('quantidade/')) {
-                        quantity = parseInt(term.substring('quantidade/'.length));
-                    } else if (term.toLowerCase().startsWith('desconto/')) {
-                        discount = parseInt(term.substring('desconto/'.length));
-                    } else if (term.toLowerCase().startsWith('categorias/')) { // <<< SUA LÓGICA AQUI
-                        categories = term.substring('categorias/'.length).split('/').filter(c => c.trim() !== ''); // Extrai e divide as categorias
-                    }
-                });
-            }
-
-            // Calculate discounted price
-            const discountedPrice = price * (1 - (discount / 100));
-
-            const product = {
-                name: entryTitle,
-                price: discountedPrice,
-                originalPrice: price,
-                imageUrls: imageUrls,
-                sizes: sizes,
-                sabor: sabor,
-                quantity: quantity,
-                discount: discount,
-                available: quantity > 0,
-                categories: categories // Adiciona a propriedade de categorias ao objeto do produto
-            };
-
-            if (isCarousel) {
+            if (product.isCarousel) {
                 carouselProducts.push(product);
-                initializeCarousel();
             }
-
-            return product;
         });
 
-        displayCategoryFilters(); // Chama a função para criar os botões de filtro
-        displayProducts(); // Exibe os produtos (inicialmente, todos)
+        if (carouselProducts.length > 0) {
+            initializeCarousel();
+        }
+
+        displayCategoryFilters();
+        displayProducts();
 
     } catch (error) {
         console.error("Erro ao processar produtos:", error);
     }
+}
+
+function verificarDisponibilidadeProdutos() {
+    // Retorna uma Promise para que possamos usar async/await
+    return new Promise((resolve, reject) => {
+        // Define uma função de callback global temporária
+        window.verificarProdutosCallback = (data) => {
+            const latestProducts = data.feed.entry.map(parseProductFromEntry);
+
+            // --- INÍCIO DA MODIFICAÇÃO ---
+            // 1. Atualiza as listas de produtos globais com os dados mais recentes.
+            products = latestProducts;
+            carouselProducts = latestProducts.filter(p => p.isCarousel);
+
+            // 2. Redesenha a vitrine de produtos e o carrossel na tela.
+            displayProducts();
+            if (carouselProducts.length > 0) {
+                initializeCarousel();
+            }
+            // --- FIM DA MODIFICAÇÃO ---
+
+
+            let cartWasModified = false;
+            const errorMessages = [];
+            const updatedCart = [];
+
+            cart.forEach(itemInCart => {
+                const latestProduct = latestProducts.find(p => p.name === itemInCart.name);
+
+                // Verificação 1: O produto ainda existe?
+                if (!latestProduct || !latestProduct.available) {
+                    cartWasModified = true;
+                    errorMessages.push(`- O produto "${itemInCart.name}" não está mais disponível e foi removido.`);
+                    return; // Pula para o próximo item do carrinho
+                }
+
+                // Verificação 2: A quantidade é válida?
+                if (itemInCart.quantity > latestProduct.quantity) {
+                    cartWasModified = true;
+                    errorMessages.push(`- O estoque de "${itemInCart.name}" foi atualizado. Quantidade ajustada para ${latestProduct.quantity}.`);
+                    itemInCart.quantity = latestProduct.quantity;
+                }
+
+                // Verificação 3: O preço mudou?
+                if (itemInCart.price.toFixed(2) !== latestProduct.price.toFixed(2)) {
+                    cartWasModified = true;
+                    errorMessages.push(`- O preço de "${itemInCart.name}" mudou para ${realBR(latestProduct.price)}.`);
+                    itemInCart.price = latestProduct.price;
+                }
+
+                updatedCart.push(itemInCart); // Adiciona o item (possivelmente modificado) ao novo carrinho
+            });
+
+            // Se o carrinho foi modificado, atualiza tudo e informa o usuário
+            if (cartWasModified) {
+                cart = updatedCart; // Substitui o carrinho antigo pelo atualizado
+                localStorage.setItem(blog + 'cart', JSON.stringify(cart));
+                updateCartDisplay();
+                updateFloatingCartCount();
+                
+                const finalMessage = "Seu carrinho foi atualizado devido a mudanças no estoque ou preços:\n\n" + errorMessages.join('\n') + "\n\nPor favor, verifique antes de continuar.";
+                exibirModalErro(finalMessage.replace(/\n/g, '<br>'), false, true, 'aviso');
+
+                resolve(false); // Indica que a verificação falhou
+            } else {
+                resolve(true); // Indica que está tudo OK
+            }
+
+            // Limpeza: remove a função de callback e o script
+            document.body.removeChild(document.getElementById('productVerificationScript'));
+            delete window.verificarProdutosCallback;
+        };
+
+        // Cria e adiciona o script para a chamada JSONP
+        const script = document.createElement('script');
+        script.id = 'productVerificationScript';
+        script.src = 'https://www.blogger.com/feeds/' + blog + '/posts/default?start-index=1&max-results=500&alt=json-in-script&callback=verificarProdutosCallback';
+        script.onerror = () => {
+            showNotification("Não foi possível verificar os produtos. Tente novamente.", 'error');
+            reject(new Error("Falha ao carregar script de verificação."));
+            document.body.removeChild(script);
+            delete window.verificarProdutosCallback;
+        };
+        document.body.appendChild(script);
+    });
+}
+
+function parseProductFromEntry(entry) {
+    const entryTitle = entry.title.$t;
+    const content = entry.content.$t;
+    let imageUrls = [];
+    const imgRegex = /<img.*?src="(.*?)"/g;
+    let imgMatch;
+
+    while ((imgMatch = imgRegex.exec(content)) !== null) {
+        imageUrls.push(imgMatch[1]);
+    }
+
+    let price = 0;
+    let originalPrice = 0;
+    let discount = 0;
+    let sizes = [];
+    let sabor = [];
+    let quantity = 0;
+    let isCarousel = false;
+    let categories = [];
+
+    if (entry.category && Array.isArray(entry.category)) {
+        isCarousel = entry.category.some(cat => cat.term.toLowerCase() === 'carousel');
+        entry.category.forEach(cat => {
+            const term = cat.term;
+            if (term.startsWith('R$')) {
+                price = parseFloat(term.replace('R$ ', '').replace(',', '.'));
+            } else if (term.toLowerCase().startsWith('tamanho/')) {
+                sizes = term.substring('tamanho/'.length).split('/');
+            } else if (term.toLowerCase().startsWith('sabor/')) {
+                sabor = term.substring('sabor/'.length).split('/');
+            } else if (term.toLowerCase().startsWith('quantidade/')) {
+                quantity = parseInt(term.substring('quantidade/'.length));
+            } else if (term.toLowerCase().startsWith('desconto/')) {
+                discount = parseInt(term.substring('desconto/'.length));
+            } else if (term.toLowerCase().startsWith('categorias/')) {
+                categories = term.substring('categorias/'.length).split('/').filter(c => c.trim() !== '');
+            }
+        });
+    }
+
+    const discountedPrice = price * (1 - (discount / 100));
+
+    return {
+        name: entryTitle,
+        price: discountedPrice,
+        originalPrice: price,
+        imageUrls: imageUrls,
+        sizes: sizes,
+        sabor: sabor,
+        quantity: quantity,
+        discount: discount,
+        available: quantity > 0,
+        categories: categories,
+        isCarousel: isCarousel
+    };
 }
 
 // Função para criar e exibir os botões de filtro de categoria
@@ -2516,28 +2707,36 @@ function filterByCategory(category) {
 
 function displayProducts() {
     const productListElement = document.getElementById('productList');
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim(); // Pega o termo da pesquisa
     productListElement.innerHTML = '';
 
-    // Filtra os produtos com base na categoria selecionada e disponibilidade
+    // Filtra os produtos com base na categoria, disponibilidade E TERMO DE PESQUISA
     const filteredProducts = products.filter(product => {
         if (!product.available) return false;
-        if (currentCategory === 'all') {
-            return true; // Mostra todos se a categoria for 'all'
-        }
-        // Verifica se o array de categorias do produto inclui a categoria atual
-        return product.categories && product.categories.includes(currentCategory);
+
+        const matchesCategory = currentCategory === 'all' || (product.categories && product.categories.includes(currentCategory));
+        const matchesSearch = product.name.toLowerCase().includes(searchTerm);
+
+        return matchesCategory && matchesSearch; // O produto deve corresponder a ambos os filtros
     });
+
+    if (filteredProducts.length === 0) {
+        productListElement.innerHTML = '<p style="text-align: center; width: 100%;">Nenhum produto encontrado com esses filtros.</p>';
+        updatePaginationButtons(0);
+        return;
+    }
 
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
     const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
     currentProducts.forEach(product => {
-        if (!product.available) return;
-
-        const productDiv = document.createElement('div');
+        // O resto do código que cria o HTML do produto continua exatamente o mesmo...
+        const productDiv = document.createElement('article');
         productDiv.classList.add('product');
-
+        // ... (todo o seu código de criação de sliders, selects, botões, etc.)
+        // Copie e cole o interior da sua função displayProducts original a partir daqui.
+        
         // --- Image Slider ---
         const imageSliderContainer = document.createElement('div');
         imageSliderContainer.classList.add('image-slider-container');
@@ -2550,6 +2749,7 @@ function displayProducts() {
             const img = document.createElement('img');
             img.src = imageUrl;
             img.alt = product.name;
+            img.loading = 'lazy'; // Boa prática de performance
             img.classList.add('slider-image');
             img.addEventListener('click', () => openFullscreenImage(imageUrl));
             imageSlider.appendChild(img);
@@ -2623,7 +2823,7 @@ function displayProducts() {
         productListElement.appendChild(spacer);
     });
 
-    updatePaginationButtons(filteredProducts.length); // Passa o total de produtos filtrados
+    updatePaginationButtons(filteredProducts.length);
 }
 
 // --- Slider Functions (com checagem e dataset por slider) ---
@@ -2793,7 +2993,6 @@ function updateCartDisplay() {
     const cartTotalElement = document.getElementById('cartTotal');
     const cartListCheckout = document.getElementById('cartListCheckout');
     
-    // Elementos do resumo do checkout
     const subtotalCheckoutEl = document.getElementById('TotalcartCheckout');
     const linhaTaxaEnvioEl = document.getElementById('linhaTaxaEnvio');
     const taxaEnvioEl = document.getElementById('taxaEnvioCheckout');
@@ -2813,43 +3012,52 @@ function updateCartDisplay() {
         const itemTotal = item.price * item.quantity;
         subtotal += itemTotal;
 
+        // --- NOVO HTML PARA O ITEM DO CARRINHO ---
         const li = document.createElement('li');
         li.classList.add('cart-item');
+        li.style.flexWrap = 'wrap'; // Permite que o conteúdo quebre a linha
+        
         li.innerHTML = `
-            <img src="${item.imageUrl}" alt="${item.name}">
-            <span>${item.name} ${item.selectedSize ? `(Tamanho: ${item.selectedSize})` : ''} ${item.selectedsabor ? `(Sabor: ${item.selectedsabor})` : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal)}</span>
-            <button class="remove-button" onclick="removeFromCart(${index})"><i class="fas fa-trash-alt"></i></button>
+            <img src="${item.imageUrl}" alt="${item.name}" style="flex-shrink: 0;">
+            <div style="flex-grow: 1; margin: 0 10px;">
+                <span>${item.name} ${item.selectedSize ? `(${item.selectedSize})` : ''} ${item.selectedsabor ? `(${item.selectedsabor})` : ''}</span>
+                <br>
+                <strong>${realBR(itemTotal)}</strong>
+            </div>
+            <div class="cart-quantity-controls" style="display: flex; align-items: center; margin-top: 5px;">
+                <button class="remove-button" onclick="decreaseCartItemQuantity(${index})" style="padding: 5px 10px;">-</button>
+                <span style="padding: 0 10px; font-weight: bold;">${item.quantity}</span>
+                <button class="ButtonFinalizarCompra" onclick="increaseCartItemQuantity(${index})" style="padding: 5px 10px;">+</button>
+                <button class="remove-button" onclick="removeFromCart(${index})" style="margin-left: 15px; padding: 5px 10px;"><i class="fas fa-trash-alt"></i></button>
+            </div>
         `;
 
         const li1 = document.createElement('li');
         li1.classList.add('cart-item');
         li1.innerHTML = `
             <img src="${item.imageUrl}" alt="${item.name}">
-            <span>${item.name} ${item.selectedSize ? `(Tamanho: ${item.selectedSize})` : ''} ${item.selectedsabor ? `(Sabor: ${item.selectedsabor})` : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal)}</span>
+            <span>${item.name} ${item.selectedSize ? `(T: ${item.selectedSize})` : ''} ${item.selectedsabor ? `(S: ${item.selectedsabor})` : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal)}</span>
         `;
 
         cartList.appendChild(li);
         cartListCheckout.appendChild(li1);
     });
 
-    // --- LÓGICA DA TAXA DE ENTREGA ---
     const deliveryOption = document.getElementById('deliveryOption').value;
     let totalFinal = subtotal;
 
     if (deliveryOption === 'delivery' && taxadeenvio > 0) {
         totalFinal += taxadeenvio;
         taxaEnvioEl.textContent = realBR(taxadeenvio);
-        linhaTaxaEnvioEl.style.display = 'flex'; // Mostra a linha da taxa
+        linhaTaxaEnvioEl.style.display = 'flex';
     } else {
-        linhaTaxaEnvioEl.style.display = 'none'; // Esconde a linha da taxa
+        linhaTaxaEnvioEl.style.display = 'none';
     }
 
-    // Atualiza os totais na tela
     cartTotalElement.textContent = realBR(subtotal);
     subtotalCheckoutEl.textContent = realBR(subtotal);
     totalFinalEl.textContent = realBR(totalFinal);
 
-    // Habilita/desabilita botões
     const cartHasItems = cart.length > 0;
     proceedToCheckoutButton.disabled = !cartHasItems;
     clearCartButton.disabled = !cartHasItems;
@@ -2923,12 +3131,29 @@ async function generatePix() {
         showNotification("Carrinho de compras vazio!", 'error');
         return;
     }
+    
+    // --- NOVA ETAPA DE VERIFICAÇÃO ---
+    try {
+        //showNotification("Verificando disponibilidade dos produtos...", 'aguardando');
+        const isCartValid = await verificarDisponibilidadeProdutos();
 
+        if (!isCartValid) {
+            // A função verificarDisponibilidadeProdutos já exibiu o modal de erro.
+            // Apenas paramos a execução aqui.
+            return; 
+        }
+    } catch (error) {
+        showNotification("Erro ao verificar o estoque. Tente novamente.", 'error');
+        return;
+    }
+    // --- FIM DA NOVA ETAPA ---
+
+
+    // O resto da função continua como antes, pois agora sabemos que o carrinho é válido.
     try {
         const idPagamentos = generatePaymentId();
         const paymentHash = idPagamentos;
         
-        // --- CÁLCULO DO VALOR FINAL ---
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         let valorFinal = subtotal;
         let taxaAplicada = 0;
@@ -2938,7 +3163,6 @@ async function generatePix() {
             taxaAplicada = taxadeenvio;
         }
         const valor = valorFinal.toFixed(2);
-        // --- FIM DO CÁLCULO ---
 
         const dataCompra = new Date().toLocaleDateString();
 
@@ -2951,7 +3175,6 @@ async function generatePix() {
             selectedsabor: item.selectedsabor || '',
         })));
 
-        // --- MENSAGEM WHATSAPP ATUALIZADA ---
         let whatsappMessage = `Novo pedido #${idPagamentos}\n\n` +
             `Dados do Cliente:\nNome: ${document.getElementById('Nome').value}\nEmail: ${document.getElementById('Email').value}\nTelefone: ${document.getElementById('WhatsApp').value}\n` +
             `Informações Adicionais: ${document.getElementById('additionalInfo').value}\n\n` +
@@ -2961,15 +3184,12 @@ async function generatePix() {
             `\n\nSubtotal: ${realBR(subtotal)}` +
             (taxaAplicada > 0 ? `\nTaxa de Entrega: ${realBR(taxaAplicada)}` : '') +
             `\nTotal: ${realBR(valor)}\nData da Compra: ${dataCompra}`;
-        // --- FIM DA MENSAGEM WHATSAPP ---
-
 
         const pedidowhatsapp = `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
         const paramschaves = `${MeuPix}&valor=${valor}&txid=${idPagamentos}&logo=${logotipo}&produtos=${produtosnopix}&pedidowhatsapp=${btoa(pedidowhatsapp)}`;
         const dadospix = btoa(paramschaves);
         const pixUrl = `index.html?codepix=${dadospix}`;
 
-        // --- OBJETO DO PEDIDO ATUALIZADO ---
         const order = {
             id: idPagamentos,
             paymentHash: paymentHash,
@@ -2987,9 +3207,9 @@ async function generatePix() {
                 selectedSize: item.selectedSize || '',
                 selectedsabor: item.selectedsabor || '',
             })),
-            subtotal: subtotal.toFixed(2), // Salva o subtotal
-            deliveryFee: taxaAplicada.toFixed(2), // Salva a taxa
-            total: valor, // Salva o total final
+            subtotal: subtotal.toFixed(2),
+            deliveryFee: taxaAplicada.toFixed(2),
+            total: valor,
             pixUrl: pixUrl,
             timestamp: Date.now(),
             deliveryOption: deliveryOption,
@@ -3004,7 +3224,6 @@ async function generatePix() {
                 additionalInfo: document.getElementById('additionalInfo').value
             }
         };
-        // --- FIM DO OBJETO DO PEDIDO ---
 
         orderHistory.push(order);
         localStorage.setItem(blog, JSON.stringify(orderHistory));
@@ -3021,6 +3240,10 @@ async function generatePix() {
         showNotification("Erro ao gerar QR Code Pix. Tente novamente.", 'error');
     }
 }
+
+
+
+
 function openModal() {
     document.getElementById('myModal').style.display = 'block';
 }
@@ -3991,6 +4214,63 @@ async function isCepValido(cep) {
         return false;
     }
 }
+
+function increaseCartItemQuantity(index) {
+    const item = cart[index];
+    if (!item) return;
+
+    // Encontra o produto original para verificar o estoque máximo
+    const productData = products.find(p => p.name === item.name);
+    const maxQuantity = productData ? productData.quantity : item.quantity;
+
+    if (item.quantity < maxQuantity) {
+        item.quantity++;
+        localStorage.setItem(blog + 'cart', JSON.stringify(cart));
+        updateCartDisplay();
+        updateFloatingCartCount();
+    } else {
+        showNotification(`Estoque máximo para "${item.name}" atingido.`, 'error');
+    }
+}
+
+function decreaseCartItemQuantity(index) {
+    const item = cart[index];
+    if (!item) return;
+
+    item.quantity--;
+
+    if (item.quantity <= 0) {
+        removeFromCart(index); // Remove se a quantidade for zero
+    } else {
+        localStorage.setItem(blog + 'cart', JSON.stringify(cart));
+        updateCartDisplay();
+        updateFloatingCartCount();
+    }
+}
+
+const searchInput = document.getElementById('searchInput');
+const clearSearchBtn = document.getElementById('clearSearchBtn');
+
+searchInput.addEventListener('input', () => {
+    currentPage = 1; 
+    displayProducts();
+
+    // Mostra ou esconde o botão "X"
+    if (searchInput.value.length > 0) {
+        clearSearchBtn.classList.add('show');
+    } else {
+        clearSearchBtn.classList.remove('show');
+    }
+});
+
+clearSearchBtn.addEventListener('click', () => {
+    searchInput.value = ''; 
+    clearSearchBtn.classList.remove('show');
+    
+    currentPage = 1;
+    displayProducts(); 
+    searchInput.focus();
+});
 
 // Evento ao perder foco do campo CEP
 document.getElementById("CEP").addEventListener("blur", async function () {
