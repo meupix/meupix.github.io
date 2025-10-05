@@ -1322,18 +1322,6 @@ input[type="file"], input[type="color"], .god {
 width: 84%;
 }
 
-
-/* --------------------- */
-
-/* Container Styling */
-.containerfundo {
-    /*background: white;*/
-    /*padding: 30px;*/
-    /*border-radius: 10px;*/
-    /*box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
-    /*text-align: center;*/
-}
-
 h1 {
     font-size: 2em;
     margin-bottom: 20px;
@@ -2369,8 +2357,8 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
                   <p class="lh-copy tc center mb4 db-ns f5"><strong>Ou use a chave Pix</strong></p>
                   <div class="flex flex-column flex-nowrap w-100 f6-ns bt-ns b--black-10 pt4-ns mt5 mt0-ns">
   
-                     <div class="flex flex-row justify-between w-auto pb3">
-                         <span class="justify-start b tl">Chave Pix</span>
+                     <div id="copiarchavepix" class="flex flex-row justify-between w-auto pb3">
+                         <span class="justify-start b tl">Chave Pix </span>
                          <span id="copy-chave" class="copy-icon-chave" onclick="copiarchavepix();">Copiar Chave PIX</span>
                      </div>
                       <div class="flex flex-row justify-between w-auto pb3">
@@ -2982,7 +2970,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
   $('.menuvendas').html(`
-  <main class="containerfundo">
+  <main>
         <h1><span id="valordopagamentos" aria-live="polite">R$ 0,00</span></h1>
 
         <form id="pix-form">
@@ -3873,6 +3861,7 @@ function GeraQRCodePix(payload, minhalogo) {
   
   const Paramsdescriptografado = atob(Params.get('criaplaca'));
   document.getElementById("desfocfundo").style.display = "block";
+    
   $('.qrcriado').html(`
   <div id="BotaoVoltar2" class="dn-l w-100 flex-ns flex-column pt4-ns pb4-ns ph5-ns ph3">
     <a class="fechalinks" onclick="mostrarLinks()"> <svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round" color="#fff" height="38" width="38" xmlns="http://www.w3.org/2000/svg" style="color: rgb(255, 255, 255);"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg></a>
@@ -4301,8 +4290,9 @@ function GeraQRCodePix(payload, minhalogo) {
   const whatsapp = ParamsPix.get('whatsapp') || '';
   const voltar = ParamsPix.get('voltar') || '';
   const minhalogo = ParamsPix.get('logo') || 'pagamentos.files/imagens/logo.png';
-  const produtos = ParamsPix.get('produtos') || '';
-  pedidowhatsapp = atob(ParamsPix.get('pedidowhatsapp') || '');
+
+  const idadaloja = ParamsPix.get('idadaloja') || '';
+  iddopagamento = ParamsPix.get('iddopagamento') || '';
 
 		 // Valida os parâmetros obrigatórios
   if (pixkey === '') {
@@ -4351,8 +4341,12 @@ function GeraQRCodePix(payload, minhalogo) {
     document.getElementById('whatswidget-pre-wrapper').style.display = 'none';
   }
   if (pedidowhatsapp === '') {
-    document.getElementById('Botaowhatpedido1').style.display = 'none';
-    document.getElementById('Botaowhatpedido2').style.display = 'none';
+    //document.getElementById('Botaowhatpedido1').style.display = 'none';
+    //document.getElementById('Botaowhatpedido2').style.display = 'none';
+    $('#Botaowhatpedido1').remove('');
+    $('#Botaowhatpedido2').remove('');
+  } else {
+      $('#copiarchavepix').remove('');
   }
   if (voltar === '') {
     document.getElementById('BotaoVoltar1').style.display = 'none';
@@ -4428,7 +4422,10 @@ function GeraQRCodePix(payload, minhalogo) {
         imagemElemento.setAttribute('height', '200');
         imagemContainer.appendChild(imagemElemento);
   }
-  if (produtos) {
+  if (idadaloja) {
+      const dadosDoPedido = obterDadosDoPedidoPorId(iddopagamento, idadaloja);
+  const produtos = dadosDoPedido.produtos;
+        pedidowhatsapp = dadosDoPedido.pedidowhatsapp;
 
         const items = JSON.parse(produtos);
         const itemList = document.getElementById('itemList');
@@ -4449,7 +4446,10 @@ function GeraQRCodePix(payload, minhalogo) {
               `;
                 itemList.appendChild(li);
             });
+  } else {
+    $('#container').remove('');
   }
+
    } else {
     const code = 'erro';
     new QRious({
@@ -5315,7 +5315,9 @@ const voltar = document.getElementById('voltar').textContent;
          location.href = voltar;
     }
 }
+
 let pedidowhatsapp = '';
+
 function EnviarPedido() {
  window.open(pedidowhatsapp, '_blank');
 }
@@ -5477,6 +5479,31 @@ $(window).click(function(event) {
         $('#modalagendamento').hide(); // Esconde o modal se clicar fora dele
     }
 });
+}
+
+  function obterDadosDoPedidoPorId(idDoPedido, iddoblog) {
+    const historicoJSON = localStorage.getItem(iddoblog);
+    if (!historicoJSON) {
+        console.error("Nenhum histórico de pedidos encontrado no localStorage.");
+        return null;
+    }
+    try {
+        const historicoDePedidos = JSON.parse(historicoJSON);
+        const pedidoEncontrado = historicoDePedidos.find(pedido => pedido.id === idDoPedido);
+
+        if (pedidoEncontrado) {
+            return {
+                produtos: pedidoEncontrado.produtos,
+                pedidowhatsapp: pedidoEncontrado.pedidowhatsapp
+            };
+        } else {
+            console.warn(`Pedido com ID "${idDoPedido}" não encontrado.`);
+            return null;
+        }
+    } catch (error) {
+        console.error("Erro ao parsear o JSON do localStorage:", error);
+        return null;
+    }
 }
 
 function fechareditform() {
