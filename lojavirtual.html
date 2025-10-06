@@ -106,6 +106,7 @@ header {
     flex: 2;
     padding-right: 20px;
     border-right: 1px solid var(--light-gray);
+    width: 800px;
 }
 
 .products h2 {
@@ -297,7 +298,6 @@ button {
 .button-group-carousel {
     display: flex;
     margin-bottom: 9px;
-    margin-top: 28px;
     flex-direction: column;
     align-items: center;
 }
@@ -505,39 +505,179 @@ button:hover {
     padding: 0;
 }
 
+/* =================================================================== */
+/* ============== CSS PERSONALIZADO PARA O ITEM DO CARRINHO ========== */
+/* =================================================================== */
+
+/* --- Container Principal do Item --- */
 .cart-item {
-    display: flex;
-    justify-content: space-between;
+    display: grid; /* Usamos Grid para controle total do layout */
+    
+    /* Layout para Desktop: [Imagem] [Informações] [Controles] */
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-}
-
-.cart-item img {
-    max-width: 50px;
-    height: auto;
-    margin-right: 10px;
-}
-
-.cart-item span {
-    flex-grow: 1;
-}
-
-.cart-item .remove-button {
-    background-color: #e74c3c;
-    color: #fff;
-    padding: 8px 12px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+    gap: 1rem; /* Espaçamento entre os elementos */
+    
+    padding: 1.25rem 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     transition: background-color 0.3s ease;
-    display: flex;
-    justify-content: center;
 }
 
-.cart-item .remove-button:hover {
+.cart-item:last-of-type {
+    border-bottom: none; /* Remove a borda do último item */
+}
+
+.cart-item:hover {
+    background-color: rgba(255, 255, 255, 0.05); /* Efeito sutil de hover */
+    border-radius: 8px;
+}
+
+/* --- Imagem do Produto --- */
+.cart-item img {
+    width: 65px;
+    height: 65px;
+    border-radius: 12px;
+    object-fit: cover; /* Garante que a imagem preencha o espaço sem distorcer */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+/* --- Informações do Produto (Nome, Opções, Preço) --- */
+.cart-item-info {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    text-align: left;
+}
+
+.cart-item-info .item-name {
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.3;
+}
+
+.cart-item-info .item-options {
+    font-size: 0.85em;
+    color: #adb5bd; /* Cor mais suave para informações secundárias */
+    margin-top: 0.25rem;
+}
+
+.cart-item-info .item-price {
+    font-weight: 700;
+    color: var(--secondary-color, #4ecdc4);
+    margin-top: 0.5rem;
+}
+
+/* --- Controles de Quantidade e Exclusão --- */
+.cart-quantity-controls {
+    display: flex;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    padding: 4px;
+}
+
+.cart-quantity-controls .quantity-btn {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.cart-quantity-controls .quantity-btn.decrease {
+    background-color: #e74c3c;
+    color: white;
+}
+.cart-quantity-controls .quantity-btn.increase {
+    background-color: #2ecc71;
+    color: white;
+}
+.cart-quantity-controls .quantity-btn:hover {
+    transform: scale(1.1);
+}
+
+.cart-quantity-controls .quantity-display {
+    font-weight: 700;
+    font-size: 1.1rem;
+    padding: 0 1rem;
+    color: white;
+}
+
+.cart-item .trash-btn {
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-left: 0.5rem; /* Espaço entre os controles de qtd e a lixeira */
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.cart-item .trash-btn:hover {
+    color: #e74c3c;
+    transform: scale(1.15) rotate(10deg);
+}
+
+
+/* ================================================== */
+/* === RESPONSIVIDADE DO ITEM DO CARRINHO (CELULAR) = */
+/* ================================================== */
+@media (max-width: 768px) {
+    .cart-item {
+        /* Layout para Celular:
+           [Imagem] [Informações]
+           [   Controles      ]
+        */
+        grid-template-columns: auto 1fr; /* 2 colunas */
+        grid-template-rows: auto auto;    /* 2 linhas */
+        grid-template-areas:
+            "image info"
+            "controls controls"; /* Controles ocupam a largura toda */
+        column-gap: 0.75rem;
+        row-gap: 0.75rem;
+        padding: 1rem 0;
+    }
+
+    .cart-item img {
+        grid-area: image; /* Posiciona na área 'image' */
+        width: 60px;
+        height: 60px;
+    }
+
+    .cart-item-info {
+        grid-area: info; /* Posiciona na área 'info' */
+    }
+
+    .cart-quantity-controls {
+        grid-area: controls; /* Posiciona na área 'controls' */
+        
+        /* Layout interno dos controles no celular */
+        display: grid;
+        grid-template-columns: 1fr auto; /* Ocupa espaço | Lixeira */
+        width: 100%;
+        background-color: transparent; /* Remove o fundo para integrar os botões */
+        padding: 0;
+        border-radius: 0;
+    }
+
+    .quantity-controls-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* Alinha à esquerda */
+        background-color: rgba(0, 0, 0, 0.2);
+        border-radius: 20px;
+        padding: 4px;
+    }
+
+    .cart-item .trash-btn {
+        justify-self: flex-end; /* Alinha a lixeira à direita */
+        margin-left: 0;
+    }
 }
 
 #cartTotal {
@@ -946,9 +1086,6 @@ to {
     }
 }
 
-
-
-
 @media (max-width: 1280px) {
 #featuredProductsCarousel {
     margin-right: 0 !important;
@@ -968,6 +1105,7 @@ to {
     border-right: none;
     padding-right: 0;
     margin-bottom: 20px;
+    width: 100%;
 }
 
     aside {
@@ -1001,7 +1139,6 @@ to {
     overflow: hidden;
     margin-bottom: 20px;
     border-radius: 15px;
-    margin-right: 20px;
     text-align: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
@@ -1116,7 +1253,7 @@ to {
 }
 
 .loja-aberta {
-    color: #ff7600;
+    color: #09ff00;
     font-size: 24px;
     font-weight: bold;
 }
@@ -1637,7 +1774,7 @@ tbody {
 #categoryFilters {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-evenly;
     gap: 10px;
     margin-bottom: 25px;
 }
@@ -1753,6 +1890,172 @@ tbody {
     background: linear-gradient(47deg, #e69200, #e05300);
     transform: translateY(-3px); /* Efeito de elevação */
 }
+.modal-product-description {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    line-height: 1.7;
+    white-space: pre-wrap; /* Respeita as quebras de linha e espaços */
+}
+
+/* =================================================================== */
+/* ============== VERSÃO CORRIGIDA DO MODAL DE DESCRIÇÃO ============= */
+/* =================================================================== */
+
+/* --- Estilo Base (Desktop) --- */
+
+.description-modal {
+    display: none; /* Inicia escondido */
+    position: fixed;
+    z-index: 1002;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 25, 47, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    
+    /* Animação suave na entrada/saída */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    visibility: hidden;
+}
+
+.description-modal.is-visible {
+    display: flex; /* Usamos Flex para centralizar o conteúdo */
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+}
+
+.description-modal-content {
+    background: linear-gradient(120deg, #206958b8, #05a582a1);
+    color: #e5e7eb;
+    padding: 2.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 90%;
+    max-width: 750px;
+    border-radius: 16px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    
+    /* Animação de entrada */
+    transform: scale(0.95);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.description-modal.is-visible .description-modal-content {
+    transform: scale(1);
+}
+
+.description-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ff9900;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.description-modal-close:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+}
+
+#descriptionModalTitle {
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 1.5rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #4ecdc4;
+}
+
+#descriptionModalText {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    color: #ffffff;
+    max-height: 60vh; /* Altura máxima no desktop para evitar modais gigantes */
+    overflow-y: auto; /* Adiciona scroll se o texto for muito longo */
+}
+
+
+/* --- Estilos de TELA CHEIA (Celular) --- */
+
+@media (max-width: 768px) {
+    .description-modal {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+
+    .description-modal-content {
+        /* Regras FORÇADAS para garantir a tela cheia */
+        width: 100vw !important;
+        height: 100vh !important;
+        max-width: none !important;
+        max-height: none !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        
+        /* Layout flex para organizar título e texto */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 0; /* Remove padding geral */
+        transform: none !important; /* Desativa animação de escala */
+    }
+
+    #descriptionModalTitle {
+        font-size: 1.5rem;
+        padding: 4rem 1.5rem 1rem 1.5rem; /* Padding com espaço para o botão de fechar */
+        margin: 0;
+        flex-shrink: 0; /* Impede que o título encolha */
+    }
+
+    #descriptionModalText {
+        padding: 0 1.5rem 1.5rem 1.5rem;
+        overflow-y: auto;
+        flex-grow: 1; /* Faz o texto ocupar todo o espaço restante */
+        max-height: none; /* Remove a restrição de altura do desktop */
+    }
+    
+    .description-modal-close {
+        /* Posição fixa para ficar visível mesmo com scroll */
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 1003; /* Acima de todo o resto */
+    }
+}
+.btn-details {
+    background: linear-gradient(120deg, #9b59b6, #8e44ad);
+    box-shadow: 0 0 15px #3498db70;
+    margin-bottom: 20px;
+    color: #fff;
+}
+.btn-details:hover {
+    background: linear-gradient(120deg, #d35400, #f39c12);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+.featured-title {
+    text-align: center;
+    font-size: 2.2em;
+    margin-bottom: 20px;
+    color: #fff;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
     </style>
 </head>
 
@@ -1773,7 +2076,8 @@ tbody {
     <div class="tela-ativada">
     <div class="container">
     <div class="products" id="products">
-    <h2>Nossos Produtos</h2>
+    <h2 class="featured-title">✨ Produtos em destaque  ✨</h2>
+
 
     <div id="featuredProductsCarousel">
         <div class="carousel-slide"></div>
@@ -1783,13 +2087,14 @@ tbody {
         </div>
     </div>
 
-    <div class="form-group search-container" style="margin-bottom: 25px;">
-    <input type="text" id="searchInput" placeholder="🔎 Pesquisar por nome do produto..." style="width: 100%; color: #000;">
-        <div id="clearSearchBtn" class="clear-search-btn">&times;</div>
-</div>
+    <div class="form-group search-container">
+    <input type="text" id="searchInput" placeholder="🔎 Pesquisar por nome do produto...">
+    <div id="clearSearchBtn" class="clear-search-btn">&times;</div>
+    </div>
 
     <div id="categoryFilters"></div>
-
+    
+    <h2 class="featured-title">Nossos Produtos</h2>
     <div id="productList">
         <p id="loadingMessage">Carregando produtos...</p>
     </div>
@@ -1998,6 +2303,16 @@ tbody {
         </div>
         </div>
         </div>
+
+        <!-- NOVO: Modal apenas para a Descrição do Produto -->
+<div id="descriptionModal" class="description-modal">
+    <div class="description-modal-content">
+        <dav class="description-modal-close" onclick="closeDescriptionModal()">&times;</dav>
+        <h3 id="descriptionModalTitle"></h3>
+        <div id="descriptionModalText" class="modal-product-description"></div>
+    </div>
+</div>
+
         <button id="backToTopBtn" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
 
 <script>
@@ -2650,6 +2965,15 @@ function verificarDisponibilidadeProdutos() {
 function parseProductFromEntry(entry) {
     const entryTitle = entry.title.$t;
     const content = entry.content.$t;
+
+    // Limpa a descrição removendo tags de imagem e outras HTML, mas mantendo quebras de linha
+    const description = content
+        .replace(/<img[^>]*>/g, "")           // Remove todas as tags <img>
+        .replace(/<br\s*\/?>/ig, "\n")        // Converte <br> para quebras de linha
+        .replace(/<[^>]*>?/gm, '')            // Remove o restante das tags HTML
+        .replace(/&nbsp;/g, '')              // <-- CORREÇÃO ADICIONADA AQUI
+        .trim();                              // Remove espaços em branco no início e no fim                           // Remove espaços em branco no início e no fim
+
     let imageUrls = [];
     const imgRegex = /<img.*?src="(.*?)"/g;
     let imgMatch;
@@ -2691,6 +3015,7 @@ function parseProductFromEntry(entry) {
 
     return {
         name: entryTitle,
+        description: description, // <-- NOVA PROPRIEDADE ADICIONADA
         price: discountedPrice,
         originalPrice: price,
         imageUrls: imageUrls,
@@ -2754,17 +3079,14 @@ function filterByCategory(category) {
 
 function displayProducts() {
     const productListElement = document.getElementById('productList');
-    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim(); // Pega o termo da pesquisa
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
     productListElement.innerHTML = '';
 
-    // Filtra os produtos com base na categoria, disponibilidade E TERMO DE PESQUISA
     const filteredProducts = products.filter(product => {
         if (!product.available) return false;
-
         const matchesCategory = currentCategory === 'all' || (product.categories && product.categories.includes(currentCategory));
         const matchesSearch = product.name.toLowerCase().includes(searchTerm);
-
-        return matchesCategory && matchesSearch; // O produto deve corresponder a ambos os filtros
+        return matchesCategory && matchesSearch;
     });
 
     if (filteredProducts.length === 0) {
@@ -2778,16 +3100,12 @@ function displayProducts() {
     const currentProducts = filteredProducts.slice(startIndex, endIndex);
 
     currentProducts.forEach(product => {
-        // O resto do código que cria o HTML do produto continua exatamente o mesmo...
         const productDiv = document.createElement('article');
         productDiv.classList.add('product');
-        // ... (todo o seu código de criação de sliders, selects, botões, etc.)
-        // Copie e cole o interior da sua função displayProducts original a partir daqui.
-        
+
         // --- Image Slider ---
         const imageSliderContainer = document.createElement('div');
         imageSliderContainer.classList.add('image-slider-container');
-
         const imageSlider = document.createElement('div');
         imageSlider.classList.add('image-slider');
         imageSlider.dataset.currentSlide = 0;
@@ -2796,7 +3114,7 @@ function displayProducts() {
             const img = document.createElement('img');
             img.src = imageUrl;
             img.alt = product.name;
-            img.loading = 'lazy'; // Boa prática de performance
+            img.loading = 'lazy';
             img.classList.add('slider-image');
             img.addEventListener('click', () => openFullscreenImage(imageUrl));
             imageSlider.appendChild(img);
@@ -2807,12 +3125,10 @@ function displayProducts() {
             prevButton.classList.add('slider-button', 'prev');
             prevButton.innerHTML = '<i class="fas fa-chevron-left"></i>';
             prevButton.addEventListener('click', () => prevSlide(imageSlider));
-
             const nextButton = document.createElement('button');
             nextButton.classList.add('slider-button', 'next');
             nextButton.innerHTML = '<i class="fas fa-chevron-right"></i>';
             nextButton.addEventListener('click', () => nextSlide(imageSlider));
-            
             imageSliderContainer.appendChild(prevButton);
             imageSliderContainer.appendChild(nextButton);
         }
@@ -2839,6 +3155,7 @@ function displayProducts() {
 
         const discountBadgeHTML = product.discount > 0 ? `<div class="discount-badge">-${product.discount}%</div>` : '';
 
+        // ATENÇÃO: A descrição foi REMOVIDA daqui para não quebrar o layout.
         const infoHTML = `
             ${discountBadgeHTML}
             <h3>${product.name}</h3>
@@ -2858,9 +3175,18 @@ function displayProducts() {
 
         const productDivs = document.createElement('div');
         productDivs.classList.add('button-group-carousel');
+
+        if (product.description && product.description.trim().length > 0) {
+            const detailsButton = document.createElement('button');
+            detailsButton.className = 'btn-details'; // Usando uma nova classe para estilizar
+            detailsButton.textContent = 'Veja todos os detalhes';
+            detailsButton.onclick = () => showDescriptionModal(product.name);
+            productDivs.appendChild(detailsButton);
+        }
         
         productDivs.appendChild(CriaBotaoAdicionarAoCarrinho(product));
         productDivs.appendChild(CriaBotaoComprarAgora(product));
+        
         productDiv.appendChild(productDivs);
 
         productListElement.appendChild(productDiv);
@@ -2871,6 +3197,44 @@ function displayProducts() {
     });
 
     updatePaginationButtons(filteredProducts.length);
+}
+
+function showDescriptionModal(productName) {
+    const product = products.find(p => p.name === productName);
+    if (!product) return;
+
+    const modal = document.getElementById('descriptionModal');
+    const modalTitle = document.getElementById('descriptionModalTitle');
+    const modalText = document.getElementById('descriptionModalText');
+
+    modalTitle.textContent = product.name;
+    modalText.innerHTML = product.description.replace(/\n/g, '<br>'); 
+
+    modal.classList.add('is-visible');
+}
+
+function closeDescriptionModal() {
+    const modal = document.getElementById('descriptionModal');
+
+    modal.classList.remove('is-visible');
+}
+
+// Atualize sua função window.onclick para fechar este novo modal também
+window.onclick = function(event) {
+    const productModal = document.getElementById('productDetailModal'); // Se você ainda tiver o modal antigo
+    const horariosModal = document.getElementById("horariosModal");
+    const descriptionModal = document.getElementById("descriptionModal"); // Novo modal
+    
+    if (event.target == productModal) {
+        closeProductDetails();
+    }
+    if (event.target == horariosModal) {
+        closeModalhorarios();
+    }
+    // Adiciona a verificação para o novo modal
+    if (event.target == descriptionModal) {
+        closeDescriptionModal();
+    }
 }
 
 // --- Slider Functions (com checagem e dataset por slider) ---
@@ -3052,38 +3416,48 @@ function updateCartDisplay() {
     
     cartList.innerHTML = '';
     cartListCheckout.innerHTML = '';
-
     let subtotal = 0;
 
     cart.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
         subtotal += itemTotal;
 
-        // --- NOVO HTML PARA O ITEM DO CARRINHO ---
+        // --- NOVO HTML PERSONALIZADO PARA O ITEM DO CARRINHO ---
         const li = document.createElement('li');
         li.classList.add('cart-item');
-        li.style.flexWrap = 'wrap'; // Permite que o conteúdo quebre a linha
         
+        // Constrói a string de opções (tamanho/sabor) de forma limpa
+        const optionsString = [item.selectedSize, item.selectedsabor].filter(Boolean).join(' / ');
+
         li.innerHTML = `
-            <img src="${item.imageUrl}" alt="${item.name}" style="flex-shrink: 0;">
-            <div style="flex-grow: 1; margin: 0 10px;">
-                <span>${item.name} ${item.selectedSize ? `(${item.selectedSize})` : ''} ${item.selectedsabor ? `(${item.selectedsabor})` : ''}</span>
-                <br>
-                <strong>${realBR(itemTotal)}</strong>
+            <img src="${item.imageUrl}" alt="${item.name}">
+            
+            <div class="cart-item-info">
+                <span class="item-name">${item.name}</span>
+                ${optionsString ? `<span class="item-options">${optionsString}</span>` : ''}
+                <strong class="item-price">${realBR(itemTotal)}</strong>
             </div>
-            <div class="cart-quantity-controls" style="display: flex; align-items: center; margin-top: 5px;">
-                <button class="remove-button" onclick="decreaseCartItemQuantity(${index})" style="padding: 5px 10px;">-</button>
-                <span style="padding: 0 10px; font-weight: bold;">${item.quantity}</span>
-                <button class="ButtonFinalizarCompra" onclick="increaseCartItemQuantity(${index})" style="padding: 5px 10px;">+</button>
-                <button class="remove-button" onclick="removeFromCart(${index})" style="margin-left: 15px; padding: 5px 10px;"><i class="fas fa-trash-alt"></i></button>
+
+            <div class="cart-quantity-controls">
+                 <!-- Wrapper extra para layout mobile -->
+                <div class="quantity-controls-wrapper">
+                    <button class="quantity-btn decrease" onclick="decreaseCartItemQuantity(${index})">-</button>
+                    <span class="quantity-display">${item.quantity}</span>
+                    <button class="quantity-btn increase" onclick="increaseCartItemQuantity(${index})">+</button>
+                </div>
+                <button class="trash-btn" onclick="removeFromCart(${index})" title="Remover item">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
             </div>
         `;
+        // --- FIM DO NOVO HTML ---
 
+        // HTML para a aba de checkout (mantido simples)
         const li1 = document.createElement('li');
         li1.classList.add('cart-item');
         li1.innerHTML = `
             <img src="${item.imageUrl}" alt="${item.name}">
-            <span>${item.name} ${item.selectedSize ? `(T: ${item.selectedSize})` : ''} ${item.selectedsabor ? `(S: ${item.selectedsabor})` : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal)}</span>
+            <span>${item.name} ${optionsString ? `(${optionsString})` : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal)}</span>
         `;
 
         cartList.appendChild(li);
@@ -3110,7 +3484,7 @@ function updateCartDisplay() {
     clearCartButton.disabled = !cartHasItems;
     generatePixButton.disabled = !cartHasItems;
 
-    carrinhoCheckoutDiv.style.display = cartHasItems ? 'block' : 'none';
+    carrinhocheckout.style.display = cartHasItems ? 'block' : 'none';
 }
 
 function updateMiniCartCount() {
@@ -3711,7 +4085,7 @@ mix-blend-mode: normal;
                     ${itemsList}
                 </ul>
                 ${order.deliveryFee > 0 ? `<p class="total"></strong>Taxa de Entrega:</strong> ${realBR(order.deliveryFee)}</p>` : ''}
-                <p class="total"><strong>Total:</strong> R$ ${order.total}</p>
+                <p class="total"><strong>Total:</strong> ${realBR(order.total)}</p>
                 <footer class="rodape">
                 <p> ${whatsapp ? `📞 Contato: ${whatsapp}` : ``} ${emailEndereco ? `| ✉️ E-mail: ${emailEndereco},` : ``}</p>
                 <p><strong>📍 Endereço:</strong></p>
@@ -4102,6 +4476,7 @@ function loadCarouselProducts() {
     let quantityHTML = '';
     let discountBadgeHTML = '';
     let saborHTML = '';
+
     carouselProducts.forEach(product => {
         if (!product.available) return;
 
@@ -4137,9 +4512,13 @@ function loadCarouselProducts() {
         `;
 
         // --- Desconto ---
-        const discountBadgeHTML = product.discount > 0
-            ? `<div class="discount-carrossel">-${product.discount}%</div>`
-            : '';
+        const discountBadgeHTML = product.discount > 0 ? `<div class="discount-carrossel">-${product.discount}%</div>` : '';
+         let detailsButtonHTML = '';
+        if (product.description && product.description.trim().length > 0) {
+            // Usamos aspas simples dentro do onclick para passar o nome do produto como string
+            detailsButtonHTML = `<button class="btn-details" onclick="showDescriptionModal('${product.name}')">Veja todos os detalhes</button>`;
+        }
+
 
         // --- Estrutura do item ---
         carouselItem.innerHTML = `
@@ -4156,6 +4535,7 @@ function loadCarouselProducts() {
                 ${sizesHTML}
                 ${saborHTML}
                 ${quantityHTML}
+                ${detailsButtonHTML}
                 <button class="add-to-cart-button" onclick="carouseladdToCart(this, '${product.name}')">Adicionar ao Carrinho</button>
                 <button class="buy-now-button" onclick="buyNowCarousel(this, '${product.name}')">Comprar Agora</button>
             </div>
