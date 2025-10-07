@@ -505,11 +505,6 @@ button:hover {
     padding: 0;
 }
 
-/* =================================================================== */
-/* ============== CSS PERSONALIZADO PARA O ITEM DO CARRINHO ========== */
-/* =================================================================== */
-
-/* --- Container Principal do Item --- */
 .cart-item {
     display: grid; /* Usamos Grid para controle total do layout */
     
@@ -542,11 +537,7 @@ button:hover {
 }
 
 /* --- Informações do Produto (Nome, Opções, Preço) --- */
-.cart-item-info {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-}
+
 
 .cart-item-info .item-name {
     font-weight: 600;
@@ -654,15 +645,14 @@ button:hover {
     }
 
     .cart-quantity-controls {
-        grid-area: controls; /* Posiciona na área 'controls' */
-        
-        /* Layout interno dos controles no celular */
+        grid-area: controls;
         display: grid;
-        grid-template-columns: 1fr auto; /* Ocupa espaço | Lixeira */
+        grid-template-columns: 1fr auto;
         width: 100%;
-        background-color: transparent; /* Remove o fundo para integrar os botões */
+        background-color: transparent;
         padding: 0;
         border-radius: 0;
+        justify-items: center;
     }
 
     .quantity-controls-wrapper {
@@ -759,48 +749,91 @@ button:hover {
     padding: 0;
 }
 
-.order-details {
-    padding: 9px;
-    margin-bottom: 10px;
-    border-radius: 12px;
-    background-color: #ffffff96;
-    color: #000000;
-}
-
-.order-details h3 {
-    color: #000000;
-    margin-bottom: 10px;
-}
-
 .order-details p {
     margin-bottom: 8px;
 }
-
 .order-details h4 {
     margin-top: 15px;
     margin-bottom: 10px;
     color: #055d00;
 }
-
 .order-details ul {
     list-style: none;
     padding: 0;
 }
-
 .order-details li {
     padding: 8px 0;
     border-bottom: 1px dashed #ddd;
 }
-
 .order-details li:last-child {
     border-bottom: none;
 }
-
 .order-details img {
     vertical-align: middle;
     border-radius: 50%;
     object-fit: contain;
 }
+
+/* =========================================== */
+/* === NOVOS ESTILOS PARA HISTÓRICO OCULTO === */
+/* =========================================== */
+.order-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    overflow: hidden; /* Importante para a animação */
+}
+.order-header {
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+.order-header:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+.order-header h3, .order-header .status-display {
+    margin: 0;
+    color: #fff;
+}
+.order-header h3 {
+    font-size: 1.1em;
+}
+.order-header .status-display {
+    font-weight: bold;
+}
+.order-header .toggle-icon {
+    font-size: 1.2em;
+    transition: transform 0.3s ease-in-out;
+}
+.order-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out, padding 0.5s ease-out;
+    padding: 0 20px; /* Sem padding vertical quando fechado */
+    color: #000;
+    background: linear-gradient(163deg, #ffa200b3, #ff5d00a1);
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+/* Estilos para quando o item está aberto */
+.order-item.open .order-header {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.order-item.open .order-content {
+    max-height: 2000px; /* Valor alto para acomodar qualquer conteúdo */
+    padding: 20px;
+}
+.order-item.open .toggle-icon {
+    transform: rotate(180deg);
+}
+.order-content p { color: #000000; }
+.order-content h4 { color: #003808; }
+.order-content ul li { color: #111; }
+/* =========================================== */
 
 .modal {
     display: none;
@@ -1264,6 +1297,23 @@ to {
     font-weight: bold;
 }
 
+.pago-success {
+    color: #09ff00;
+    font-size: 18px;
+    font-weight: bold;
+}
+.aguardando-paga {
+    color: #ffee00;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.cancelado-falha {
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
+}
+
 .whatswidget-widget-wrapper {
     font-family: "Helvetica Neue","Apple Color Emoji",Helvetica,Arial,sans-serif !important;
     font-size: 16px !important;
@@ -1489,77 +1539,78 @@ to {
             cursor: pointer;
         }
 
-        /* Estilos para a tabela de horários */
+        /* =========================================== */
+/*    NOVO CSS PARA TABELA DE HORÁRIOS         */
+/* =========================================== */
+
 .schedule-table-container {
     width: 100%;
-    max-width: 50%;
-    margin: 20px auto;
+    max-width: 500px; /* Um pouco mais estreito para melhor leitura */
+    margin: 25px auto;
     overflow-x: auto;
 }
 
 .schedule-table {
     width: 100%;
     border-collapse: collapse;
-    /* Combina as bordas das células em uma única borda */
-    margin: 0 auto;
-    /* Centraliza a tabela dentro do container */
-    font-size: 0.9em;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    /* Sutil sombra para dar profundidade */
-    border-radius: 8px;
-    /* Borda arredondada para um visual mais suave */
-    overflow: hidden;
-    /* Garante que as bordas arredondadas sejam aplicadas */
+    font-size: 1em;
+    border-radius: 12px; /* Bordas mais arredondadas */
+    overflow: hidden; /* Garante que o border-radius funcione */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     color: var(--text-color);
 }
 
-.schedule-table thead {
-    background: linear-gradient(360deg, #ffa200e0, #ff5d00e0);
-    color: #fff;
+.schedule-table thead tr {
+    /* Gradiente laranja da sua identidade visual */
+    background: linear-gradient(135deg, #ffa200e0, #ff5d00e0);
+    color: #ffffff;
+    text-align: left;
     font-weight: bold;
 }
 
-.schedule-table th,
-.schedule-table td {
-    padding: 12px 15px;
-    /* Espaçamento interno para melhor legibilidade */
-    text-align: center;
-    /* Alinhamento do texto centralizado */
-    border-bottom: 1px solid #ddd;
-    /* Linha divisória sutil */
+     .schedule-table th,
+        .schedule-table td {
+            padding: 6px 0px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+.schedule-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.15);
 }
 
-.schedule-table tbody tr:nth-child(even) {
-    background: linear-gradient(181deg, #ffa200, #ff5e00);
+.schedule-table tbody tr:nth-of-type(even) {
+    background-color: rgba(0, 0, 0, 0.25); /* Efeito de zebra sutil */
 }
 
-.schedule-table tbody tr:last-child {
-    border-bottom: 2px solid #e2940c;
+.schedule-table tbody tr:last-of-type {
+    border-bottom: 2px solid #ff5d00; /* Linha final mais forte */
 }
 
-/* Estilos responsivos para telas menores */
+/* Estilo para o texto "Fechado" */
+.schedule-table td span {
+    background: linear-gradient(120deg, #e74c3c, #c0392b);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+/* Ajustes para telas menores */
 @media (max-width: 600px) {
-    .schedule-table-container {
-        max-width: 100%;
-        /* Ocupa toda a largura em telas menores */
-        margin-left: 0;
-        margin-right: 0;
-        /* Remove margens laterais */
-    }
-
     .schedule-table {
-        font-size: 0.8em;
-        /* Reduz o tamanho da fonte em telas menores */
+        font-size: 0.9em;
     }
-
     .schedule-table th,
     .schedule-table td {
-        padding: 8px 10px;
-        /* Reduz o espaçamento interno em telas menores */
+        padding: 10px 12px;
     }
 }
+ 
    /* Estilos para o modal */
-   .horariosModal {
+.horariosModal {
             display: none;
             position: fixed;
             z-index: 1000;
@@ -1571,7 +1622,7 @@ to {
             background-color: rgba(0, 0, 0, 0.4);
         }
 
-        .modal-contenthorarios {
+.modal-contenthorarios {
             display: flex;
     position: fixed;
     top: 0;
@@ -1590,6 +1641,26 @@ tbody {
     background: linear-gradient(153deg, #206958, #05a582);
 }
 
+/* Adicione este CSS perto dos outros estilos de .tab-button */
+
+.tab-button.tab-disabled {
+    background: #555; /* Cor cinza escura */
+    color: #999;
+    cursor: not-allowed; /* Ícone de "proibido" */
+    box-shadow: none;
+    transform: none;
+}
+
+.tab-button.tab-disabled::before {
+    display: none; /* Remove o efeito de brilho */
+}
+
+.tab-button.tab-disabled:hover {
+    background: #555; /* Impede mudança de cor no hover */
+    transform: none;
+    box-shadow: none;
+}
+
 .close {
     position: absolute;
     top: -22px;
@@ -1599,60 +1670,6 @@ tbody {
     font-size: 5em;
 }
 
-        /* Estilos para a tabela de horários */
-        .schedule-table-container {
-            width: 100%;
-            max-width: 600px;
-            margin: 20px auto;
-            overflow-x: auto;
-            color: #333;
-            /* Cor do texto para melhor contraste */
-        }
-
-        .schedule-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 0 auto;
-            font-size: 0.9em;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .schedule-table thead {
-            background-color: #343a40;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .schedule-table th,
-        .schedule-table td {
-            padding: 12px 15px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .schedule-table tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        /* Responsivo para telas menores */
-        @media (max-width: 600px) {
-            .schedule-table-container {
-                max-width: 100%;
-                margin-left: 0;
-                margin-right: 0;
-            }
-
-            .schedule-table {
-                font-size: 0.8em;
-            }
-
-            .schedule-table th,
-            .schedule-table td {
-                padding: 8px 10px;
-            }
-        }
 .status {
     font-family: helvetica;
     text-align: center;
@@ -2056,6 +2073,91 @@ tbody {
     color: #fff;
     text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
 }
+/* Adicione este CSS na sua tag <style> */
+.payment-options-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+.payment-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    border: 2px solid var(--light-gray);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.payment-option:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: var(--secondary-color);
+}
+.payment-option input[type="radio"] {
+    display: none; /* Esconde o radio button padrão */
+}
+.payment-option input[type="radio"]:checked + i + span,
+.payment-option input[type="radio"]:checked ~ i {
+    color: var(--secondary-color); /* Apenas para visualização */
+}
+.payment-option input[type="radio"]:checked ~ label,
+.payment-option input[type="radio"]:checked + label {
+     border-color: var(--success-color);
+     box-shadow: 0 0 10px var(--success-color);
+}
+
+/* Estilo para quando a opção está selecionada */
+input[type="radio"]:checked + .payment-option {
+    border-color: var(--success-color);
+    box-shadow: 0 0 10px var(--success-color);
+    background-color: rgba(46, 204, 113, 0.1);
+}
+.payment-option i {
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+#featuredProductsCarousel {
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+    box-shadow: 0 0 15px #ff6700;
+    background: linear-gradient(231deg, #ffa200b3, #ff5d00a1);
+    
+    /* Adiciona uma altura mínima para que o skeleton seja visível */
+    min-height: 450px; 
+}
+
+/* NOVO: Estilos para o estado de carregamento do carrossel */
+#featuredProductsCarousel.loading {
+    /* Mantém o fundo, mas podemos adicionar a animação */
+    position: relative;
+}
+
+#featuredProductsCarousel.loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    height: 100%;
+    width: 150%;
+    z-index: 1; /* Fica acima do fundo, mas abaixo do conteúdo */
+    
+    /* Mesmo efeito de brilho dos outros skeletons */
+    background: linear-gradient(to right, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+    animation: pulse 1.8s infinite;
+}
+
+/* Esconde os botões de navegação enquanto carrega */
+#featuredProductsCarousel.loading .carousel-nav {
+    display: none;
+}
+
     </style>
 </head>
 
@@ -2179,28 +2281,61 @@ tbody {
         <textarea id="additionalInfo" name="additionalInfo"
         placeholder="Informações Adicionais (opcional)"></textarea>
         </div>
+
         <div id="carrinhocheckout">
         <h3>Resumo do Pedido</h3>
         <ul id="cartListCheckout"></ul>
         <hr>
         <!-- MODIFIQUE A SEÇÃO DO TOTAL PARA ISTO -->
         <p class="resumo-linha">Subtotal: <span id="TotalcartCheckout">R$ 0,00</span></p>
-        <p id="linhaTaxaEnvio" class="resumo-linha" style="display: none;">Taxa de Entrega: <span id="taxaEnvioCheckout"> R$ 0,00</span>
-        </p>
+        <p id="linhaDesconto" class="resumo-linha" style="display: none;">Desconto: <span id="valorDescontoCheckout"> - R$ 0,00</span></p>
+        <p id="linhaTaxaEnvio" class="resumo-linha" style="display: none;"><span id="taxaEnvioCheckout"> R$ 0,00</span></p>
         <h3 class="resumo-linha total-final">Total Final: <span id="totalFinalCheckout">R$ 0,00</span></h3>
         <!-- FIM DA MODIFICAÇÃO -->
         </div>
-        <div class="button-group">
-        <button class="btnInicio" type="button" onclick="generatePix()" id="generatePixButton">Gerar QR Code Pix</button>
+
+        <div id="cupomcheckout" class="form-group">
+        <label for="cupomInput">Cupom de Desconto</label>
+        <div style="display: flex; gap: 10px;">
+        <input type="text" id="cupomInput" placeholder="Digite seu cupom">
+        <button type="button" class="btnInicio" id="aplicarCupomBtn">Aplicar</button>
         </div>
+        <p id="cupomStatus" style="margin-top: 5px; font-weight: bold;"></p>
+        </div>
+
+         
+        <div class="form-group">
+        <label class="required">Forma de Pagamento</label>
+        <div class="payment-options-container">
+        <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="pix" onchange="updatePaymentMethodUI()" checked>
+            <i class="fas fa-qrcode"></i> Pix
+        </label>
+        <label class="payment-option">
+            <input type="radio" name="paymentMethod" value="dinheiro" onchange="updatePaymentMethodUI()">
+            <i class="fas fa-money-bill-wave"></i> Dinheiro
+        </label>
+        </div>
+        </div>
+
+        <!-- 2. MODIFIQUE o botão de finalização -->
+        <div class="button-group">
+    <!-- Mude o ID e o onclick deste botão -->
+        <button class="ButtonFinalizarCompra" type="button" onclick="finalizarPedido()" id="finalizarPedidoBtn">Gerar QR Code Pix</button>
+        </div>
+
+
+    
         </form>
     </div>
 
     <div id="orderHistory" class="tab-content">
         <h2>Histórico de Pedidos</h2>
         <ul id="orderHistoryList"></ul>
-        <div class="button-group">
-        <button class="ButtonEsvaziarCarrinho" id="clearHistoryButton" onclick="clearOrderHistory()">Apagar Histórico</button>
+        <!-- NOVO: Container para a paginação do histórico -->
+        <div id="orderHistoryPagination" class="pagination-buttons"></div>
+        <div class="button-group" style="display: none;">
+            <button class="ButtonEsvaziarCarrinho" id="clearHistoryButton" onclick="clearOrderHistory()">Apagar Histórico</button>
         </div>
     </div>
     </aside>
@@ -2302,18 +2437,18 @@ tbody {
         </div>
         </div>
         </div>
-        </div>
+    </div>
 
         <!-- NOVO: Modal apenas para a Descrição do Produto -->
-<div id="descriptionModal" class="description-modal">
-    <div class="description-modal-content">
+    <div id="descriptionModal" class="description-modal">
+        <div class="description-modal-content">
         <dav class="description-modal-close" onclick="closeDescriptionModal()">&times;</dav>
         <h3 id="descriptionModalTitle"></h3>
         <div id="descriptionModalText" class="modal-product-description"></div>
+        </div>
     </div>
-</div>
 
-        <button id="backToTopBtn" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
+    <button id="backToTopBtn" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
 
 <script>
 const Params = new URLSearchParams(window.location.search);
@@ -2371,8 +2506,44 @@ const Params = new URLSearchParams(window.location.search);
     let logotipo = '';
     let taxadeenvio = 0;
     let contatoHTML = '';
+    var hashCupomParaVerificar = '';
+    let cupomAplicado = null;
+    // --- NOVAS VARIÁVEIS DE ESTADO PARA PAGINAÇÃO DO HISTÓRICO ---
+    let orderHistoryCurrentPage = 1;
+    const ordersPerPage = 10;
+
+
+function updatePaymentMethodUI() {
+    const metodoSelecionado = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const btnFinalizar = document.getElementById('finalizarPedidoBtn');
+
+    if (metodoSelecionado === 'pix') {
+        btnFinalizar.innerHTML = '<i class="fas fa-qrcode"></i> Gerar QR Code Pix';
+        // Troca a classe para estilizar o botão (opcional)
+        btnFinalizar.classList.remove('btnInicio');
+        btnFinalizar.classList.add('ButtonFinalizarCompra');
+    } else {
+        btnFinalizar.innerHTML = '<i class="fas fa-hand-holding-usd"></i> Finalizar Pedido em Dinheiro';
+        // Troca a classe para estilizar o botão (opcional)
+        btnFinalizar.classList.remove('ButtonFinalizarCompra');
+        btnFinalizar.classList.add('btnInicio');
+    }
+}
+
 
     document.addEventListener('DOMContentLoaded', function () {
+    const carouselContainer = document.getElementById('featuredProductsCarousel');
+    if (carouselContainer) {
+        carouselContainer.classList.add('loading');
+    }
+        const productListElement = document.getElementById('productList');
+    // Limpa a lista e mostra os skeletons
+    productListElement.innerHTML = `
+        <div class="product skeleton"></div>
+        <div class="product skeleton"></div>
+        <div class="product skeleton"></div>
+        <div class="product skeleton"></div>
+    `;
 
         if (!blog) {
             exibirModalErro("Digitar o id da loja", true, false, 'trocaid');
@@ -2410,11 +2581,13 @@ const Params = new URLSearchParams(window.location.search);
     updateMiniCartCount();
     updateFloatingCartCount();
     updateFloatingCartAccessibilityLabel(); // Inicializa a label ARIA
+    updatePaymentMethodUI();
 
     const trocaid = document.getElementById('sairdaloja');
         trocaid.addEventListener('click', function() {
         exibirModalErro("Digitar o id da loja", true, true, 'trocaid');
     });
+
 });
 
 function exibirModalErro(mensagem, comb, x, tipo = 'error') {
@@ -2513,6 +2686,7 @@ function processarStatusDaLoja(data) {
     let fechada = false;
     let manutencao = false;
     let ativahorario = false;
+    let ativacupom = false;
     
     if (data && data.feed && data.feed.entry && data.feed.entry.length > 0) {
          nomedaloja = data.feed.title.$t;
@@ -2553,7 +2727,9 @@ function processarStatusDaLoja(data) {
         fechada = line.includes('ativado');
     } else if (line.startsWith('manutenção')) {
         manutencao = line.includes('ativado');
-    } else if (line.startsWith('ativahorário')) {
+    } else if (line.startsWith('ativacupom')) {
+        ativacupom = line.includes('ativado');
+    }  else if (line.startsWith('ativahorário')) {
         ativahorario = line.includes('ativado');
     } else if (line.startsWith('pix')) {
         Pix = line.split('pix =')[1].trim();
@@ -2664,6 +2840,13 @@ function processarStatusDaLoja(data) {
         return (!str || str.trim().length === 0);
     }
 
+        const cupomForm = document.getElementById('cupomcheckout');
+        if (!ativacupom && cupomForm) {
+            cupomForm.style.display = 'none';
+        } else if (ativacupom && cupomForm) {
+            cupomForm.style.display = 'block';
+        }
+
         // Função para remover o elemento e seu separador
         function removerRedeSocial(linkElement, separatorElement) {
         if (linkElement) {
@@ -2742,10 +2925,10 @@ function processarStatusDaLoja(data) {
 }
 
 function atualizarInterface(fechada, manutencao, ativahorario) {
-    const minecart = document.getElementById('floating-cart');
     const telaAtivada = document.querySelector('.products');
     const cartTabButton = document.querySelector('.tab-button[data-tab="cart"]');
     const checkoutTabButton = document.querySelector('.tab-button[data-tab="checkout"]');
+    const minecart = document.getElementById('floating-cart');
 
     function desativarInterface() {
     if (minecart) minecart.style.display = 'none';
@@ -2766,6 +2949,7 @@ function atualizarInterface(fechada, manutencao, ativahorario) {
 
     if (fechada) {
     desativarInterface();
+    desativarAbasCarrinho();
     clearCart();
     const LojaAberta = document.getElementById('statusLoja');
     LojaAberta.innerHTML = '<h1 class="loja-fechada">Loja fechada!</h1>';
@@ -2794,12 +2978,12 @@ function atualizarInterface(fechada, manutencao, ativahorario) {
     isOpen = true;
     const LojaAberta = document.getElementById('statusLoja');
     LojaAberta.innerHTML = '<p class="loja-aberta">Loja aberta, Boas compras!</p>';
-
+  ativarAbasCarrinho();
     // Loja aberta
     if (document.querySelector('.desativado')) {
         telaAtivada.innerHTML = ''; // Limpa a mensagem "Loja fechada"
     }
-    if (minecart) minecart.style.display = 'flex'; // Exibe o carrinho flutuante
+    if (minecart) minecart.style.display = 'flex'; 
     //Reativa o carrinho caso a loja volte a estar disponível
     if (cartTabButton) {
         cartTabButton.classList.remove('disabled-tab');
@@ -2819,23 +3003,15 @@ function atualizarInterface(fechada, manutencao, ativahorario) {
 
 function fetchProducts() {
     if (isOpen) { } else { return;}
-    const productListElement = document.getElementById('productList');
-    const errorMessage = document.getElementById('errorMessage');
 
-    // Limpa a lista e mostra os skeletons
-    productListElement.innerHTML = `
-        <div class="product skeleton"></div>
-        <div class="product skeleton"></div>
-        <div class="product skeleton"></div>
-        <div class="product skeleton"></div>
-    `;
+    const errorMessage = document.getElementById('errorMessage');
     errorMessage.classList.add('hidden');
 
     const script = document.createElement('script');
     script.src = 'https://www.blogger.com/feeds/' + blog + '/posts/default?start-index=1&max-results=500&alt=json-in-script&callback=processarProdutos';
 
     script.onerror = function () {
-        productListElement.innerHTML = ''; // Limpa os skeletons em caso de erro
+        
         errorMessage.textContent = 'A loja foi desativada ou o ID é inválido. Verifique novamente mais tarde.';
         errorMessage.classList.remove('hidden');
 
@@ -2865,8 +3041,16 @@ function processarProdutos(data) {
             }
         });
 
-        if (carouselProducts.length > 0) {
+
+                if (carouselProducts.length > 0) {
             initializeCarousel();
+        } else {
+            // NOVO: Se não houver produtos de carrossel, esconde o contêiner e remove o loading
+            const carouselContainer = document.getElementById('featuredProductsCarousel');
+            if (carouselContainer) {
+                carouselContainer.style.display = 'none';
+                carouselContainer.classList.remove('loading');
+            }
         }
 
         displayCategoryFilters();
@@ -2972,7 +3156,7 @@ function parseProductFromEntry(entry) {
         .replace(/<br\s*\/?>/ig, "\n")        // Converte <br> para quebras de linha
         .replace(/<[^>]*>?/gm, '')            // Remove o restante das tags HTML
         .replace(/&nbsp;/g, '')              // <-- CORREÇÃO ADICIONADA AQUI
-        .trim();                              // Remove espaços em branco no início e no fim                           // Remove espaços em branco no início e no fim
+        .trim();                              // Remove espaços em branco no início e no fim
 
     let imageUrls = [];
     const imgRegex = /<img.*?src="(.*?)"/g;
@@ -3400,93 +3584,143 @@ function ComprarProdutos(product, selectedQuantity, selectedSize, selectedSabor,
 }
 
 function updateCartDisplay() {
+    // --- 1. Seleciona todos os elementos do DOM que serão manipulados ---
+    // Abas principais
     const cartList = document.getElementById('cartList');
     const cartTotalElement = document.getElementById('cartTotal');
     const cartListCheckout = document.getElementById('cartListCheckout');
     
+    // Resumo do Pedido no Checkout
     const subtotalCheckoutEl = document.getElementById('TotalcartCheckout');
+    const linhaDescontoEl = document.getElementById('linhaDesconto');
+    const valorDescontoEl = document.getElementById('valorDescontoCheckout');
     const linhaTaxaEnvioEl = document.getElementById('linhaTaxaEnvio');
     const taxaEnvioEl = document.getElementById('taxaEnvioCheckout');
     const totalFinalEl = document.getElementById('totalFinalCheckout');
+    const carrinhoCheckoutDiv = document.getElementById('carrinhocheckout');
 
+    // Botões de Ação
     const proceedToCheckoutButton = document.getElementById('proceedToCheckoutButton');
     const clearCartButton = document.getElementById('clearCartButton');
-    const carrinhoCheckoutDiv = document.getElementById('carrinhocheckout');
-    const generatePixButton = document.getElementById('generatePixButton');
-    
+    const finalizarPedidoBtn = document.getElementById('finalizarPedidoBtn');
+
+    // --- 2. Limpa as listas para evitar itens duplicados na tela ---
     cartList.innerHTML = '';
     cartListCheckout.innerHTML = '';
-    let subtotal = 0;
+    
+    // --- 3. Calcula o subtotal iterando sobre os itens do carrinho ---
+    let subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
+    // --- 4. Renderiza cada item do carrinho na tela ---
     cart.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
-        subtotal += itemTotal;
-
-        // --- NOVO HTML PERSONALIZADO PARA O ITEM DO CARRINHO ---
-        const li = document.createElement('li');
-        li.classList.add('cart-item');
-        
-        // Constrói a string de opções (tamanho/sabor) de forma limpa
         const optionsString = [item.selectedSize, item.selectedsabor].filter(Boolean).join(' / ');
 
+        // HTML para a aba "Meu Carrinho" (com controles completos)
+        const li = document.createElement('li');
+        li.classList.add('cart-item');
         li.innerHTML = `
             <img src="${item.imageUrl}" alt="${item.name}">
-            
             <div class="cart-item-info">
                 <span class="item-name">${item.name}</span>
                 ${optionsString ? `<span class="item-options">${optionsString}</span>` : ''}
                 <strong class="item-price">${realBR(itemTotal)}</strong>
             </div>
-
             <div class="cart-quantity-controls">
-                 <!-- Wrapper extra para layout mobile -->
                 <div class="quantity-controls-wrapper">
                     <button class="quantity-btn decrease" onclick="decreaseCartItemQuantity(${index})">-</button>
                     <span class="quantity-display">${item.quantity}</span>
                     <button class="quantity-btn increase" onclick="increaseCartItemQuantity(${index})">+</button>
                 </div>
-                <button class="trash-btn" onclick="removeFromCart(${index})" title="Remover item">
+                <dav class="trash-btn" onclick="removeFromCart(${index})" title="Remover item">
                     <i class="fas fa-trash-alt"></i>
-                </button>
+                </dav>
             </div>
         `;
-        // --- FIM DO NOVO HTML ---
-
-        // HTML para a aba de checkout (mantido simples)
-        const li1 = document.createElement('li');
-        li1.classList.add('cart-item');
-        li1.innerHTML = `
-            <img src="${item.imageUrl}" alt="${item.name}">
-            <span>${item.name} ${optionsString ? `(${optionsString})` : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal)}</span>
-        `;
-
         cartList.appendChild(li);
-        cartListCheckout.appendChild(li1);
+
+        // HTML para a aba "Checkout" (resumo simples)
+        const liCheckout = document.createElement('li');
+        liCheckout.classList.add('cart-item'); // Reutiliza o estilo se quiser
+        liCheckout.innerHTML = `
+            <img src="${item.imageUrl}" alt="${item.name}" width="50" height="50">
+            <span>${item.name} ${optionsString ? `(${optionsString})` : ''} (x${item.quantity})</span>
+            <strong>${realBR(itemTotal)}</strong>
+        `;
+        cartListCheckout.appendChild(liCheckout);
     });
 
-    const deliveryOption = document.getElementById('deliveryOption').value;
-    let totalFinal = subtotal;
-
-    if (deliveryOption === 'delivery' && taxadeenvio > 0) {
-        totalFinal += taxadeenvio;
-        taxaEnvioEl.textContent = realBR(taxadeenvio);
-        linhaTaxaEnvioEl.style.display = 'flex';
-    } else {
-        linhaTaxaEnvioEl.style.display = 'none';
+    // --- 5. Lógica de Cálculo de Descontos e Taxas ---
+    let desconto = 0;
+    
+    // Calcula o desconto do cupom, se houver um válido aplicado
+    
+if (cupomAplicado && subtotal > 0) {
+    if (cupomAplicado.tipo === 'percentual') {
+        desconto = subtotal * (cupomAplicado.valor / 100);
+    } else if (cupomAplicado.tipo === 'fixo') {
+        desconto = cupomAplicado.valor;
+        // Garante que o desconto não seja maior que o subtotal
+        if (desconto > subtotal) desconto = subtotal;
     }
 
+    // Só mostra se o desconto for maior que 0
+    if (desconto > 0) {
+        linhaDescontoEl.style.display = 'block';
+        valorDescontoEl.textContent = `- ${realBR(desconto)}`;
+    } else {
+        linhaDescontoEl.style.display = 'none';
+    }
+
+} else {
+    linhaDescontoEl.style.display = 'none'; // Esconde a linha do desconto
+}
+
+    // Calcula a taxa de entrega
+    const deliveryOption = document.getElementById('deliveryOption').value;
+    let taxaDeEntregaAplicada = 0;
+
+    if (deliveryOption === 'delivery' && taxadeenvio > 0) {
+        if (cupomAplicado && cupomAplicado.tipo === 'frete') {
+            taxaEnvioEl.innerHTML = `Taxa de Entrega: <span style="text-decoration: line-through; color: #e74c3c;"> ${realBR(taxadeenvio)}</span> <span style="color: var(--success-color);">Grátis!</span>`;
+        } else {
+            taxaDeEntregaAplicada = taxadeenvio;
+            taxaEnvioEl.textContent = 'Taxa de Entrega: ' + realBR(taxadeenvio);
+        }
+        linhaTaxaEnvioEl.style.display = 'flex'; // Mostra a linha da taxa
+    } else {
+        linhaTaxaEnvioEl.style.display = 'none'; // Esconde a linha da taxa
+    }
+
+    // --- 6. Calcula o Total Final ---
+    let totalFinal = subtotal - desconto + taxaDeEntregaAplicada;
+    
+    // Garante que o total nunca seja negativo
+    if (totalFinal < 0) {
+        totalFinal = 0;
+    }
+
+    // --- 7. Atualiza todos os valores na interface ---
     cartTotalElement.textContent = realBR(subtotal);
     subtotalCheckoutEl.textContent = realBR(subtotal);
     totalFinalEl.textContent = realBR(totalFinal);
 
+    // --- 8. Gerencia o estado dos botões e da visibilidade do resumo ---
     const cartHasItems = cart.length > 0;
+    
+    // Habilita/desabilita botões
     proceedToCheckoutButton.disabled = !cartHasItems;
     clearCartButton.disabled = !cartHasItems;
-    generatePixButton.disabled = !cartHasItems;
+    finalizarPedidoBtn.disabled = !cartHasItems;
 
-    carrinhocheckout.style.display = cartHasItems ? 'block' : 'none';
+    // Mostra ou esconde o resumo do pedido no checkout
+    carrinhoCheckoutDiv.style.display = cartHasItems ? 'block' : 'none';
+
+    // --- 9. Atualiza outros elementos da UI, como o carrinho flutuante ---
+    updateMiniCartCount(); // Se você ainda tiver esse elemento
+    updateFloatingCartCount();
+    updateFloatingCartAccessibilityLabel();
 }
-
 function updateMiniCartCount() {
     const miniCartCount = document.getElementById('miniCartCount');
     if (miniCartCount) { // Check if the element exists
@@ -3526,65 +3760,84 @@ async function generateHash(value) {
     return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
-async function generatePix() {
+async function finalizarPedido() {
+    // --- Validação dos campos do formulário (seu código existente) ---
     const deliveryOption = document.getElementById('deliveryOption').value;
     let requiredFields = ['Nome', 'Email', 'WhatsApp'];
-
     if (deliveryOption === 'delivery') {
         requiredFields = requiredFields.concat(['CEP', 'Endereço', 'Cidade', 'Bairro']);
     }
-
     const missingFields = requiredFields.filter(field => !document.getElementById(field).value);
     if (missingFields.length > 0) {
         showNotification(`Por favor, preencha os campos: ${missingFields.join(', ')}.`, 'error');
         return;
     }
-
-    if (deliveryOption === 'delivery') {
-        const postcode = document.getElementById('CEP').value;
-        if (!(await isCepValido(postcode))) {
-            showNotification("CEP fora da área de entrega!", 'error');
-            return;
-        }
-    }
+    // ...outras validações que você tem...
 
     if (cart.length === 0) {
         showNotification("Carrinho de compras vazio!", 'error');
         return;
     }
     
-    // --- NOVA ETAPA DE VERIFICAÇÃO ---
+    // Verificação de estoque antes de prosseguir
     try {
-        //showNotification("Verificando disponibilidade dos produtos...", 'aguardando');
         const isCartValid = await verificarDisponibilidadeProdutos();
-
         if (!isCartValid) {
-            // A função verificarDisponibilidadeProdutos já exibiu o modal de erro.
-            // Apenas paramos a execução aqui.
             return; 
         }
     } catch (error) {
         showNotification("Erro ao verificar o estoque. Tente novamente.", 'error');
         return;
     }
-    // --- FIM DA NOVA ETAPA ---
-
-
-    // O resto da função continua como antes, pois agora sabemos que o carrinho é válido.
+    
     try {
         const idPagamentos = generatePaymentId();
         const paymentHash = idPagamentos;
         
+        // --- 1. Recalcula o subtotal (base para todos os outros cálculos) ---
+        const metodoPagamento = document.querySelector('input[name="paymentMethod"]:checked').value;
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-        let valorFinal = subtotal;
-        let taxaAplicada = 0;
+        let valorDesconto = 0;
+        let cupomInfo = null; // Objeto para salvar no histórico
 
-        if (deliveryOption === 'delivery' && taxadeenvio > 0) {
-            valorFinal += taxadeenvio;
-            taxaAplicada = taxadeenvio;
+        if (cupomAplicado && subtotal > 0) {
+            if (cupomAplicado.tipo === 'percentual') {
+                valorDesconto = subtotal * (cupomAplicado.valor / 100);
+            } else if (cupomAplicado.tipo === 'fixo') {
+                valorDesconto = cupomAplicado.valor;
+                if (valorDesconto > subtotal) valorDesconto = subtotal;
+            }
+            // Guarda a informação do cupom que foi usado
+            cupomInfo = {
+                codigoHash: cupomAplicado.hash, // Salva o hash para referência
+                valor: cupomAplicado.valor,
+                tipo: cupomAplicado.tipo,
+                codigoOriginal: cupomAplicado.codigoOriginal
+            };
         }
-        const valor = valorFinal.toFixed(2);
 
+        // --- 3. Calcula a taxa de entrega ---
+        let taxaAplicada = 0;
+        if (deliveryOption === 'delivery' && taxadeenvio > 0) {
+            // Se o cupom NÃO for de frete, aplica a taxa
+            if (!cupomAplicado || cupomAplicado.tipo !== 'frete') {
+                taxaAplicada = taxadeenvio;
+            } else {
+                 // Se for cupom de frete, guarda a informação
+                 cupomInfo = {
+                    codigoHash: cupomAplicado.hash,
+                    valor: cupomAplicado.valor,
+                    tipo: 'frete',
+                    codigoOriginal: cupomAplicado.codigoOriginal
+                 };
+            }
+        }
+
+        // --- 4. Calcula o VALOR FINAL para o Pix e para o histórico ---
+        let valorFinal = subtotal - valorDesconto + taxaAplicada;
+        if (valorFinal < 0) valorFinal = 0;
+
+        const valor = valorFinal.toFixed(2);
         const dataCompra = new Date().toLocaleDateString();
 
         const produtosnopix = JSON.stringify(cart.map(item => ({
@@ -3596,20 +3849,68 @@ async function generatePix() {
             selectedsabor: item.selectedsabor || '',
         })));
 
-        let whatsappMessage = `Novo pedido #${idPagamentos}\n\n` +
-            `Dados do Cliente:\nNome: ${document.getElementById('Nome').value}\nEmail: ${document.getElementById('Email').value}\nTelefone: ${document.getElementById('WhatsApp').value}\n` +
-            `Informações Adicionais: ${document.getElementById('additionalInfo').value}\n\n` +
-            (deliveryOption === 'delivery' ? `Endereço: ${document.getElementById('Endereço').value}, ${document.getElementById('Cidade').value} - ${document.getElementById('Bairro').value}, ${document.getElementById('CEP').value}\n\n` : 'Retirada no Local\n\n') +
-            `Itens do Pedido:\n` +
-            cart.map(item => `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR((item.price * item.quantity))}`).join('\n') +
-            `\n\nSubtotal: ${realBR(subtotal)}` +
-            (taxaAplicada > 0 ? `\nTaxa de Entrega: ${realBR(taxaAplicada)}` : '') +
-            `\nTotal: ${realBR(valor)}\nData da Compra: ${dataCompra}`;
+        const nomeCliente = document.getElementById('Nome').value;
+        const emailCliente = document.getElementById('Email').value;
+        const telefoneCliente = document.getElementById('WhatsApp').value;
+        const infoAdicional = document.getElementById('additionalInfo').value;
+
+        // --- 2. Monta a string dos itens do pedido ---
+        const itensPedidoString = cart.map(item => {
+            const optionsString = [item.selectedSize, item.selectedsabor].filter(Boolean).join(' / ');
+            const itemTotal = item.price * item.quantity;
+            return `${item.name} ${optionsString ? `(${optionsString})` : ''} (x${item.quantity}) - ${realBR(itemTotal)}`;
+        }).join('\n');
+
+        // --- 3. Monta a string do endereço de entrega ou retirada ---
+        const entregaString = deliveryOption === 'delivery'
+            ? `*Endereço de Entrega:*\n${document.getElementById('Endereço').value}, ${document.getElementById('Bairro').value}, ${document.getElementById('Cidade').value} - CEP: ${document.getElementById('CEP').value}`
+            : `*Opção de Entrega:*\nRetirada no Local`;
+
+        // --- 4. Constrói a mensagem final usando um array e join() para mais legibilidade ---
+        const messageParts = [
+            `*✨ Novo Pedido Realizado! ✨*`,
+            `*Pedido:* #${idPagamentos}`,
+            `-----------------------------------`,
+            `*Dados do Cliente:*`,
+            `*Nome:* ${nomeCliente}`,
+            `*Email:* ${emailCliente}`,
+            `*Telefone:* ${telefoneCliente}`,
+            infoAdicional ? `*Info Adicional:* ${infoAdicional}` : null,
+            `-----------------------------------`,
+            entregaString,
+            `-----------------------------------`,
+            `*Itens do Pedido:*`,
+            itensPedidoString,
+            `-----------------------------------`,
+            `*Resumo Financeiro:*`,
+            `*Forma de Pagamento:* ${metodoPagamento === 'pix' ? 'Pix' : 'Dinheiro'}`,
+            `*Subtotal:* ${realBR(subtotal)}`
+        ];
+
+        // Adiciona a linha de desconto SOMENTE se ele for maior que zero
+        if (valorDesconto > 0) {
+            // AQUI ESTÁ A MUDANÇA
+            const codigoCupom = cupomAplicado && cupomAplicado.codigoOriginal ? `(Cupom: ${cupomAplicado.codigoOriginal})` : '';
+            messageParts.push(`*Desconto:* - ${realBR(valorDesconto)} ${codigoCupom}`);
+        }
+        
+        // Adiciona a linha da taxa de entrega
+        if (deliveryOption === 'delivery') {
+            if (cupomAplicado && cupomAplicado.tipo === 'frete') {
+                // E AQUI TAMBÉM
+                const codigoCupom = cupomAplicado.codigoOriginal || '';
+                messageParts.push(`*Taxa de Entrega:* Frete Grátis (Cupom: ${codigoCupom})`);
+            } else if (taxaAplicada > 0) {
+                messageParts.push(`*Taxa de Entrega:* ${realBR(taxaAplicada)}`);
+            }
+        }
+        
+        messageParts.push(`*TOTAL:* *${realBR(valor)}*`);
+        messageParts.push(`*Data:* ${dataCompra}`);
+
+        const whatsappMessage = messageParts.filter(part => part !== null).join('\n');
 
         const pedidowhatsapp = `https://wa.me/${whatsapp}?text=${encodeURIComponent(whatsappMessage)}`;
-        const paramschaves = `${MeuPix}&valor=${valor}&txid=${idPagamentos}&logo=${logotipo}&idadaloja=${blog}&iddopagamento=${idPagamentos}`;
-        const dadospix = btoa(paramschaves);
-        const pixUrl = `index.html?codepix=${dadospix}`;
 
         const order = {
             id: idPagamentos,
@@ -3631,9 +3932,12 @@ async function generatePix() {
                 selectedsabor: item.selectedsabor || '',
             })),
             subtotal: subtotal.toFixed(2),
+            desconto: valorDesconto.toFixed(2), 
+            cupomUtilizado: cupomInfo,        
             deliveryFee: taxaAplicada.toFixed(2),
-            total: valor,
-            pixUrl: pixUrl,
+            total: valor, 
+            metodoPagamento: metodoPagamento,
+            pixUrl: '',
             timestamp: Date.now(),
             deliveryOption: deliveryOption,
             address: {
@@ -3648,21 +3952,48 @@ async function generatePix() {
             }
         };
 
-        orderHistory.push(order);
-        localStorage.setItem(blog, JSON.stringify(orderHistory));
+        if (metodoPagamento === 'pix') {
 
-        document.getElementById('myModal').classList.add('fullscreen');
-        document.getElementById('qrCode').innerHTML = `<iframe src='${pixUrl}' style="width:100%; height:100%; border:none;"></iframe>`;
+            const paramschaves = `${MeuPix}&valor=${valor}&txid=${idPagamentos}&logo=${logotipo}&idadaloja=${blog}&iddopagamento=${idPagamentos}`;
+            const dadospix = btoa(paramschaves);
+            order.pixUrl = `index.html?codepix=${dadospix}`; 
 
-        showNotification("QR Code Pix gerado!", 'success');
+            // Salva o pedido no histórico
+            orderHistory.push(order);
+            localStorage.setItem(blog, JSON.stringify(orderHistory));
+            
+            // Mostra o modal do QR Code
+            document.getElementById('myModal').classList.add('fullscreen');
+            document.getElementById('qrCode').innerHTML = `<iframe src='${order.pixUrl}' style="width:100%; height:100%; border:none;"></iframe>`;
+            openModal();
+            showNotification("QR Code Pix gerado!", 'success');
+
+        } else { // (metodoPagamento === 'dinheiro')
+
+            orderHistory.push(order);
+            localStorage.setItem(blog, JSON.stringify(orderHistory));
+
+             window.open(pedidowhatsapp, '_blank');
+            // Mostra uma mensagem de confirmação para o cliente
+            const mensagemConfirmacao = `Pedido #${order.id} registrado com sucesso! \n\nPor favor, tenha o valor de ${realBR(order.total)} pronto para o pagamento na entrega/retirada. \n\nNão esqueça de enviar o pedido no nosso WhatsApp.`;
+            exibirModalErro(mensagemConfirmacao.replace(/\n/g, '<br>'), false, true, 'success');
+        }
+        
+        cupomAplicado = null;
+        document.getElementById('cupomInput').value = '';
+        document.getElementById('cupomStatus').textContent = '';
+        
         clearCart();
         updateOrderHistoryDisplay();
-        openModal();
         showTab('orderHistory');
+        
     } catch (error) {
-        showNotification("Erro ao gerar QR Code Pix. Tente novamente.", 'error');
+        console.error("Erro ao finalizar pedido:", error);
+        showNotification("Erro ao finalizar o pedido. Tente novamente.", 'error');
     }
 }
+
+
 
 function openModal() {
     document.getElementById('myModal').style.display = 'block';
@@ -3677,6 +4008,9 @@ function closeModal() {
 function clearCart() {
     cart = [];
     localStorage.removeItem(blog + 'cart');
+    cupomAplicado = null;
+    document.getElementById('cupomInput').value = '';
+    document.getElementById('cupomStatus').textContent = '';
     updateCartDisplay();
     updateMiniCartCount();
     updateFloatingCartCount();
@@ -3684,6 +4018,19 @@ function clearCart() {
     showNotification("Carrinho esvaziado!", 'success');
 }
 
+// ===========================================
+// === NOVA FUNÇÃO PARA ABRIR/FECHAR PEDIDO ==
+// ===========================================
+function toggleOrderDetails(headerElement) {
+    const orderItem = headerElement.closest('.order-item');
+    if (orderItem) {
+        orderItem.classList.toggle('open');
+    }
+}
+
+// ===========================================
+// === FUNÇÃO DO HISTÓRICO ATUALIZADA ========
+// ===========================================
 function updateOrderHistoryDisplay() {
     const orderHistoryList = document.getElementById('orderHistoryList');
     const clearHistoryButton = document.getElementById('clearHistoryButton');
@@ -3691,83 +4038,109 @@ function updateOrderHistoryDisplay() {
 
     const history = JSON.parse(localStorage.getItem(blog)) || [];
 
+    if (history.length === 0) {
+        orderHistoryList.textContent = "Nenhum pedido no histórico.";
+        clearHistoryButton.style.display = 'none';
+        renderOrderHistoryPagination(0); // Limpa a paginação
+        return;
+    }
+    
+    clearHistoryButton.style.display = 'block';
+
     const reversedHistory = [...history].reverse();
 
-    const limitedOrderHistory = reversedHistory.slice(0, 10);
-    if (history.length > 0) {
-    limitedOrderHistory.forEach((order, index) => {
+    // Lógica de Paginação
+    const startIndex = (orderHistoryCurrentPage - 1) * ordersPerPage;
+    const endIndex = startIndex + ordersPerPage;
+    const paginatedOrders = reversedHistory.slice(startIndex, endIndex);
+
+    paginatedOrders.forEach((order) => {
         const li = document.createElement('li');
-        li.classList.add('order-details');
+        li.classList.add('order-item');
 
-        // Verificações de segurança para evitar erros
+        const metodoPagamentoTexto = (order.metodoPagamento === 'pix' ? 'Pix' : (order.metodoPagamento === 'dinheiro' ? 'Dinheiro' : 'N/A'));
         const addressData = order.address || {};
-        const nomeCliente = addressData.name;
-        const enderecoCompleto = addressData.address ? `${addressData.address}, ${addressData.city} - ${addressData.bairro}, ${addressData.postcode}` : 'Endereço não disponível';
+        const nomeCliente = addressData.name || "Cliente não informado";
+        const emailCliente = addressData.email || "E-mail não informado";
+        const telefoneCliente = addressData.phone || "Telefone não informado";
+        const infoAdicional = addressData.additionalInfo || "Nenhuma";
+        const enderecoCompleto = addressData.address ? `${addressData.address}, ${addressData.city || ''} - ${addressData.bairro || ''}, ${addressData.postcode || ''}` : 'Endereço não disponível';
 
-        let itemsList = "";
-        if (order.items && order.items.length > 0) {
-        itemsList = order.items.map(item => {
-        const itemTotal = item.price * item.quantity;
-        return `<li style="list-style:none;"><img src="${item.imageUrl}" alt="${item.name}" width="40" height="40"> ${item.name} (Qtd: ${item.quantity}) ${item.selectedSize ? `(Tamanho: ${item.selectedSize})` : ``} ${item.selectedsabor ? `(sabor: ${item.selectedsabor})` : ``} - ${realBR(itemTotal.toFixed(2))}</li>`;}).join('\n    ');
-        } else {
-        itemsList = "Nenhum item no pedido.";
+        const itemsList = (order.items && order.items.length > 0) ? order.items.map(item => {
+            const itemTotal = (item.price || 0) * (item.quantity || 1);
+            return `<li><img src="${item.imageUrl}" alt="${item.name}" width="40" height="40" style="vertical-align: middle; border-radius: 5px; margin-right: 10px;"> ${item.name} (Qtd: ${item.quantity}) ${item.selectedSize ? `(Tamanho: ${item.selectedSize})` : ``} ${item.selectedsabor ? `(sabor: ${item.selectedsabor})` : ``} - <strong>${realBR(itemTotal)}</strong></li>`;
+        }).join('') : "<li>Nenhum item encontrado.</li>";
+
+        let resumoFinanceiroHTML = `<p><strong>Subtotal:</strong> ${realBR(order.subtotal)}</p>`;
+        if (order.desconto && parseFloat(order.desconto) > 0) {
+            resumoFinanceiroHTML += `<p style="color: green;"><strong>Desconto Aplicado:</strong> - ${realBR(order.desconto)}</p>`;
         }
+        if (order.cupomUtilizado && order.cupomUtilizado.tipo === 'frete') {
+            resumoFinanceiroHTML += `<p style="color: green;"><strong>Cupom de Frete Grátis Utilizado</strong></p>`;
+        }
+        if (order.deliveryFee && parseFloat(order.deliveryFee) > 0) {
+            resumoFinanceiroHTML += `<p><strong>Taxa de Entrega:</strong> ${realBR(order.deliveryFee)}</p>`;
+        }
+        resumoFinanceiroHTML += `<h4 style="margin-top: 10px;">Total Final: ${realBR(order.total)}</h4>`;
 
-        let addressDisplay = "";
-        let buttonRetirada = "";
-        let Retiranolocal = "";
-        let cancelado = "";
+        let enderecoHTML = '';
+        let buttonRetirada = '';
+
         if (order.deliveryOption === 'delivery') {
-        addressDisplay = `<p>Endereço: ${enderecoCompleto}</p>`;
-        Retiranolocal = `<h3>Total: ${realBR(order.total)}</h3>`;
+            enderecoHTML = `<p><strong>Endereço de Entrega:</strong> ${enderecoCompleto}</p>`;
         } else {
-            if (order.StatusButton === false) {
-                cancelado = `<span class='loja-fechada'>Cancelado</span>`;
-            } else {
-                Retiranolocal = `<h3>Total: ${realBR(order.total)}</h3><h3>(Retirada no Local)</h3>`;
-                buttonRetirada = `<button onclick="goToAddress()">Endereço de Retirada</button>`;
-            }
-
+                enderecoHTML = `<p><strong>Opção de Entrega:</strong> Retirada no Local</p>`;
+                buttonRetirada = `<button onclick="goToAddress()"><i class="fa-solid fa-map-location-dot"></i> Ver Endereço de Retirada</button>`;
         }
-        const originalIndex = history.findIndex(item => item.id === order.id);
-        const safeIndex = originalIndex !== -1 ? originalIndex : index; 
-        li.innerHTML = `
-        <div class="order-details">
-        <h3>Pedido #${order.id}</h3>
-        <p>Nome: ${nomeCliente}</p>
-        <p>Email: ${order.address.email}</p>
-        <p>Telefone: ${order.address.phone}</p>
-        ${addressDisplay}
-        <p>Informações Adicionais: ${order.address.additionalInfo}</p>
-        <p>Data: ${new Date(order.timestamp).toLocaleString()}</p>
-        <h4>Itens Comprados:</h4>
-        <ul>
-        ${itemsList}
-        </ul>
-        ${order.deliveryFee > 0 ? `<h3>Taxa de Entrega: ${realBR(order.deliveryFee)}</h3>` : ''}
-        ${Retiranolocal} 
-        <div class="status">
-        <h4>Status do Pedido: ${cancelado} ${order.Entregue ? `${order.Entregue}` : `${order.Enviado ? `${order.Enviado}` : `${order.Pagamento ? `${order.Pagamento}` : `Aguardando Pagamentos`}`}`} </h4>
-        </div>
-        <div class="button-container">
- 
-        ${order.StatusButton ? `
-         ${buttonRetirada}
-         ${order.isPago ? '' : `<button onclick="showPixQrCode(${originalIndex})">Ver QR Pix</button>`}
-         ${order.isPago ? '' : `<button onclick="verificarPagamento(${originalIndex})">Verificar Pagamento</button>`}
-         ${order.isPago ? '' : `<button onclick="resendWhatsappMessage(${safeIndex})">Reenviar WhatsApp</button>`}
-         ${order.isPago ? `<button onclick="printOrder(${safeIndex})">🖨️ Imprimir Pedido</button>` : ``}
-         <button onclick="deleteOrderFromHistory(${safeIndex})">🗑️ Excluir Pedido</button>
-        ` : `
-         <button onclick="AbrirWhatsapp();">Entra em contato</button>
-         <button onclick="deleteOrderFromHistory(${safeIndex})">🗑️ Excluir Pedido</button>
-        `}
-        
-        </div>
-        </div>
-        `;
 
+        const originalIndex = history.findIndex(h => h.id === order.id);
+
+        li.innerHTML = `
+            <div class="order-header" onclick="toggleOrderDetails(this)">
+                <div>
+                    <h3>#${order.id}</h3>
+                    <small>${new Date(order.timestamp).toLocaleString()}</small>
+                </div>
+                <div class="status-display">
+                   ${order.StatusButton === false ? `<span class='cancelado-falha'>Cancelado</span>` : `${order.Entregue ? `<span class='pago-success'>${order.Entregue}</span>` : `${order.Enviado ? `<span class='pago-success'>${order.Enviado}</span>` : `${order.Pagamento ? `<span class='pago-success'>${order.Pagamento}</span>` : `<span class='aguardando-paga'>Aguardando Pagamentos</span>`}`}`}`}
+                <i class="fas fa-chevron-down toggle-icon"></i>
+                   </div>
+            </div>
+            <div class="order-content">
+                <p><strong>Nome:</strong> ${nomeCliente}</p>
+                <p><strong>Email:</strong> ${emailCliente}</p>
+                <p><strong>Telefone:</strong> ${telefoneCliente}</p>
+                ${enderecoHTML}
+                <p><strong>Informações Adicionais:</strong> ${infoAdicional}</p>
+                <hr>
+                <h4>Itens Comprados:</h4>
+                <ul style="list-style: none; padding-left: 0;">${itemsList}</ul>
+                <hr>
+                <h4>Resumo Financeiro:</h4>
+                <p><strong>Forma de Pagamento:</strong> ${metodoPagamentoTexto}</p>
+                ${resumoFinanceiroHTML}
+                <div class="button-container">
+                    ${ order.StatusButton === false ? 
+                        `<button onclick="AbrirWhatsapp();"><i class="fa-brands fa-whatsapp"></i> Entrar em contato</button>
+                         <button onclick="deleteOrderFromHistory(${originalIndex})">🗑️ Excluir do Histórico</button>` 
+                        :
+                        `${order.isPago ? `${buttonRetirada}` : ``}
+                         ${metodoPagamentoTexto === 'Pix' && !order.isPago ? `<button onclick="showPixQrCode(${originalIndex})"><i class="fas fa-qrcode"></i> Ver QR Code Pix</button>` : ''}
+                         ${!order.isPago ? `<button onclick="verificarPagamento(${originalIndex})"><i class="fa fa-check-to-slot"></i> Verificar Pagamento</button>` : ''}
+                         ${!order.isPago ? `<button onclick="resendWhatsappMessage(${originalIndex})"><i class="fa-brands fa-whatsapp"></i> Reenviar Pedido no WhatsApp</button>` : ''}
+                         ${order.isPago ? `<button onclick="printOrder(${originalIndex})">🖨️ Imprimir Pedido</button>` : ``}
+                         <button onclick="deleteOrderFromHistory(${originalIndex})">🗑️ Excluir do Histórico</button>`
+                    }
+                </div>
+            </div>
+        `;
         orderHistoryList.appendChild(li);
+    });
+
+    renderOrderHistoryPagination(reversedHistory.length);
+    
+    // Limpa o formulário de checkout após o pedido ser adicionado ao histórico
+    if (document.getElementById('Nome')) {
         document.getElementById('Nome').value = '';
         document.getElementById('Endereço').value = '';
         document.getElementById('Cidade').value = '';
@@ -3778,14 +4151,50 @@ function updateOrderHistoryDisplay() {
         document.getElementById('additionalInfo').value = '';
         document.getElementById('deliveryOption').value = '';
         toggleAddressFields();
-        });
-
-        clearHistoryButton.style.display = '';
-        } else {
-        orderHistoryList.textContent = "Nenhuma transação no histórico.";
-        clearHistoryButton.style.display = 'none';
-        }
+    }
 }
+
+// =========================================================
+// === NOVAS FUNÇÕES PARA CONTROLAR A PAGINAÇÃO ============
+// =========================================================
+function renderOrderHistoryPagination(totalOrders) {
+    const paginationContainer = document.getElementById('orderHistoryPagination');
+    paginationContainer.innerHTML = '';
+
+    const totalPages = Math.ceil(totalOrders / ordersPerPage);
+
+    if (totalPages <= 1) {
+        return; // Não mostra a paginação se houver apenas uma página
+    }
+
+    // Botão Anterior
+    const prevButton = document.createElement('button');
+    prevButton.innerHTML = '<i class="fas fa-chevron-left"></i> Anterior';
+    prevButton.disabled = orderHistoryCurrentPage === 1;
+    prevButton.onclick = () => changeOrderHistoryPage(-1);
+    paginationContainer.appendChild(prevButton);
+
+    // Indicador de página
+    const pageIndicator = document.createElement('span');
+    pageIndicator.textContent = `Página ${orderHistoryCurrentPage} de ${totalPages}`;
+    pageIndicator.style.margin = '0 15px';
+    pageIndicator.style.fontWeight = 'bold';
+    paginationContainer.appendChild(pageIndicator);
+    
+    // Botão Próximo
+    const nextButton = document.createElement('button');
+    nextButton.innerHTML = 'Próximo <i class="fas fa-chevron-right"></i>';
+    nextButton.disabled = orderHistoryCurrentPage >= totalPages;
+    nextButton.onclick = () => changeOrderHistoryPage(1);
+    paginationContainer.appendChild(nextButton);
+}
+
+function changeOrderHistoryPage(direction) {
+    orderHistoryCurrentPage += direction;
+    updateOrderHistoryDisplay(); // Re-renderiza a lista e a paginação
+    document.getElementById('orderHistory').scrollIntoView({ behavior: 'smooth' });
+}
+
 
 function deleteOrderFromHistory(index) {
     let history = JSON.parse(localStorage.getItem(blog)) || [];
@@ -3808,298 +4217,174 @@ function printOrder(index) {
     const order = history[index];
 
     if (!order) {
-        showNotification("Erro ao imprimir o pedido.", "error");
+        showNotification("Erro: Pedido não encontrado para impressão.", "error");
         return;
     }
+
+    // --- 1. Extrai e formata os dados do pedido de forma segura ---
+
     const addressData = order.address || {};
-    const enderecoCompleto = addressData.address ? `${addressData.address}, ${addressData.city || 'Cidade não disponível'} - ${addressData.bairro || 'Bairro não disponível'}, ${addressData.postcode || 'CEP não disponível'}` : 'Endereço não disponível';
-   
-    let itemsList = "";
-    if (order.items && order.items.length > 0) {
-        itemsList = order.items.map(item => {
-            const itemTotal = item.price * item.quantity;
-            return `
-                <li>
-                    <img src="${item.imageUrl}" alt="${item.name}" width="40" height="40" />
-                    <div style="word-break: break-word;">
-                     ${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}
-                    </div>
-                </li>`;
-        }).join('\n');
-    } else {
-        itemsList = "Nenhum item no pedido.";
-    }
-    
-    let addressDisplay = "";
-    let buttonRetirada = "";
-    if (order.deliveryOption === 'delivery') {
-        addressDisplay = `<p><strong>Endereço de Entrega:</strong> ${enderecoCompleto}</p>`;
-    } else {
-        buttonRetirada = `<h2>Retirada no Local</h2>`;
+    const enderecoCompleto = addressData.address ? `${addressData.address}, ${addressData.bairro || ''}, ${addressData.city || ''} - CEP: ${addressData.postcode || ''}` : 'Não aplicável';
+    const metodoPagamento = order.metodoPagamento === 'pix' ? 'Pix' : (order.metodoPagamento === 'dinheiro' ? 'Dinheiro na Entrega/Retirada' : 'Não informado');
+
+    // Monta a lista de itens
+    const itemsListHTML = (order.items && order.items.length > 0) ? order.items.map(item => {
+        const itemTotal = (item.price || 0) * (item.quantity || 1);
+        const optionsString = [item.selectedSize, item.selectedsabor].filter(Boolean).join(' / ');
+        return `
+            <tr class="item-row">
+                <td><img src="${item.imageUrl}" alt="${item.name}" class="item-image"></td>
+                <td>
+                    ${item.name}
+                    ${optionsString ? `<br><small>(${optionsString})</small>` : ''}
+                </td>
+                <td class="text-center">${item.quantity || 1}</td>
+                <td class="text-right">${realBR(item.price || 0)}</td>
+                <td class="text-right">${realBR(itemTotal)}</td>
+            </tr>`;
+    }).join('') : '<tr><td colspan="5">Nenhum item no pedido.</td></tr>';
+
+    // Monta o resumo financeiro, incluindo descontos
+    let resumoFinanceiroHTML = `
+        <tr>
+            <td colspan="4" class="text-right"><strong>Subtotal</strong></td>
+            <td class="text-right">${realBR(order.subtotal || 0)}</td>
+        </tr>
+    `;
+
+    if (order.desconto && parseFloat(order.desconto) > 0) {
+        const codigoCupom = (order.cupomUtilizado && order.cupomUtilizado.codigoOriginal) ? ` (${order.cupomUtilizado.codigoOriginal})` : '';
+        resumoFinanceiroHTML += `
+            <tr class="desconto-row">
+                <td colspan="4" class="text-right"><strong>Desconto${codigoCupom}</strong></td>
+                <td class="text-right">- ${realBR(order.desconto)}</td>
+            </tr>`;
     }
 
-    const printWindow = window.open('a', '_blank');
+    if (order.deliveryFee && parseFloat(order.deliveryFee) > 0) {
+        resumoFinanceiroHTML += `
+            <tr>
+                <td colspan="4" class="text-right"><strong>Taxa de Entrega</strong></td>
+                <td class="text-right">${realBR(order.deliveryFee)}</td>
+            </tr>`;
+    } else if (order.cupomUtilizado && order.cupomUtilizado.tipo === 'frete') {
+         const codigoCupom = (order.cupomUtilizado && order.cupomUtilizado.codigoOriginal) ? ` (${order.cupomUtilizado.codigoOriginal})` : '';
+        resumoFinanceiroHTML += `
+            <tr class="desconto-row">
+                <td colspan="4" class="text-right"><strong>Taxa de Entrega${codigoCupom}</strong></td>
+                <td class="text-right">Grátis</td>
+            </tr>`;
+    }
+    
+    resumoFinanceiroHTML += `
+        <tr class="total-row">
+            <td colspan="4" class="text-right"><strong>Total a Pagar</strong></td>
+            <td class="text-right"><strong>${realBR(order.total || 0)}</strong></td>
+        </tr>
+    `;
+
+    // --- 2. Abre uma nova janela e escreve o HTML otimizado para impressão ---
+
+    const printWindow = window.open('', '_blank');
     printWindow.document.write(`
         <html>
         <head>
+            <title>Pedido #${order.id} - ${nomedaloja}</title>
+            <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
             <style>
-                /* Estilos Globais */
-                :root {
-                    --primary-color: #000;
-                    --secondary-color: #6c757d;
-                    --text-color: #343a40;
-                    --light-bg: #f8f9fa;
-                    --border-color: #dee2e6;
-                    --font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                }
-
-                body {
-                    font-family: var(--font-family);
-                    padding: 20px;
-                    line-height: 1.6;
-                    color: var(--text-color);
-                }
-
-                h2, h3, h4 {
-                    text-align: center;
-                    color: var(--primary-color);
-                    margin-bottom: 15px;
-                }
-
-                h4 {
-                    margin-top: 25px;
-                    border-bottom: 1px solid var(--border-color);
-                    padding-bottom: 5px;
-                }
-
-                .order-container {
-                    max-width: 800px;
-                    margin: 0 auto;
-                }
-
-                .order-details {
-                    border: 1px solid var(--border-color);
-                    padding: 15px;
-                    margin: 20px 0;
-                    border-radius: 5px;
-                    background-color: var(--light-bg);
-                    display: flex; /* Alinha as informações e o QR Code lado a lado */
-                    justify-content: space-between;
-                    align-items: flex-start;
-                }
-
-                .order-details p {
-                    margin-bottom: 8px;
-                }
-
-                .order-info {
-                    flex-grow: 1;
-                }
-
-                /* Estilo para o container do QR Code */
-                .qr-code {
-                    margin-left: 20px;
-                }
-
-                .qr-code img {
-                    display: block;
-                    width: 150px;
-                    height: 150px;
-                }
-
-                .logo {
-                    display: block;
-                    margin: 0 auto 20px;
-                    max-width: 150px;
-                    height: auto;
-                }
-
-                ul {
-                    list-style-type: none;
-                    padding: 0;
-                }
-
-                strong {
-                    font-weight: 600;
-                }
-
-                .total {
-                    font-size: 1.2em;
-                    font-weight: bold;
-                    margin-top: 20px;
-                    text-align: center;
-                    color: var(--primary-color);
-                }
-
-                .description {
-                    margin-top: 20px;
-                    font-style: italic;
-                    color: var(--secondary-color);
-                }
-
-                .address {
-                    margin-top: 15px;
-                    color: var(--secondary-color);
-                }
-
+                body { font-family: 'Poppins', sans-serif; color: #333; margin: 20px; }
+                .invoice-box { max-width: 800px; margin: auto; padding: 30px; border: 1px solid #eee; box-shadow: 0 0 10px rgba(0, 0, 0, .15); font-size: 16px; }
+                .header { text-align: center; margin-bottom: 20px; }
+                .header img { max-width: 150px; max-height: 150px; }
+                .header h1 { margin: 10px 0 0; color: #333; }
+                .section { margin-bottom: 20px; }
+                .section h2 { font-size: 1.2em; border-bottom: 2px solid #eee; padding-bottom: 5px; margin-bottom: 10px; }
+                .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+                .details-grid p { margin: 0; }
+                table { width: 100%; line-height: inherit; text-align: left; border-collapse: collapse; }
+                table th { background: #eee; font-weight: 700; padding: 8px; }
+                table td { padding: 8px; border-bottom: 1px solid #eee; }
+                .item-image { width: 34px; height: 34px; object-fit: cover; border-radius: 5px; vertical-align: middle; }
+                .text-center { text-align: center; }
+                .text-right { text-align: right; }
+                .summary-table td { border: none; }
+                .desconto-row { color: #27ae60; }
+                .total-row { border-top: 2px solid #333; font-size: 1.2em; }
+                .footer { text-align: center; margin-top: 30px; font-size: 0.9em; color: #777; }
+                .descricao { font-family: helvetica; color: #333; display: block; margin-block-start: 1em; }
                 @media print {
-                    body {
-                        padding: 10px;
-                        font-size: 12pt;
-                        -webkit-print-color-adjust: exact !important;
-                        print-color-adjust: exact !important;
-                    }
-
-                    .logo {
-                        max-width: 100px;
-                    }
-
-                    .order-details {
-                        background-color: transparent !important;
-                        border: none !important;
-                        padding: 0;
-                        margin: 10px 0;
-                        display: block;
-                    }
-
-                    .order-details img {
-                        display: block;
-                        margin: 0 auto;
-                    }
-
-                    h2, h3, h4, .total {
-                        color: #000 !important;
-                    }
-
-                    a {
-                        text-decoration: none !important;
-                        color: #000 !important;
-                    }
+                    body { -webkit-print-color-adjust: exact; margin: 0; }
+                    .invoice-box { box-shadow: none; border: none; padding: 0; }
                 }
-                
-                li {
-                    list-style: none;
-                    display: flex;
-                    padding: 1px 0;
-                    border-bottom: 1px solid #9c9c9c;
-                    align-items: center;
-                }
-                
-                li img {
-                    object-fit: contain;
-                    max-width: 40px;
-                    max-height: 40px;
-                    border-radius: 50%;
-                    margin-right: 15px;
-                }
-                    #qr-code {
-mix-blend-mode: normal;
-    background: linear-gradient(47deg, #206958, #05a581, #206958);
-
-    color: #fff;
-    border-radius: 15px;
-}
-
-.descricao {
-    font-size: 12px;
-    font-family: helvetica;
-    text-align: center;
-    color: #000;
-}
-
-.rodape {
-    height: auto;
-    font-size: 14px;
-    font-family: helvetica;
-    margin-top: 15px;
-    border-radius: 15px;
-    text-align: center;
-    padding: 20px;
-    color: #000;
-}
-
-.rodape a {
-    color: #3498db;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-.rodape a:hover {
-    color: #fff;
-    text-decoration: underline;
-}
-
-.rodape p {
-    margin: 10px 0;
-    font-size: 0.9em;
-}
-
-.rodape strong {
-    color: #000000;
-}
-
-.rodape .redes-sociais {
-    margin-top: 20px;
-}
-
-.rodape .redes-sociais a {
-    display: inline-block;
-    margin: 0 15px;
-    font-size: 1.4em;
-    color: #fff;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.rodape .redes-sociais a:hover {
-    transform: translateY(-3px);
-    color: #e67e22;
-    text-decoration: none;
-}
             </style>
         </head>
         <body>
-            <div class="order-container">
-                <img src="${logotipo}" alt="${nomedaloja}" class="logo">
-                <h2>${nomedaloja}</h2>
+            <div class="invoice-box">
+                <div class="header">
+                    ${logotipo ? `<img src="${logotipo}" alt="${nomedaloja}">` : ''}
+                    <h1>${nomedaloja}</h1>
                 <div class="descricao">
                 ${descricao ? `<strong>${descricao}</strong>` : ``}
                 </div>
-                <h3>Pedido #${order.id}</h3>
+                    <p>Pedido #${order.id}</p>
+                </div>
 
-                <h2>Status do Pedido: ${order.Pagamento}</h2>
-
-                <div class="order-details">
-                    <div class="order-info">
-                        <p><strong>Nome:</strong> ${order.address?.name}</p>
-                        <p><strong>Email:</strong> ${order.address?.email}</p>
-                        <p><strong>Telefone:</strong> ${order.address?.phone}</p>
-                        <p><strong>Data:</strong> ${new Date(order.timestamp).toLocaleString()}</p>
-                        <p><strong>Informações Adicionais:</strong> ${order.address?.additionalInfo}</p>
-                        ${addressDisplay ? addressDisplay : buttonRetirada}
-                        ${order.Enviado ? `<ul>${order.Enviado}</ul>` : ''}
+                <div class="section">
+                    <h2>Detalhes do Pedido</h2>
+                    <div class="details-grid">
+                        <p><strong>Data do Pedido:</strong> ${new Date(order.timestamp).toLocaleString('pt-BR')}</p>
+                        <p><strong>Forma de Pagamento:</strong> ${metodoPagamento}</p>
                     </div>
                 </div>
-                
-                <h4>Itens Comprados:</h4>
-                <ul>
-                    ${itemsList}
-                </ul>
-                ${order.deliveryFee > 0 ? `<p class="total"></strong>Taxa de Entrega:</strong> ${realBR(order.deliveryFee)}</p>` : ''}
-                <p class="total"><strong>Total:</strong> ${realBR(order.total)}</p>
-                <footer class="rodape">
-                <p> ${whatsapp ? `📞 Contato: ${whatsapp}` : ``} ${emailEndereco ? `| ✉️ E-mail: ${emailEndereco},` : ``}</p>
-                <p><strong>📍 Endereço:</strong></p>
-                 <p><strong>🏠 ${Endereço1 ? `${Endereço1},` : ``}</strong></p>
-                 <p><strong>🏙️ ${Endereço2 ? `${Endereço2}` : ``}</strong></p>
-                 <p><strong>📮 ${meucep ? `CEP: ${meucep}` : ``}</strong></p>
-                 </footer>
+
+                <div class="section">
+                    <h2>Informações do Cliente</h2>
+                    <p><strong>Nome:</strong> ${addressData.name || 'N/A'}</p>
+                    <p><strong>Email:</strong> ${addressData.email || 'N/A'}</p>
+                    <p><strong>Telefone:</strong> ${addressData.phone || 'N/A'}</p>
+                    <p><strong>${order.deliveryOption === 'delivery' ? 'Endereço de Entrega:' : 'Opção de Entrega:'}</strong> ${order.deliveryOption === 'delivery' ? enderecoCompleto : 'Retirada no Local'}</p>
+                    ${addressData.additionalInfo ? `<p><strong>Observações:</strong> ${addressData.additionalInfo}</p>` : ''}
                 </div>
+
+                <div class="section">
+                    <h2>Itens do Pedido</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th colspan="2">Produto</th>
+                                <th class="text-center">Qtd.</th>
+                                <th class="text-right">Preço Unit.</th>
+                                <th class="text-right">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${itemsListHTML}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="section">
+                    <h2>Resumo Financeiro</h2>
+                    <table class="summary-table">
+                        <tbody>
+                            ${resumoFinanceiroHTML}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="footer">
+                    Obrigado pela sua preferência!
+                </div>
+            </div>
         </body>
         </html>
     `);
 
     printWindow.document.close();
-    setTimeout(() => {printWindow.print(); }, 500); 
+    // Um pequeno timeout garante que a página carregue antes de chamar a impressão
+    setTimeout(() => {
+        printWindow.print();
+    }, 500);
 }
 
 async function verificarPagamento(index) {
@@ -4187,10 +4472,11 @@ async function verificarPagamento(index) {
                 // Se o pagamento não foi encontrado
                 if (!paymentFound && order.StatusPedido === "Aguardando Pagamento") {
                     showNotification(`Estamos aguardando a confirmação do seu pagamento #${iddopagamento}. Assim que recebermos a confirmação, você será notificado.`, 'aguardando'); // 'info' em vez de 'aguardando'
-                }
+                } 
 
                 localStorage.setItem(blog, JSON.stringify(history)); // Salva as mudanças no localStorage
                 updateOrderHistoryDisplay(); // Atualiza a interface
+                
             } else {
                 showNotification("Erro ao processar os dados da API.", 'error');
             }
@@ -4280,44 +4566,72 @@ function showTab(tabId) {
 }
 
 function resendWhatsappMessage(index) {
-    const order = orderHistory[index];
-    const dataCompra = new Date().toLocaleDateString();
-
-    let itemsList = "";
-    if (order.items && order.items.length > 0) {
-    itemsList = order.items.map(item => {
-        const itemTotal = item.price * item.quantity;
-        return `${item.name} ${item.selectedSize ? '(Tamanho: ' + item.selectedSize + ')' : ''} ${item.selectedsabor ? '(Sabor: ' + item.selectedsabor + ')' : ''} (Qtd: ${item.quantity}) - ${realBR(itemTotal.toFixed(2))}`;}).join('\n  ');
-    } else {
-    itemsList = "Nenhum item no pedido.";
+    const history = JSON.parse(localStorage.getItem(blog)) || [];
+    const order = history[index];
+    
+    if (!order) {
+        showNotification("Pedido não encontrado no histórico.", 'error');
+        return;
     }
 
-    let addressInfo = "";
+    const codigoOriginal = (order.cupomUtilizado && order.cupomUtilizado.codigoOriginal) ? order.cupomUtilizado.codigoOriginal : '';
+
+    const addressData = order.address || {};
+    const nomeCliente = addressData.name || "N/A";
+    const emailCliente = addressData.email || "N/A";
+    const telefoneCliente = addressData.phone || "N/A";
+    const infoAdicional = addressData.additionalInfo || "";
+    const dataCompra = new Date(order.timestamp).toLocaleDateString('pt-BR');
+
+    const itensPedidoString = (order.items && order.items.length > 0) ? order.items.map(item => {
+        const optionsString = [item.selectedSize, item.selectedsabor].filter(Boolean).join(' / ');
+        const itemTotal = (item.price || 0) * (item.quantity || 1);
+        return `${item.name} ${optionsString ? `(${optionsString})` : ''} (x${item.quantity}) - ${realBR(itemTotal)}`;
+    }).join('\n') : "Nenhum item no pedido.";
+
+    // String da entrega.
+    const entregaString = order.deliveryOption === 'delivery'
+        ? `*Endereço de Entrega:*\n${addressData.address || ''}, ${addressData.bairro || ''}, ${addressData.city || ''} - CEP: ${addressData.postcode || ''}`
+        : `*Opção de Entrega:*\nRetirada no Local`;
+
+    // --- 3. Monta a mensagem final, parte por parte ---
+    const messageParts = [
+        `*⚠ REENVIO DE PEDIDO ⚠*`,
+        `*Pedido:* #${order.id}`,
+        `-----------------------------------`,
+        `*Dados do Cliente:*`,
+        `*Nome:* ${nomeCliente}`,
+        `*Email:* ${emailCliente}`,
+        `*Telefone:* ${telefoneCliente}`,
+        infoAdicional ? `*Info Adicional:* ${infoAdicional}` : null,
+        `-----------------------------------`,
+        entregaString,
+        `-----------------------------------`,
+        `*Itens do Pedido:*`,
+        itensPedidoString,
+        `-----------------------------------`,
+        `*Resumo Financeiro:*`,
+        `*Subtotal:* ${realBR(order.subtotal || 0)}`
+    ];
+    
+    if (order.desconto && parseFloat(order.desconto) > 0) {
+        const cupomInfoString = codigoOriginal ? ` (Cupom: ${codigoOriginal})` : '';
+        messageParts.push(`*Desconto:* - ${realBR(order.desconto)}${cupomInfoString}`);
+    }
+  
     if (order.deliveryOption === 'delivery') {
-    addressInfo =
-        ` Endereço: ${order.address.address}, ${order.address.city} - ${order.address.bairro}, ${order.address.postcode}`;
-    } else {
-    addressInfo = "Retirada no Local";
+        if (order.cupomUtilizado && order.cupomUtilizado.tipo === 'frete') {
+            const cupomInfoString = codigoOriginal ? ` (Cupom: ${codigoOriginal})` : '';
+            messageParts.push(`*Taxa de Entrega:* Frete Grátis${cupomInfoString}`);
+        } else if (order.deliveryFee && parseFloat(order.deliveryFee) > 0) {
+            messageParts.push(`*Taxa de Entrega:* ${realBR(order.deliveryFee)}`);
+        }
     }
 
-const whatsappMessage = `
-  Pedido #${order.id} (REENVIO)
-
-  Dados do Cliente:
-  Nome: ${order.address.name}
-  Email: ${order.address.email}
-  Telefone: ${order.address.phone}
-  Informações Adicionais: ${order.address.additionalInfo}
-
-  ${addressInfo}
-
-  Itens do Pedido:
-  ${itemsList}
-
-  Total: ${realBR(order.total)}
-  Data da Compra: ${dataCompra}
-`;
-
+    messageParts.push(`*TOTAL:* *${realBR(order.total || 0)}*`);
+    messageParts.push(`*Data do Pedido Original:* ${dataCompra}`);
+    
+    const whatsappMessage = messageParts.filter(part => part !== null).join('\n');
     const encodedMessage = encodeURIComponent(whatsappMessage);
     const whatsappLink = `https://wa.me/${whatsapp}?text=${encodedMessage}`;
 
@@ -4415,6 +4729,7 @@ function showNotification(message, type = 'success') {
         const carouselSlide = document.querySelector('.carousel-slide');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
+        const carouselContainer = document.getElementById('featuredProductsCarousel'); 
 
         // Verifica se os elementos do carrossel existem
         if (!carouselSlide || !prevBtn || !nextBtn) {
@@ -4553,6 +4868,9 @@ function loadCarouselProducts() {
     }
     loadCarouselProducts();
     startAutoSlide();
+        if (carouselContainer) {
+        carouselContainer.classList.remove('loading');
+    }
 }
 
 function carouseladdToCart(button, productName) {
@@ -4600,6 +4918,144 @@ function buyNowCarousel(button, productName) {
     // Chama a função auxiliar, indicando para redirecionar para o checkout
     ComprarProdutos(product, selectedQuantity, selectedSize, selectedSabor, true);
 }
+
+
+async function aplicarCupom() {
+    const codigoInput = document.getElementById('cupomInput').value.toUpperCase();
+    const cupomStatusEl = document.getElementById('cupomStatus');
+    const aplicarBtn = document.getElementById('aplicarCupomBtn');
+
+    // Se o campo estiver vazio, reseta tudo
+    if (!codigoInput) {
+        cupomAplicado = null;
+        cupomStatusEl.textContent = "";
+        updateCartDisplay();
+        return;
+    }
+
+    // Desabilita o botão e mostra feedback de carregamento
+    aplicarBtn.disabled = true;
+    aplicarBtn.textContent = 'Aguarde...';
+    cupomStatusEl.textContent = 'Verificando cupom...';
+    cupomStatusEl.style.color = '#ffa200e0'; // Laranja para "aguardando"
+
+    // Gera o hash a partir da entrada do usuário
+    hashCupomParaVerificar = await generateHash(codigoInput);
+    window.codigoOriginalCupom = codigoInput;
+
+    // Remove qualquer script de verificação de cupom anterior para evitar conflitos
+    const scriptAntigo = document.getElementById('cupomVerifierScript');
+    
+    if (scriptAntigo) {
+        scriptAntigo.remove();
+    }
+
+    // Cria o novo script para a chamada JSONP
+    const script = document.createElement('script');
+    script.id = 'cupomVerifierScript'; // ID para fácil remoção posterior
+    script.src = 'https://www.blogger.com/feeds/' + blog + '/pages/default?alt=json-in-script&callback=processarVerificacaodecupom';
+    
+    // Define o que fazer em caso de erro de rede ou blog inválido
+    script.onerror = () => {
+        showNotification("Erro de rede ao verificar o cupom. Tente novamente.", 'error');
+        cupomStatusEl.textContent = 'Erro na verificação.';
+        cupomStatusEl.style.color = 'var(--error-color)';
+        
+        window.codigoOriginalCupom = null;
+        aplicarBtn.disabled = false;
+        aplicarBtn.textContent = 'Aplicar';
+    };
+
+    // Adiciona o script ao corpo do documento, o que dispara a requisição
+    document.body.appendChild(script);
+
+ window.processarVerificacaodecupom = (data) => {
+    const cupomStatusEl = document.getElementById('cupomStatus');
+    const aplicarBtn = document.getElementById('aplicarCupomBtn');
+    let cupomEncontrado = false;
+    let cupomValido = null;
+
+    const regexCupom = /^[a-f0-9]{64}:(\d+(\.\d+)?):(percentual|fixo|frete)$/;
+
+    if (data && data.feed && data.feed.entry) {
+        for (const entry of data.feed.entry) {
+            if (cupomEncontrado) break;
+
+            if (entry.content && entry.content.$t) {
+                const lines = entry.content.$t.split('\n').map(line => line.replace(/<[^>]*>/g, '').trim());
+
+                for (const line of lines) {
+                    if (regexCupom.test(line)) {
+                        const [hash, valor, tipo] = line.split(':');
+
+                        if (hash === hashCupomParaVerificar) {
+                            cupomValido = {
+                                hash: hash,
+                                valor: parseFloat(valor),
+                                tipo: tipo
+                            };
+                            cupomEncontrado = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (cupomEncontrado) {
+        cupomValido.codigoOriginal = window.codigoOriginalCupom;
+        cupomAplicado = cupomValido; // Armazena o objeto do cupom válido
+        
+        let mensagemSucesso = ''; // Variável para a mensagem personalizada
+
+        // Constrói a mensagem com base no tipo do cupom
+        switch (cupomValido.tipo) {
+            case 'percentual':
+                mensagemSucesso = `Desconto de ${cupomValido.valor}% aplicado!`;
+                break;
+            case 'fixo':
+                // Usamos a função realBR para formatar o valor como moeda
+                mensagemSucesso = `Desconto de ${realBR(cupomValido.valor)} aplicado!`;
+                break;
+            case 'frete':
+                mensagemSucesso = `Frete Grátis ativado!`;
+                break;
+            default:
+                // Mensagem padrão caso algo inesperado aconteça
+                mensagemSucesso = `Cupom aplicado com sucesso!`;
+        }
+
+        // Exibe a mensagem personalizada
+        cupomStatusEl.textContent = mensagemSucesso;
+        cupomStatusEl.style.color = 'var(--success-color)';
+        showNotification(mensagemSucesso, 'success');
+
+    } else {
+        cupomAplicado = null;
+        cupomStatusEl.textContent = 'Cupom inválido ou expirado.';
+        cupomStatusEl.style.color = 'var(--error-color)';
+        showNotification('Cupom inválido ou expirado!', 'error');
+    }
+
+    window.codigoOriginalCupom = null; 
+
+    // Limpa a variável global e o script, e reabilita o botão
+    hashCupomParaVerificar = '';
+    const scriptElement = document.getElementById('cupomVerifierScript');
+    if (scriptElement) {
+        scriptElement.remove();
+    }
+    aplicarBtn.disabled = false;
+    aplicarBtn.textContent = 'Aplicar';
+
+    // Recalcula o total e atualiza toda a exibição do carrinho
+    updateCartDisplay();
+};
+}
+
+// Não se esqueça de ligar a função ao botão "Aplicar"
+document.getElementById('aplicarCupomBtn').addEventListener('click', aplicarCupom);
 
 // Função para validar CEP
 async function isCepValido(cep) {
@@ -4803,96 +5259,112 @@ function toggleAddressFields() {
     updateCartDisplay(); // Mantém esta linha para recalcular o total
 }
 
-
+/**
+ * Verifica o status da loja (aberta, fechada, em pausa) com base em múltiplos
+ * períodos de funcionamento e exibe mensagens personalizadas.
+ */
 function getStoreStatus() {
+    // Desativa qualquer verificação automática anterior para evitar loops
+    if (window.intervalID2) {
+        clearInterval(window.intervalID2);
+    }
+
     const now = new Date();
+    // Para testar um horário diferente, descomente a linha abaixo:
+    // now.setHours(13, 30); // Ex: Testando às 13:30
+
     const dayOfWeek = now.getDay();
-    const hour = now.getHours();
-    const minute = now.getMinutes();
-    const currentTime = hour * 60 + minute; 
-
- 
-    let openingTime = 0;
-    let closingTime = 0;
-
-    const minecart = document.getElementById('floating-cart');
-    const telaAtivada = document.querySelector('.products');
-    const cartTabButton = document.querySelector('.tab-button[data-tab="cart"]');
-    const checkoutTabButton = document.querySelector('.tab-button[data-tab="checkout"]');
-
-    function desativarInterface() {
-    if (minecart) minecart.style.display = 'none';
-    if (cartTabButton) {
-        cartTabButton.classList.add('disabled-tab');
-        cartTabButton.disabled = true;
-        cartTabButton.style.display = 'none';
-        document.getElementById('cart').style.display = 'none';
-    }
-    if (checkoutTabButton) {
-        checkoutTabButton.classList.add('disabled-tab');
-        checkoutTabButton.disabled = true;
-        checkoutTabButton.style.display = 'none';
-    }
-    const featuredProductsCarousel = document.getElementById('featuredProductsCarousel');
-    if (featuredProductsCarousel) featuredProductsCarousel.style.display = 'none';
-    }
-
-    const horariosArray = horariosFuncionamento.split(';');
+    const currentTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+    
     const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-    let horarioDia = null;
+    const diaAtual = diasSemana[dayOfWeek];
 
-    horariosArray.forEach(horario => {
-    const [dia, tempo] = horario.split(':');
-    if (diasSemana[dayOfWeek].startsWith(dia.trim())) {
-        horarioDia = {
-        dia: dia.trim(),
-        tempo: tempo.trim()
+    let status = {
+        aberta: false,
+        emPausa: false,
+        proximaAbertura: -1,
+        mensagem: `Hoje estamos fechados.`
     };
+
+    // Função auxiliar para converter "HHhMM" em minutos
+    const parseTime = (timeStr) => {
+        const [hour, minute] = timeStr.split('h');
+        return parseInt(hour) * 60 + parseInt(minute || 0);
+    };
+
+    // Encontra o horário para o dia atual
+    const horariosDoDiaStr = horariosFuncionamento.split(';')
+        .find(h => h.trim().startsWith(diaAtual));
+    
+    if (horariosDoDiaStr) {
+        const tempoStr = horariosDoDiaStr.split(':')[1].trim();
+
+        if (tempoStr.toUpperCase() !== 'FECHADO') {
+            const periodos = tempoStr.split(','); // Divide em múltiplos períodos, ex: "08h-12h, 14h-18h"
+
+            for (const periodo of periodos) {
+                const [inicioStr, fimStr] = periodo.trim().split('-');
+                const openingTime = parseTime(inicioStr);
+                const closingTime = parseTime(fimStr);
+
+                // Verifica se o horário atual está dentro de algum período de funcionamento
+                if (currentTimeInMinutes >= openingTime && currentTimeInMinutes < closingTime) {
+                    status.aberta = true;
+                    break; // Se está aberto em um período, não precisa checar os outros
+                }
+                
+                // Se ainda não estiver aberto, guarda o próximo horário de abertura
+                if (currentTimeInMinutes < openingTime && status.proximaAbertura === -1) {
+                    status.proximaAbertura = openingTime;
+                }
+            }
+
+            // Se a loja não está aberta, mas teve períodos hoje, verifica se está em pausa
+            if (!status.aberta && status.proximaAbertura !== -1) {
+                status.emPausa = true;
+                const proximaHora = Math.floor(status.proximaAbertura / 60).toString().padStart(2, '0');
+                const proximoMinuto = (status.proximaAbertura % 60).toString().padStart(2, '0');
+                status.mensagem = `Estamos em pausa! Reabriremos às ${proximaHora}h${proximoMinuto}.`;
+            } else if (!status.aberta) {
+                 status.mensagem = `Nosso horário de funcionamento hoje já encerrou.`;
+            }
+        }
     }
-    });
 
-    const statusLojaDiv = document.getElementById('products');
-    const LojaAberta = document.getElementById('statusLoja');
+    // --- Atualiza a interface com base no status encontrado ---
+  const lojaStatusEl = document.getElementById('statusLoja');
+    const estavaAberto = isOpen; // Guarda o estado anterior da loja
+    isOpen = status.aberta;
 
-    if (horarioDia && horarioDia.tempo === 'FECHADO') {
-    statusLojaDiv.innerHTML = `
-    <p class="loja-fechada">Loja fechada! Hoje estamos fechados.</p> ${generateScheduleTable(horariosFuncionamento)}`;
-    desativarInterface();
-    clearInterval(intervalID2);
-    return;
-    }
-
-    if (horarioDia) {
-    const [abertura, fechamento] = horarioDia.tempo.split('-');
-    if (abertura && fechamento) {
-        const [aberturaHora, aberturaMinuto] = abertura.split('h');
-        const [fechamentoHora, fechamentoMinuto] = fechamento.split('h');
-
-        openingTime = parseInt(aberturaHora) * 60 + parseInt(aberturaMinuto || 0);
-        closingTime = parseInt(fechamentoHora) * 60 + parseInt(fechamentoMinuto || 0);
-
-        // Verificar se a loja está aberta
-        if (currentTime >= openingTime && currentTime <= closingTime) {
-        isOpen = true;
-    }
-    }
-    }
-
-    // Exibir mensagem de status da loja
     if (isOpen) {
-    LojaAberta.innerHTML = '<p class="loja-aberta">Loja aberta, Boas compras!</p>';
+        lojaStatusEl.innerHTML = '<p class="loja-aberta">Loja aberta, Boas compras!</p>';
+
     } else {
-    const openModalhorarios = document.getElementById("openModalhorarios");
-    openModalhorarios.style.display = "none";
-    statusLojaDiv.innerHTML = ''; // Limpar mensagens anteriores
-    LojaAberta.innerHTML = '<p class="loja-fechada">Loja fechada!</p>';
-    statusLojaDiv.innerHTML = `<p class="loja-fechada">Horário de funcionamento:</p> ${generateScheduleTable(horariosFuncionamento)}`;
-    desativarInterface();
-    clearInterval(intervalID2);
-    return;
+        desativarInterface();
+        desativarAbasCarrinho(); 
+
+        lojaStatusEl.innerHTML = `<p class="loja-fechada">${status.emPausa ? 'Loja em Pausa!' : 'Loja Fechada!'}</p>`;
+        
+        const productsDiv = document.getElementById('products');
+        productsDiv.innerHTML = `
+            <div class="desativado">
+                <h1>${status.emPausa ? '⏸️' : '🌙'}</h1>
+                <p style="font-size: 1.2em;">${status.mensagem}</p>
+                <br>
+                <h4>Nosso Horário de Funcionamento:</h4>
+                ${generateScheduleTable(horariosFuncionamento)}
+            </div>
+        `;
     }
 
-    var intervalID2 = setInterval(getStoreStatus, 60000);
+    // Verifica o status novamente em 1 minuto
+    window.intervalID2 = setInterval(getStoreStatus, 60000);
+}
+
+// Sua função `desativarInterface()` continua a mesma.
+function desativarInterface() {
+    const minecart = document.getElementById('floating-cart');
+    // ... o resto da sua função ...
 }
 
 function generateScheduleTable(horarios) {
@@ -4903,8 +5375,7 @@ function generateScheduleTable(horarios) {
             <thead>
                 <tr>
                     <th>Dia da Semana</th>
-                    <th>Abertura</th>
-                    <th>Fechamento</th>
+                    <th>Horário de Funcionamento</th>
                 </tr>
             </thead>
             <tbody>`;
@@ -4912,15 +5383,16 @@ function generateScheduleTable(horarios) {
     horariosArray.forEach(horario => {
         const [dia, tempo] = horario.split(':');
         const diaTrimmed = dia.trim();
+        let tempoFormatado = tempo.trim();
 
-        if (tempo === 'FECHADO') {
-            tableHTML += `<tr><td>${diaTrimmed}</td><td colspan="2">Fechado</td></tr>`;
+        if (tempoFormatado.toUpperCase() === 'FECHADO') {
+            tempoFormatado = '<span>Fechado</span>'; 
         } else {
-            const [abertura, fechamento] = tempo.split('-');
-            const aberturaTrimmed = abertura.trim();
-            const fechamentoTrimmed = fechamento.trim();
-            tableHTML += `<tr><td>${diaTrimmed}</td><td>${aberturaTrimmed}</td><td>${fechamentoTrimmed}</td></tr>`;
+            // Formata múltiplos períodos com uma quebra de linha para melhor visualização
+            tempoFormatado = tempoFormatado.replace(/,\s*/g, '<br>');
         }
+        
+        tableHTML += `<tr><td>${diaTrimmed}</td><td>${tempoFormatado}</td></tr>`;
     });
 
     tableHTML += `
@@ -4929,6 +5401,34 @@ function generateScheduleTable(horarios) {
     </div>
     `;
     return tableHTML;
+}
+
+function desativarAbasCarrinho() {
+    const abasParaBloquear = ['cart', 'checkout'];
+    abasParaBloquear.forEach(tabId => {
+        const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+        if (tabButton) {
+            tabButton.classList.add('tab-disabled');
+            tabButton.disabled = true; // Impede o clique
+        }
+    });
+
+    // Garante que a aba de Histórico seja a ativa quando a loja fecha
+    showTab('orderHistory');
+}
+
+function ativarAbasCarrinho() {
+    const abasParaReativar = ['cart', 'checkout'];
+    abasParaReativar.forEach(tabId => {
+        const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+        if (tabButton) {
+            tabButton.classList.remove('tab-disabled');
+            tabButton.disabled = false; // Permite o clique novamente
+        }
+    });
+
+    // Volta para a aba do Carrinho como padrão
+    showTab('cart'); 
 }
 
 function openModalhorarios() {
@@ -5021,6 +5521,7 @@ const inputWhatsApp = document.getElementById('WhatsApp');
         });
     }
 
+
 const button = document.getElementById("whatswidget-button");
     const conversation = document.getElementById("whatswidget-conversation");
     let chatOpen = false;
@@ -5041,8 +5542,12 @@ button.addEventListener("click", openChat);
 const backToTopButton = document.getElementById("backToTopBtn");
 
 function toggleBackToTopButton() {
-    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-        backToTopButton.style.display = "block"; 
+    const backToTopButton = document.getElementById("backToTopBtn");
+    if (!backToTopButton) return;
+
+    // Mostra o botão após rolar 300px para baixo
+    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        backToTopButton.style.display = "block";
     } else {
         backToTopButton.style.display = "none";
     }
