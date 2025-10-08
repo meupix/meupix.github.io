@@ -200,11 +200,13 @@ header {
     z-index: 1;
 }
 
+    /* Barra Lateral */
 aside {
     flex: 1;
     padding-left: 20px;
 }
 
+ 
 .tab-button {
     flex: 1; /* Distribui o espaço igualmente entre os botões */
     background: linear-gradient(120deg, #206958b8, #05a582a1);
@@ -823,7 +825,7 @@ button:hover {
 }
 .order-item.open .order-content {
     max-height: 2000px; /* Valor alto para acomodar qualquer conteúdo */
-    padding: 20px;
+    padding-bottom: 20px;
 }
 .order-item.open .toggle-icon {
     transform: rotate(180deg);
@@ -2358,11 +2360,7 @@ input[type="radio"]:checked + .payment-option {
     <div class="footer-content">
         <!-- Coluna 1: Contato e Endereço -->
         <div class="footer-column">
-            <h4>Contato e Localização</h4>
-            <div id="contato-info">
-                <!-- O parágrafo de contato será inserido aqui pelo JS -->
-                <p id="contatorodape"></p>
-            </div>
+            <h4>Localização</h4>
             <div id="endereco-info">
                 <p><strong>📍 Endereço:</strong></p>
                 <p id="Endereço1"></p>
@@ -2384,6 +2382,7 @@ input[type="radio"]:checked + .payment-option {
                 <a id="instagramLink" href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                 <a id="facebookLink" href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                 <a id="twitterLink" href="#" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                <a id="emailLink" href="#" target="_blank" aria-label="envelope"><i class="fa-solid fa-envelope"></i></a>
             </div>
         </div>
 
@@ -2669,57 +2668,64 @@ function irParaLoja() {
     }
 
 function verificarStatusDaLoja() {
+    // 🔹 Remove qualquer script anterior antes de criar um novo
+    const oldScript = document.getElementById('statusLojaScript');
+    if (oldScript) oldScript.remove();
 
+    // 🔹 Cria o novo script de forma controlada
     const script = document.createElement('script');
-    script.src = 'https://www.blogger.com/feeds/' + blog + '/pages/default?start-index=1&max-results=500&alt=json-in-script&callback=processarStatusDaLoja';
-    
+    script.id = 'statusLojaScript';
+    script.src = `https://www.blogger.com/feeds/${blog}/pages/default?start-index=1&max-results=500&alt=json-in-script&callback=processarStatusDaLoja`;
+
     script.onerror = function () {
-            exibirModalErro("ID do blog inválido.", true, false, 'error');
-        };
-    
+        exibirModalErro("ID do blog inválido.", true, false, 'error');
+        script.remove(); // 🔹 remove em caso de erro
+    };
+
     document.body.appendChild(script);
 }
 
+// 🔹 Callback principal
 function processarStatusDaLoja(data) {
-    let fechada = false;
-    let manutencao = false;
-    let ativahorario = false;
-    let ativacupom = false;
-    
-    if (data && data.feed && data.feed.entry && data.feed.entry.length > 0) {
-         nomedaloja = data.feed.title.$t;
-         descricao = data.feed.subtitle.$t;
-        
-        document.querySelector('title').textContent = "Meu Pix - " + nomedaloja;
-        document.getElementById('descricao').textContent = descricao;
-        document.getElementById('NomeDaLoja').textContent = nomedaloja;
-        document.getElementById('rodapedaloja').textContent = '© 2025 ' + nomedaloja + ' - Todos os direitos reservados.';
-        
-        const shareButton = document.getElementById('shareButton');
-        shareButton.addEventListener('click', function() {
-        const baseUrl = window.location.search; // Obtém a URL base da página
-        const shareUrl = `${baseUrl}?id=${blog}`;
+    try {
+        let fechada = false;
+        let manutencao = false;
+        let ativahorario = false;
+        let ativacupom = false;
 
-        if (navigator.share) {
-        navigator.share({
-        title: nomedaloja,
-        text: descricao,
-        url: shareUrl
-        }).then(() => {
-        showNotification("Link de compartilhamento Gerado!", 'success');
-        }).catch((error) => {
-        showNotification("Erro ao compartilhar: ", 'error');
-        });
-        } else {
-        showNotification("Erro ao compartilhar: ", 'error');
-        }
-        });
+        if (data && data.feed && data.feed.entry && data.feed.entry.length > 0) {
+            nomedaloja = data.feed.title.$t;
+            descricao = data.feed.subtitle.$t;
 
-        data.feed.entry.forEach(entry => {
-        if (entry.content && entry.content.$t) {
-        const lines = entry.content.$t.split('\n');
-                
-    lines.forEach(line => {
+            document.querySelector('title').textContent = "Meu Pix - " + nomedaloja;
+            document.getElementById('descricao').textContent = descricao;
+            document.getElementById('NomeDaLoja').textContent = nomedaloja;
+            document.getElementById('rodapedaloja').textContent = '© 2025 ' + nomedaloja + ' - Todos os direitos reservados.';
+
+            const shareButton = document.getElementById('shareButton');
+            shareButton.addEventListener('click', function () {
+                const baseUrl = window.location.search;
+                const shareUrl = `${baseUrl}?id=${blog}`;
+
+                if (navigator.share) {
+                    navigator.share({
+                        title: nomedaloja,
+                        text: descricao,
+                        url: shareUrl
+                    }).then(() => {
+                        showNotification("Link de compartilhamento Gerado!", 'success');
+                    }).catch(() => {
+                        showNotification("Erro ao compartilhar: ", 'error');
+                    });
+                } else {
+                    showNotification("Erro ao compartilhar: ", 'error');
+                }
+            });
+
+            data.feed.entry.forEach(entry => {
+                if (entry.content && entry.content.$t) {
+                    const lines = entry.content.$t.split('\n');
+                        lines.forEach(line => {
         line = line.replace(/<[^>]*>/g, '').trim();
     if (line.startsWith('fechada')) {
         fechada = line.includes('ativado');
@@ -2733,7 +2739,7 @@ function processarStatusDaLoja(data) {
         Pix = line.split('pix =')[1].trim();
         MeuPix = Pix.replace(/&amp;/g, "&");
     } if (line.startsWith('whatsapp')) {
-        whatsapp = line.split('=')[1].trim();
+       whatsapp = line.split('=')[1].trim();
     } else if (line.startsWith('nome')) {
         nome = line.split('=')[1].trim();
         document.getElementById('nome1').textContent = nome;
@@ -2773,31 +2779,14 @@ function processarStatusDaLoja(data) {
         bairro = line.split('bairro =')[1].trim();
     } else if (line.startsWith('emailEndereco')) {
         emailEndereco = line.split('emailEndereco =')[1].trim();
-        const contatorodape = document.getElementById("contatorodape");
-    if (whatsapp) {
-        contatoHTML += `📞 Contato: <a href="https://wa.me/${whatsapp}" target="_blank">WhatsApp</a>`;
-    }
-
-    if (emailEndereco) {
-    if (whatsapp) {
-        contatoHTML += ` | ✉️ E-mail: <a href="mailto:${emailEndereco}">${emailEndereco}</a>`;
-    } else {
-        contatoHTML += `✉️ E-mail: <a href="mailto:${emailEndereco}">${emailEndereco}</a>`;
-    }
-    }
-
-    if (contatoHTML) {
-        contatorodape.innerHTML = `<p>${contatoHTML}</p>`;
-    } else {
-        contatorodape.style.display = 'none';
-    }
-
     } else if (line.startsWith('instagramUsuario')) {
         instagramUsuario = line.split('instagramUsuario =')[1].trim();
     } else if (line.startsWith('facebookPagina')) {
         facebookPagina = line.split('facebookPagina =')[1].trim();
     } else if (line.startsWith('twitterUsuario')) {
         twitterUsuario = line.split('twitterUsuario =')[1].trim();
+    } else if (line.startsWith('facebookPagina')) {
+        facebookPagina = line.split('facebookPagina =')[1].trim();
     } else if (line.startsWith('politicaPrivacidadeURL')) {
         politicaPrivacidadeURL = line.split('politicaPrivacidadeURL =')[1].trim();
     } else if (line.startsWith('termosUsoURL')) {
@@ -2810,11 +2799,11 @@ function processarStatusDaLoja(data) {
         document.getElementById('avisonorodape').textContent = avisonorodape;
     }
                 });
-            }
-        });
+                }
+            });
 
         atualizarInterface(fechada, manutencao, ativahorario);
-
+        const emailLink = document.getElementById("emailLink");
         const instagramLink = document.getElementById("instagramLink");
         const facebookLink = document.getElementById("facebookLink");
         const twitterLink = document.getElementById("twitterLink");
@@ -2881,6 +2870,14 @@ function processarStatusDaLoja(data) {
         removerRedeSocial(twitterLink, twitterSeparator);
     }
 
+      // Atualiza o link do Facebook, se a página for válida
+        if (!isEmpty(emailEndereco)) {
+        emailLink.href = `mailto:${emailEndereco}`;
+        redesSociaisAdicionadas = true;
+    } else {
+        removerRedeSocial(emailLink, facebookSeparator);
+    }
+
         //Remove o siga-nos caso nenhuma rede social seja adicionada
         if (!redesSociaisAdicionadas) {
         removerRedeSocial(sigaNosParagrafo, null);
@@ -2917,10 +2914,16 @@ function processarStatusDaLoja(data) {
         removerRedeSocial(privacidadeTermosParagrafo, null);
     }
     }
+        }
+
+        fetchProducts();
+    } finally {
+        // 🔹 Remove o script sempre, mesmo se der erro
+        const script = document.getElementById('statusLojaScript');
+        if (script) script.remove();
     }
-    
-    fetchProducts(); 
 }
+
 
 function atualizarInterface(fechada, manutencao, ativahorario) {
     const telaAtivada = document.querySelector('.products');
@@ -3000,50 +3003,54 @@ function atualizarInterface(fechada, manutencao, ativahorario) {
 }
 
 function fetchProducts() {
-    if (isOpen) { } else { return;}
+    if (!isOpen) return;
 
     const errorMessage = document.getElementById('errorMessage');
     errorMessage.classList.add('hidden');
 
+    // Remove qualquer script anterior (se existir)
+    const oldScript = document.getElementById('scriptProdutos');
+    if (oldScript) oldScript.remove();
+
+    // Cria o script novo
     const script = document.createElement('script');
+    script.id = 'scriptProdutos';
     script.src = 'https://www.blogger.com/feeds/' + blog + '/posts/default?start-index=1&max-results=500&alt=json-in-script&callback=processarProdutos';
 
     script.onerror = function () {
-        
         errorMessage.textContent = 'A loja foi desativada ou o ID é inválido. Verifique novamente mais tarde.';
         errorMessage.classList.remove('hidden');
 
-        // Desativa abas, etc.
+        // Esconde abas relacionadas
         const cartTabButton = document.querySelector('.tab-button[data-tab="cart"]');
         const checkoutTabButton = document.querySelector('.tab-button[data-tab="checkout"]');
         if (cartTabButton) cartTabButton.style.display = 'none';
         if (checkoutTabButton) checkoutTabButton.style.display = 'none';
+
+        // Remove o script com erro
+        script.remove();
     };
 
     document.body.appendChild(script);
 }
 
+// Callback
 function processarProdutos(data) {
     const loadingMessage = document.getElementById('loadingMessage');
-    
+
     try {
-        products = []; // Limpa o array de produtos
-        carouselProducts = []; // Limpa o array de produtos do carrossel
+        products = [];
+        carouselProducts = [];
 
         data.feed.entry.forEach(entry => {
             const product = parseProductFromEntry(entry);
             products.push(product);
-
-            if (product.isCarousel) {
-                carouselProducts.push(product);
-            }
+            if (product.isCarousel) carouselProducts.push(product);
         });
 
-
-                if (carouselProducts.length > 0) {
+        if (carouselProducts.length > 0) {
             initializeCarousel();
         } else {
-            // NOVO: Se não houver produtos de carrossel, esconde o contêiner e remove o loading
             const carouselContainer = document.getElementById('featuredProductsCarousel');
             if (carouselContainer) {
                 carouselContainer.style.display = 'none';
@@ -3053,11 +3060,15 @@ function processarProdutos(data) {
 
         displayCategoryFilters();
         displayProducts();
-
     } catch (error) {
         console.error("Erro ao processar produtos:", error);
+    } finally {
+        // Remove o script após processar (limpeza final)
+        const script = document.getElementById('scriptProdutos');
+        if (script) script.remove();
     }
 }
+
 
 function verificarDisponibilidadeProdutos() {
     // Retorna uma Promise para que possamos usar async/await
@@ -4398,29 +4409,37 @@ async function verificarPagamento(index) {
         const paymentHash = order.paymentHash;
         const iddopagamento = order.id;
 
-        // Obter os dados da API do Blogger
+        // 🔹 Antes de criar um novo script, remove qualquer antigo
+        const oldScript = document.getElementById('verificacaoPagamentoScript');
+        if (oldScript) oldScript.remove();
+
+        // 🔹 Cria o novo script
         const script = document.createElement('script');
-        script.src = 'https://www.blogger.com/feeds/' + blog + '/pages/default?alt=json-in-script&callback=processarVerificacaoPagamento';
+        script.id = 'verificacaoPagamentoScript';
+        script.src = `https://www.blogger.com/feeds/${blog}/pages/default?alt=json-in-script&callback=processarVerificacaoPagamento`;
+
         script.onerror = () => {
             showNotification("Erro ao obter os dados de pagamento.", 'error');
+            script.remove(); // remove o script em caso de erro
         };
 
+        // 🔹 Define o callback
         window.processarVerificacaoPagamento = (data) => {
-            if (data && data.feed && data.feed.entry) {
-                let paymentFound = false;
+            try {
+                if (data && data.feed && data.feed.entry) {
+                    let paymentFound = false;
 
-                // Iterar sobre as entradas do feed
-                data.feed.entry.forEach(entry => {
-                    if (entry.content && entry.content.$t) {
-                        const lines = entry.content.$t.split('\n').map(line => line.replace(/<[^>]*>/g, '').trim());
+                    data.feed.entry.forEach(entry => {
+                        if (entry.content && entry.content.$t) {
+                            const lines = entry.content.$t.split('\n').map(line => line.replace(/<[^>]*>/g, '').trim());
 
-                        for (const line of lines) {
-                            const match = line.match(new RegExp(`${paymentHash}\\s+(\\w+)`));
+                            for (const line of lines) {
+                                const match = line.match(new RegExp(`${paymentHash}\\s+(\\w+)`));
 
-                            if (match) {
-                                const status = match[1].trim();
+                                if (match) {
+                                    const status = match[1].trim();
 
-                                if (status === 'Cancelado') {
+                                    if (status === 'Cancelado') {
                                         history[index].StatusButton = false;
                                         history[index].StatusPedido = 'Cancelado';
                                         history[index].Enviado = ' ';
@@ -4429,10 +4448,8 @@ async function verificarPagamento(index) {
                                         history[index].isPago = false;
                                         showNotification(`Pedido #${iddopagamento} foi Cancelado.`, 'error');
                                         paymentFound = true;
-                                        //deleteOrderFromHistory(index);
-                                        //return;
-                                } if (order.Entregue === '') {
-                                    if (status === 'Entregue') {
+
+                                    } else if (order.Entregue === '' && status === 'Entregue') {
                                         history[index].Entregue = 'Entregue';
                                         history[index].Pagamento = 'Pago';
                                         history[index].StatusPedido = 'Pago';
@@ -4440,9 +4457,7 @@ async function verificarPagamento(index) {
                                         showNotification(`Pedido #${iddopagamento} Pago e foi entregue.`, 'atualizado');
                                         paymentFound = true;
 
-                                    }
-                                 } if (order.Enviado === '') {
-                                    if (status === 'Enviado') {
+                                    } else if (order.Enviado === '' && status === 'Enviado') {
                                         history[index].Enviado = 'Enviado';
                                         history[index].Pagamento = 'Pago';
                                         history[index].StatusPedido = 'Pago';
@@ -4450,42 +4465,42 @@ async function verificarPagamento(index) {
                                         showNotification(`Pedido #${iddopagamento} Pago e foi enviado.`, 'atualizado');
                                         paymentFound = true;
 
-                                    }
-                                 } if (order.StatusPedido === 'Aguardando Pagamento') {
-                                    if (status === 'Pago') { 
+                                    } else if (order.StatusPedido === 'Aguardando Pagamento' && status === 'Pago') {
                                         history[index].isPago = true;
                                         history[index].Pagamento = 'Pago';
                                         history[index].StatusPedido = 'Pago';
                                         showNotification(`Pagamento #${iddopagamento} concluído com sucesso!`, 'success');
                                         paymentFound = true;
                                     }
-                                    
                                 }
-                                
                             }
                         }
+                    });
+
+                    if (!paymentFound && order.StatusPedido === "Aguardando Pagamento") {
+                        showNotification(`Estamos aguardando a confirmação do seu pagamento #${iddopagamento}. Assim que recebermos a confirmação, você será notificado.`, 'aguardando');
                     }
-                });
 
-                // Se o pagamento não foi encontrado
-                if (!paymentFound && order.StatusPedido === "Aguardando Pagamento") {
-                    showNotification(`Estamos aguardando a confirmação do seu pagamento #${iddopagamento}. Assim que recebermos a confirmação, você será notificado.`, 'aguardando'); // 'info' em vez de 'aguardando'
-                } 
+                    localStorage.setItem(blog, JSON.stringify(history));
+                    updateOrderHistoryDisplay();
 
-                localStorage.setItem(blog, JSON.stringify(history)); // Salva as mudanças no localStorage
-                updateOrderHistoryDisplay(); // Atualiza a interface
-                
-            } else {
-                showNotification("Erro ao processar os dados da API.", 'error');
+                } else {
+                    showNotification("Erro ao processar os dados da API.", 'error');
+                }
+            } finally {
+                // 🔹 Sempre remove o script após o uso (mesmo em caso de erro)
+                const s = document.getElementById('verificacaoPagamentoScript');
+                if (s) s.remove();
             }
         };
 
         document.body.appendChild(script);
 
-        // Adicionando um tempo de espera (simulação) para poder ver o fluxo mais claramente
-        await new Promise(resolve => setTimeout(resolve, 2000)); // Espera 2 segundos entre as verificações
+        // Pequeno delay para simular tempo de rede (opcional)
+        await new Promise(resolve => setTimeout(resolve, 2000));
     }
 }
+
 
 function goToAddress() {
     const addressElement = document.querySelector('.rodape');
