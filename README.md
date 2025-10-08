@@ -52,7 +52,7 @@ Deixe um comentário sobre o Gerador de pix [**Comenta Agora**](https://chat-meu
 
 [https://meupix.github.io/lojavirtual?id=1364727178420957300](https://meupix.github.io/lojavirtual?id=1364727178420957300)
 
-Deixe um comentário sobre a loja virtual [**Comenta Agora**](https://chat-meupix.blogspot.com/p/cria-sua-loja-virtual-com-meupix.html).
+Crie sua loja aqui virtual [**Criar aqui**](https://meupix.vercel.app/lojavirtual/criarconfig).
 
 ## Autor
 
