@@ -5272,10 +5272,6 @@ function toggleAddressFields() {
     updateCartDisplay(); // Mantém esta linha para recalcular o total
 }
 
-/**
- * Verifica o status da loja (aberta, fechada, em pausa) com base em múltiplos
- * períodos de funcionamento e exibe mensagens personalizadas.
- */
 function getStoreStatus() {
     // Desativa qualquer verificação automática anterior para evitar loops
     if (window.intervalID2) {
