@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+        <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4SV7F9T34D"></script>
+  <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-4SV7F9T34D');
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!--  -->
@@ -2054,6 +2063,55 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
 
 #container {
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+/* Estilo base para todos os valores do pedido */
+.valor-pedido {
+  display: block;
+  margin-top: 11px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Desconto */
+.valor-desconto {
+    color: #ff0013;
+    background: rgb(29 53 87 / 35%);
+    border-radius: 8px;
+    padding: 6px 10px;
+    display: inline-block;
+}
+
+/* Subtotal */
+.valor-subtotal {
+  color: #ffffff; /* azul escuro */
+  background: rgb(29 53 87 / 35%);
+  border-radius: 8px;
+  padding: 6px 10px;
+  display: inline-block;
+}
+
+/* Entrega */
+.valor-entrega {
+  color: #002fff; /* azul médio */
+    background: rgb(29 53 87 / 35%);
+  border-radius: 8px;
+  padding: 6px 10px;
+  display: inline-block;
+}
+
+/* Total Final */
+.valor-total {
+  color: #2a9d8f; /* verde destaque */
+  background: rgba(42, 157, 143, 0.1);
+  font-size: 1.3rem;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-top: 12px;
+  display: inline-block;
 }
 </style>
 </head>
@@ -4429,10 +4487,33 @@ function GeraQRCodePix(payload, minhalogo) {
         const itemList = document.getElementById('itemList');
         const container = document.getElementById('container');
         const h1 = document.createElement('strong');
+
         h1.classList.add("lh-copy", "tc", "center", "mb4", "db-ns", "f5");
         h1.textContent = "Produtos do Pedido:";
         container.insertBefore(h1, itemList);
 
+if (Number(dadosDoPedido.subtotal) > 0) {
+  const spansubtotal = document.createElement('strong');
+  spansubtotal.classList.add("valor-pedido", "valor-subtotal");
+  spansubtotal.textContent = "Subtotal: " + formatarReal(dadosDoPedido.subtotal);
+  container.appendChild(spansubtotal);
+}
+
+if (Number(dadosDoPedido.desconto) > 0) {
+  const spandesconto = document.createElement('strong');
+  spandesconto.classList.add("valor-pedido", "valor-desconto");
+  spandesconto.textContent = "Desconto: - " + formatarReal(dadosDoPedido.desconto);
+  container.appendChild(spandesconto);
+}
+
+
+if (Number(dadosDoPedido.deliveryFee) > 0) {
+  const spandelivery = document.createElement('strong');
+  spandelivery.classList.add("valor-pedido", "valor-entrega");
+  spandelivery.textContent = "Entrega: + " + formatarReal(dadosDoPedido.deliveryFee);
+  container.appendChild(spandelivery);
+}
+    document.getElementById('valor2').textContent = "Total: " + formatarReal(dadosDoPedido.total);
             items.forEach(item => {
               const li = document.createElement('li');
               li.innerHTML = `
@@ -5492,7 +5573,11 @@ $(window).click(function(event) {
         if (pedidoEncontrado) {
             return {
                 produtos: pedidoEncontrado.produtos,
-                pedidowhatsapp: pedidoEncontrado.pedidowhatsapp
+                pedidowhatsapp: pedidoEncontrado.pedidowhatsapp,
+                desconto: pedidoEncontrado.desconto,
+                subtotal: pedidoEncontrado.subtotal,
+                deliveryFee: pedidoEncontrado.deliveryFee,
+                total: pedidoEncontrado.total
             };
         } else {
             console.warn(`Pedido com ID "${idDoPedido}" não encontrado.`);
