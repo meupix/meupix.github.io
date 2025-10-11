@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
+<!DOCTYPE html><html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -34,7 +33,7 @@
     --light-gray: #ddd;
     --success-color: #2ecc71;
     --error-color: #e74c3c;
-    --floating-cart-bg: linear-gradient(47deg, #ffa200e0, #ff5d00e0);
+    --floating-cart-bg: linear-gradient(120deg, #ffa200a6, #ff5e00a2);
 }
 
     /* Estilos Globais */
@@ -52,10 +51,11 @@
     /* Header Styles */
 header {
     text-align: center;
-    background: linear-gradient(227deg, #05a5826b, #2069586b);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(8px);
+    box-shadow: 0px 0px 23px 0 #05a58285;
+    background: linear-gradient(120deg, #2069587d, #05a58266);
 }
 
     header img {
@@ -84,23 +84,12 @@ header {
     margin-top: 20px;
     margin-bottom: 20px;
     padding: 20px;
-    box-shadow: 0 0 15px #05a582a1;
-    background: linear-gradient(120deg, #206958b8, #05a582a1);
+    box-shadow: 0px 0px 23px 0 #05a58285;
+    background: linear-gradient(120deg, #2069587d, #05a58266);
     border-radius: 15px;
     display: flex;
+    backdrop-filter: blur(8px);
 }
-
-    /* Layout Desativado */
-.desativado {
-    margin: 20px auto;
-    padding: 20px;
-    box-shadow: 0 0 15px #ff0000;
-    background: #ad0000b2;
-    border-radius: 15px;
-    color: #fff;
-    text-align: center;
-}
-
     /* Seção de Produtos */
 .products {
     flex: 2;
@@ -110,7 +99,7 @@ header {
 }
 
 .products h2 {
-    font-size: 2em;
+    font-size: 1.4em;
     margin-bottom: 15px;
 }
 
@@ -180,24 +169,27 @@ header {
     position: absolute;
     top: 10px;
     left: 10px;
-    background: linear-gradient(118deg, #ff0000, #cc0000);
+    background: linear-gradient(118deg, #ff0000ad, #cc0000c4);
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 0.9em;
     z-index: 1;
+    backdrop-filter: blur(8px);
 }
 
 .discount-carrossel {
     position: absolute;
     top: 19px;
     margin-left: 20px;
-    background: linear-gradient(118deg, #ff0000, #cc0000);
+    background: linear-gradient(118deg, #ff0000b3, #cc0000b0);
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
     font-size: 0.9em;
     z-index: 1;
+    box-shadow: 0 0 15px #0000009a;
+    backdrop-filter: blur(8px);
 }
 
     /* Barra Lateral */
@@ -272,27 +264,14 @@ button {
     outline: none;
 }
 
-/* Estilos para os botões primários */
-.btnInicio {
-    background-color: #3498db;
-    /* Azul */
-    color: #fff;
-}
-
-.btnInicio:hover {
-    background-color: #2980b9;
-    /* Azul mais escuro no hover */
-    transform: translateY(-2px);
-    /* Leve elevação no hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    /* Sombra mais intensa no hover */
-}
 
 .button-group {
-    display: flex;
-    justify-content: space-around;
     margin-bottom: 20px;
-    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+    flex-wrap: wrap;
 }
 
 .button-group-carousel {
@@ -335,50 +314,63 @@ button:hover::before {
 }
 
 /* Estilos para os botões primários */
-.btnInicio {
-  background: linear-gradient(120deg, #3498db, #2980b9); /* Gradiente azul */
-  color: #fff;
+.ButtonCompraComDinheiro {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-direction: column;
+    box-shadow: 0 0 15px #000000c7;
+    background: linear-gradient(167deg, #3498db, #2980b9);
+    color: #fff;
 }
 
-.btnInicio:hover {
-  background: linear-gradient(120deg, #2980b9, #3498db); /* Inverte o gradiente no hover */
+.ButtonCompraComDinheiro:hover {
+  background: linear-gradient(120deg, #d35400, #f39c12); /* Inverte o gradiente no hover */
   transform: translateY(-3px); /* Elevação um pouco maior */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais intensa */
 }
 
 /* Estilos para os botões secundários */
-.ButtonFinalizarCompra {
-  background: linear-gradient(120deg, #2ecc71, #27ae60); /* Gradiente verde */
-  color: #fff;
+.ButtonCompraComPix {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-direction: column;
+    box-shadow: 0 0 15px #000000c7;
+        background: linear-gradient(120deg, #206958, #05a582);
+    color: #fff;
 }
 
-.ButtonFinalizarCompra:hover {
-  background: linear-gradient(120deg, #27ae60, #2ecc71); /* Inverte o gradiente no hover */
+.ButtonCompraComPix:hover {
+  background: linear-gradient(120deg, #d35400, #f39c12); /* Inverte o gradiente no hover */
   transform: translateY(-3px); /* Elevação um pouco maior */
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais intensa */
 }
 
-/* Estilos para os botões de ação close-button*/
-.ButtonEsvaziarCarrinho {
-  background: linear-gradient(120deg, #e74c3c, #c0392b); /* Gradiente vermelho */
-  color: #fff;
-}
-
-.ButtonEsvaziarCarrinho:hover {
-  background: linear-gradient(120deg, #c0392b, #e74c3c); /* Inverte o gradiente no hover */
-  transform: translateY(-3px); /* Elevação um pouco maior */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais intensa */
-}
 
 /* Estilos para os botões de texto */
 .buy-now-button {
-  background: linear-gradient(120deg, #2ecc71, #27ae60); /* Gradiente laranja */
-  box-shadow: 0 0 15px #2ecc7052;
-  color: #fff;
+padding: 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px #000000a3;
+    background: linear-gradient(120deg, #206958, #029b7a);
+    color: #fff;
 }
 .add-to-cart-button {
   background: linear-gradient(120deg, #3498db, #2980b9); /* Gradiente laranja */
-  box-shadow: 0 0 15px #3498db70;
+  box-shadow: 0 0 15px #000000a3;
   margin-bottom: 20px;
   color: #fff;
 }
@@ -564,6 +556,7 @@ button:hover {
     background-color: rgba(0, 0, 0, 0.2);
     border-radius: 20px;
     padding: 4px;
+    justify-content: center;
 }
 
 .cart-quantity-controls .quantity-btn {
@@ -646,13 +639,6 @@ button:hover {
 
     .cart-quantity-controls {
         grid-area: controls;
-        display: grid;
-        grid-template-columns: 1fr auto;
-        width: 100%;
-        background-color: transparent;
-        padding: 0;
-        border-radius: 0;
-        justify-items: center;
     }
 
     .quantity-controls-wrapper {
@@ -681,7 +667,6 @@ button:hover {
 }
 
 .form-group label {
-    display: block;
     margin-bottom: 5px;
     font-weight: 500;
 }
@@ -698,6 +683,7 @@ button:hover {
     border-radius: 5px;
     font-size: 1em;
     box-sizing: border-box;
+    box-shadow: 0 0 15px #0000009a;
 }
 
 .form-group textarea {
@@ -953,6 +939,7 @@ to {
 
     /* Carrinho Flutuante */
 #floating-cart {
+    backdrop-filter: blur(8px);
     position: fixed;
     bottom: 20px;
     left: 20px;
@@ -973,7 +960,7 @@ to {
 #floating-cart:hover {
     background-color: darken(#3498db, 10%);
     transform: translateY(-2px);
-    background: linear-gradient(47deg, #206958, #05a581, #206958);
+    background: linear-gradient(47deg, #206958ab, #05a5829c, #206958ad);
 }
 
 #floating-cart .cart-icon {
@@ -994,22 +981,20 @@ to {
     display: none;
 }
 
-
-
-
 /* =================================== */
 /*       ESTILOS DO NOVO RODAPÉ        */
 /* =================================== */
 
 /* Estilo principal do rodapé */
 .rodape {
-    background: linear-gradient(120deg, #206958b8, #05a582a1);
-    box-shadow: 0 0 15px #05a582;
     color: #fff;
-    padding: 40px 20px 20px 20px; /* Mais espaço interno */
+    padding: 40px 20px 20px 20px;
     margin-top: 30px;
     border-radius: 15px;
     font-size: 0.9em;
+    backdrop-filter: blur(8px);
+    box-shadow: 0px 0px 23px 0 #05a58285;
+    background: linear-gradient(120deg, #2069587d, #05a58266);
 }
 
 /* Container que segura as colunas */
@@ -1175,8 +1160,9 @@ to {
     text-align: center;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     box-sizing: border-box;
-    box-shadow: 0 0 15px #ff6700;
     background: linear-gradient(231deg, #ffa200b3, #ff5d00a1);
+    box-shadow: 0 0 15px #ff6700;
+    backdrop-filter: blur(8px);
 }
 
 .loja-fechada-mensagem {
@@ -1199,34 +1185,28 @@ to {
     font-size: 1em;
 }
 
-.not-alert table {
+.not-alert {
     width: 100%;
     margin-top: 10px;
     border-collapse: collapse;
 }
 
-.not-alert table thead th {
+.not-alert {
     background-color: #ffffff;
     color: #000000;
     padding: 8px;
     border: 1px solid #ebccd1;
 }
 
-.not-alert table tbody td {
+.not-alert {
     padding: 8px;
     border: 1px solid #ebccd1;
     text-align: left;
 }
 
-.not-alert table tbody tr:nth-child(even) {
+.not-alert{
     background-color: #f9f9f9;
 }
-
-.uk-margin-xsmall-right {
-    margin-right: 5px;
-}
-
-
 
 .carousel-slide {
     display: flex;
@@ -1246,6 +1226,7 @@ to {
     margin-bottom: 10px;
     border-radius: 8px;
     margin-top: 20px;
+    box-shadow: 0 0 15px #0000009a;
 }
 
 .carousel-nav {
@@ -1260,17 +1241,18 @@ to {
 }
 
 .carousel-nav button {
-    background: rgba(0, 0, 0, 0.5);
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    background: linear-gradient(141deg, #ff0000b8, #4800ffba);
     color: #fff;
     border: none;
     padding: 8px 12px;
     cursor: pointer;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-}
-
-.carousel-nav button:hover {
-    background: rgba(0, 0, 0, 0.7);
+    box-shadow: 2px 1px 2px #000000e8;
+    backdrop-filter: blur(8px);
 }
 
 .required:after {
@@ -1468,7 +1450,7 @@ to {
 }	
 
 .backgroundred {
-    background: linear-gradient(118deg, #ff0000, #cc0000);
+    background: linear-gradient(118deg, #ff0000, #cc0000fb);
     color: white;
     padding: 5px 10px;
     border-radius: 5px;
@@ -1481,132 +1463,55 @@ to {
     border-radius: 5px;
     font-size: 0.9em;
 }
-#modalErro {
-            display: flex;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 101;
-        }
-        #modalErro .conteudo {
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px;
-            width: 300px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-        #modalErro .botaoAjuda {
-            background-color: #007BFF;
-            color: white;
-        }
-        #modalErro.botaoFechar {
-            background-color: #ff0000;
-            color: white;
-        }
-        #modalErro.trocaid .conteudo {
-            background: linear-gradient(153deg, #d8131388, #1900ff85);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        /* Estilos para os tipos de mensagem */
-        #modalErro.success .conteudo {
-            background: linear-gradient(153deg, #096d1a, #08ad08);
-            color: white;
-        }
-        #modalErro.aviso .conteudo {
-            background: linear-gradient(153deg, #6d5e09, #7e7101);
-            color: white;
-        }
-        #modalErro.error .conteudo {
-            background: linear-gradient(153deg, #f44336, #880303);
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        #modalErro button {
-            margin-top: 10px;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
 
-        /* =========================================== */
-/*    NOVO CSS PARA TABELA DE HORÁRIOS         */
-/* =========================================== */
 
-.schedule-table-container {
-    width: 100%;
-    max-width: 500px; /* Um pouco mais estreito para melhor leitura */
-    margin: 25px auto;
-    overflow-x: auto;
+/* Botão "Finalizar Compra" */
+.ButtonFinalizarcheckout {
+  flex: 1;
+  background: linear-gradient(120deg, #206958, #05a582);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.37);
 }
 
-.schedule-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 1em;
-    border-radius: 12px; /* Bordas mais arredondadas */
-    overflow: hidden; /* Garante que o border-radius funcione */
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    color: var(--text-color);
+.ButtonFinalizarcheckout:hover {
+  background: linear-gradient(47deg, #e05300, #e69200);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.39);
 }
 
-.schedule-table thead tr {
-    /* Gradiente laranja da sua identidade visual */
-    background: linear-gradient(135deg, #ffa200e0, #ff5d00e0);
-    color: #ffffff;
-    text-align: left;
-    font-weight: bold;
+/* Botão "Esvaziar Carrinho" */
+.ButtonEsvaziarCarrinho {
+  flex: 1;
+  background: linear-gradient(167deg, #5b0000, #ff0000);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.329);
 }
 
-     .schedule-table th,
-        .schedule-table td {
-            padding: 6px 0px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-
-.schedule-table tbody tr {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    background-color: rgba(0, 0, 0, 0.15);
+.ButtonEsvaziarCarrinho:hover {
+  background: linear-gradient(332deg, #5b0000, #ff0000);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.336);
 }
 
-.schedule-table tbody tr:nth-of-type(even) {
-    background-color: rgba(0, 0, 0, 0.25); /* Efeito de zebra sutil */
-}
-
-.schedule-table tbody tr:last-of-type {
-    border-bottom: 2px solid #ff5d00; /* Linha final mais forte */
-}
-
-/* Estilo para o texto "Fechado" */
-.schedule-table td span {
-    background: linear-gradient(120deg, #e74c3c, #c0392b);
-    color: white;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 0.9em;
-    font-weight: 500;
-}
-
-/* Ajustes para telas menores */
-@media (max-width: 600px) {
-    .schedule-table {
-        font-size: 0.9em;
-    }
-    .schedule-table th,
-    .schedule-table td {
-        padding: 10px 12px;
-    }
+/* Efeito visual ao clicar */
+.ButtonFinalizarcheckout:active,
+.ButtonEsvaziarCarrinho:active {
+  transform: scale(0.97);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
  
    /* Estilos para o modal */
@@ -1632,14 +1537,8 @@ to {
     background: rgba(0, 0, 0, 0.8);
     justify-content: center;
     align-items: center;
-        }
-
-tbody {
-    display: table-row-group;
-    vertical-align: middle;
-    unicode-bidi: isolate;
-    background: linear-gradient(153deg, #206958, #05a582);
 }
+
 
 /* Adicione este CSS perto dos outros estilos de .tab-button */
 
@@ -1680,7 +1579,7 @@ tbody {
 }
         /* Estilos para o botão de compartilhar */
 #shareButton {
-    background: linear-gradient(120deg, #851616cc, #1e05a5db);
+    background: linear-gradient(231deg, #ffa200e0, #ff5d00e0);
     color: white;
     padding: 10px 15px;
     border: none;
@@ -1689,17 +1588,12 @@ tbody {
 }
 
 #openModalhorarios {
-    background: linear-gradient(120deg, #851616cc, #1e05a5db);
+        background: linear-gradient(231deg, #ffa200e0, #ff5d00e0);
     color: white;
     padding: 10px 15px;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-}
-#openModalhorarios {
-    background-color: #2980b9; /* Azul mais escuro no hover */
-    transform: translateY(-2px); /* Levemente elevado no hover */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra mais intensa no hover */
 }
 
 #shareButton:hover {
@@ -1708,7 +1602,7 @@ tbody {
     box-shadow: 0 4px 8px rgba(0,0,0,0.3); /* Sombra mais intensa no hover */
 }
 #sairdaloja {
-    background: linear-gradient(60deg, #851616cc, #1e05a5db);
+        background: linear-gradient(231deg, #ffa200e0, #ff5d00e0);
     color: white;
     padding: 10px 15px;
     border: none;
@@ -1741,6 +1635,7 @@ tbody {
     border-radius: 5px;
     transition: background-color 0.3s ease;
     box-shadow: 2px 1px 2px #000000e8;
+        backdrop-filter: blur(8px);
 }
 
 .slider-button.prev { left: 8px; }
@@ -1791,9 +1686,10 @@ tbody {
 #categoryFilters {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-evenly;
     gap: 10px;
     margin-bottom: 25px;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .category-button {
@@ -1887,7 +1783,7 @@ tbody {
     bottom: 102px;
     right: 25px;
     z-index: 99;
-    background: var(--floating-cart-bg, linear-gradient(47deg, #ffa200e0, #ff5d00e0));
+    background: linear-gradient(47deg, #ffa200e0, #ff5d00e0);
     color: white;
     border: none;
     outline: none;
@@ -1897,14 +1793,11 @@ tbody {
     border-radius: 50%;
     font-size: 20px;
     transition: background-color 0.3s, transform 0.2s;
-    background-color: #e4dcd4 !important;
-    background-repeat: repeat !important;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 40px !important;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 40px;
 }
 
 #backToTopBtn:hover {
-    /* Escurece um pouco ao passar o mouse */
-    background: linear-gradient(47deg, #e69200, #e05300);
+    background: linear-gradient(47deg, #206958ab, #05a5829c, #206958ad);
     transform: translateY(-3px); /* Efeito de elevação */
 }
 .modal-product-description {
@@ -1913,12 +1806,6 @@ tbody {
     line-height: 1.7;
     white-space: pre-wrap; /* Respeita as quebras de linha e espaços */
 }
-
-/* =================================================================== */
-/* ============== VERSÃO CORRIGIDA DO MODAL DE DESCRIÇÃO ============= */
-/* =================================================================== */
-
-/* --- Estilo Base (Desktop) --- */
 
 .description-modal {
     display: none; /* Inicia escondido */
@@ -1931,8 +1818,6 @@ tbody {
     background-color: rgba(10, 25, 47, 0.85);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    
-    /* Animação suave na entrada/saída */
     opacity: 0;
     transition: opacity 0.3s ease;
     visibility: hidden;
@@ -2057,7 +1942,7 @@ tbody {
 }
 .btn-details {
     background: linear-gradient(120deg, #9b59b6, #8e44ad);
-    box-shadow: 0 0 15px #3498db70;
+    box-shadow: 0 0 15px #00000070;
     margin-bottom: 20px;
     color: #fff;
 }
@@ -2085,15 +1970,20 @@ tbody {
     align-items: center;
     justify-content: center;
     padding: 15px;
-    border: 2px solid var(--light-gray);
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-color: rgba(255, 255, 255, 0.1);
+    flex-direction: row;
+    box-shadow: 0 0 15px #000000a3;
+    background: linear-gradient(120deg, #206958a1, #05a582ab);
+}
+.payment-option.active {
+    background: linear-gradient(231deg, #ffa200e0, #ff5d00e0);
+    box-shadow: 0 0 15px #ff6700;
+    font-weight: bold;
 }
 .payment-option:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: var(--secondary-color);
+    transform: translateY(-2px);
 }
 .payment-option input[type="radio"] {
     display: none; /* Esconde o radio button padrão */
@@ -2119,16 +2009,6 @@ input[type="radio"]:checked + .payment-option {
     font-size: 1.2em;
 }
 #featuredProductsCarousel {
-    position: relative;
-    overflow: hidden;
-    margin-bottom: 20px;
-    border-radius: 15px;
-    text-align: center;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    box-sizing: border-box;
-    box-shadow: 0 0 15px #ff6700;
-    background: linear-gradient(231deg, #ffa200b3, #ff5d00a1);
-    
     /* Adiciona uma altura mínima para que o skeleton seja visível */
     min-height: 450px; 
 }
@@ -2157,8 +2037,278 @@ input[type="radio"]:checked + .payment-option {
 #featuredProductsCarousel.loading .carousel-nav {
     display: none;
 }
+#statusLoja {
+  text-align: center;
+  font-size: 1.4em;
+  font-weight: bold;
+  margin: 15px 0;
+  transition: all 0.6s ease;
+}
 
-    </style>
+.loja-aberta {
+  color: #00ff99;
+  background: linear-gradient(120deg, #206958, #05a582);
+  padding: 10px 20px;
+  border-radius: 12px;
+  display: inline-block;
+  animation: fadeSlideIn 0.8s ease;
+}
+
+.loja-fechada {
+  color: #ffb347;
+  background: linear-gradient(47deg, #e69200, #e05300);
+  padding: 10px 20px;
+  border-radius: 12px;
+  display: inline-block;
+  animation: fadeSlideIn 0.8s ease;
+}
+
+@keyframes fadeSlideIn {
+  0% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.fade-out {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.current-day {
+  background: rgb(255, 0, 0);
+  font-weight: bold;
+}
+.aplicarCupomBtn {
+  background: linear-gradient(47deg, #e69200, #e05300);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+/* --- Modal base --- */
+#modalErro {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+    overflow-y: auto;
+}
+
+/* --- Animação de entrada --- */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* --- Caixa do conteúdo --- */
+#modalErro .conteudo {
+    border-radius: 16px;
+    padding: 25px;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    animation: scaleUp 0.3s ease;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 30px #000000b0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* --- Título e texto --- */
+#modalErro h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+#modalErro p {
+    font-size: 1rem;
+    margin: 10px 0 20px;
+}
+
+/* --- Formulário --- */
+#modalErro .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#modalErro input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+#modalErro input:focus {
+    border-color: #05a582;
+}
+
+/* --- Botões gerais --- */
+#modalErro button {
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: 0.25s ease;
+}
+
+/* Botão de ajuda */
+.botaoAjuda {
+    background: linear-gradient(47deg, #e69200, #e05300);
+    color: #fff;
+    margin-top: 8px;
+}
+
+/* Botão de fechar */
+.botaoFechar {
+    background: #ddd;
+    color: #333;
+    margin-top: 10px;
+}
+
+.botaoFechar:hover {
+    background: #ccc;
+}
+
+/* --- Temas por tipo --- */
+#modalErro.error .conteudo { border-top: 6px solid #ff0000; }
+#modalErro.success .conteudo { border-top: 6px solid #05a582; }
+#modalErro.aviso .conteudo { border-top: 6px solid #e69200; }
+#modalErro.trocaid .conteudo { border-top: 6px solid #206958; }
+#modalErro.info .conteudo { border-top: 6px solid #2196F3; }
+        /* =========================================== */
+/*    NOVO CSS PARA TABELA DE HORÁRIOS         */
+/* =========================================== */
+
+.schedule-table-container {
+    width: 100%;
+    max-width: 500px; /* Um pouco mais estreito para melhor leitura */
+    margin: 25px auto;
+    overflow-x: auto;
+}
+
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1em;
+    border-radius: 12px; /* Bordas mais arredondadas */
+    overflow: hidden; /* Garante que o border-radius funcione */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    color: var(--text-color);
+}
+
+.schedule-table thead tr {
+    /* Gradiente laranja da sua identidade visual */
+    background: linear-gradient(135deg, #ffa200e0, #ff5d00e0);
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+     .schedule-table th,
+        .schedule-table td {
+            padding: 6px 0px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+.schedule-table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+.schedule-table tbody tr:nth-of-type(even) {
+    background-color: rgba(0, 0, 0, 0.25); /* Efeito de zebra sutil */
+}
+
+.schedule-table tbody tr:last-of-type {
+    border-bottom: 2px solid #ff5d00; /* Linha final mais forte */
+}
+
+/* Estilo para o texto "Fechado" */
+.schedule-table td span {
+    background: linear-gradient(120deg, #e74c3c, #c0392b);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+}
+
+/* Ajustes para telas menores */
+@media (max-width: 600px) {
+    .schedule-table {
+        font-size: 0.9em;
+    }
+    .schedule-table th,
+    .schedule-table td {
+        padding: 10px 12px;
+    }
+}
+ 
+   /* Estilos para o modal */
+.horariosModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+.modal-contenthorarios {
+            display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+        }
+
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    unicode-bidi: isolate;
+    background: linear-gradient(153deg, #206958, #05a582);
+}
+#tela-horarios {
+    display: none;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 15px;
+    color: #fff;
+    text-align: center;
+    flex: 2;
+    padding-right: 20px;
+}
+</style>
 </head>
 
 <body>
@@ -2175,12 +2325,10 @@ input[type="radio"]:checked + .payment-option {
 
     </header>
 
-    <div class="tela-ativada">
     <div class="container">
+    <div id="tela-horarios"></div>
     <div class="products" id="products">
     <h2 class="featured-title">✨ Produtos em destaque  ✨</h2>
-
-
     <div id="featuredProductsCarousel">
         <div class="carousel-slide"></div>
         <div class="carousel-nav">
@@ -2197,9 +2345,7 @@ input[type="radio"]:checked + .payment-option {
     <div id="categoryFilters"></div>
     
     <h2 class="featured-title">Nossos Produtos</h2>
-    <div id="productList">
-        <p id="loadingMessage">Carregando produtos...</p>
-    </div>
+    <div id="productList"></div>
 
     <p id="errorMessage" class="hidden" style="color: rgb(255, 255, 255);"></p>
     <div class="pagination-buttons">
@@ -2221,7 +2367,7 @@ input[type="radio"]:checked + .payment-option {
         <ul id="cartList"></ul>
         <p>Total: <span id="cartTotal">R$ 0,00</span></p>
         <div class="button-group">
-        <button class="ButtonFinalizarCompra" onclick="showTab('checkout')" id="proceedToCheckoutButton" disabled>Finalizar Compra</button>
+        <button class="ButtonFinalizarcheckout" onclick="showTab('checkout')" id="proceedToCheckoutButton" disabled>Finalizar Compra</button>
         <button class="ButtonEsvaziarCarrinho" id="clearCartButton" onclick="clearCart()" disabled>Esvaziar Carrinho</button>
         </div>
     </div>
@@ -2284,48 +2430,43 @@ input[type="radio"]:checked + .payment-option {
 
         <div id="carrinhocheckout">
         <h3>Resumo do Pedido</h3>
-        <ul id="cartListCheckout"></ul>
+        <div id="cartListCheckout"></div>
         <hr>
-        <!-- MODIFIQUE A SEÇÃO DO TOTAL PARA ISTO -->
         <p class="resumo-linha">Subtotal: <span id="TotalcartCheckout">R$ 0,00</span></p>
         <p id="linhaDesconto" class="resumo-linha" style="display: none;">Desconto: <span id="valorDescontoCheckout"> - R$ 0,00</span></p>
         <p id="linhaTaxaEnvio" class="resumo-linha" style="display: none;"><span id="taxaEnvioCheckout"> R$ 0,00</span></p>
         <h3 class="resumo-linha total-final">Total Final: <span id="totalFinalCheckout">R$ 0,00</span></h3>
-        <!-- FIM DA MODIFICAÇÃO -->
         </div>
 
         <div id="cupomcheckout" class="form-group">
         <label for="cupomInput">Cupom de Desconto</label>
         <div style="display: flex; gap: 10px;">
         <input type="text" id="cupomInput" placeholder="Digite seu cupom">
-        <button type="button" class="btnInicio" id="aplicarCupomBtn">Aplicar</button>
+        <button type="button" class="aplicarCupomBtn" id="aplicarCupomBtn">Aplicar</button>
         </div>
         <p id="cupomStatus" style="margin-top: 5px; font-weight: bold;"></p>
         </div>
 
          
-        <div class="form-group">
-        <label class="required">Forma de Pagamento</label>
-        <div class="payment-options-container">
-        <label class="payment-option">
-            <input type="radio" name="paymentMethod" value="pix" onchange="updatePaymentMethodUI()" checked>
-            <i class="fas fa-qrcode"></i> Pix
-        </label>
-        <label class="payment-option">
-            <input type="radio" name="paymentMethod" value="dinheiro" onchange="updatePaymentMethodUI()">
-            <i class="fas fa-money-bill-wave"></i> Dinheiro
-        </label>
-        </div>
-        </div>
+<div class="form-group">
+  <label class="required">Forma de Pagamento</label>
+  <div class="payment-options-container">
+    <label class="payment-option" data-tab="pix">
+      <input type="radio" name="paymentMethod" value="pix" onchange="updatePaymentMethodUI()" checked>
+      <i class="fas fa-qrcode"></i> Pix
+    </label>
+    <label class="payment-option" data-tab="dinheiro">
+      <input type="radio" name="paymentMethod" value="dinheiro" onchange="updatePaymentMethodUI()">
+      <i class="fas fa-money-bill-wave"></i> Dinheiro
+    </label>
+  </div>
+</div>
 
-        <!-- 2. MODIFIQUE o botão de finalização -->
-        <div class="button-group">
-    <!-- Mude o ID e o onclick deste botão -->
-        <button class="ButtonFinalizarCompra" type="button" onclick="finalizarPedido()" id="finalizarPedidoBtn">Gerar QR Code Pix</button>
-        </div>
-
-
-    
+<div class="button-group">
+  <div class="ButtonCompraComPix" id="finalizarPedidoBtn" onclick="finalizarPedido()">
+    <i class="fas fa-qrcode"></i> Gerar QR Code Pix
+  </div>
+</div>
         </form>
     </div>
 
@@ -2334,12 +2475,13 @@ input[type="radio"]:checked + .payment-option {
         <ul id="orderHistoryList"></ul>
         <!-- NOVO: Container para a paginação do histórico -->
         <div id="orderHistoryPagination" class="pagination-buttons"></div>
-        <div class="button-group" style="display: none;">
-            <button class="ButtonEsvaziarCarrinho" id="clearHistoryButton" onclick="clearOrderHistory()">Apagar Histórico</button>
+        <div class="button-group">
+           <button class="ButtonEsvaziarCarrinho" id="clearHistoryButton" onclick="clearOrderHistory()">
+    <i class="fas fa-trash-alt"></i> Apagar Histórico
+  </button>
         </div>
     </div>
     </aside>
-    </div>
     </div>
 
     <div id="myModal" class="modal">
@@ -2406,8 +2548,6 @@ input[type="radio"]:checked + .payment-option {
     </div>
 </footer>
 
-    <div id="notification-container"></div>
-
     <div id="floating-cart" onclick="showTab('cart')">
     <i class="fas fa-shopping-cart cart-icon"></i>
     <span class="cart-count" id="floatingCartCount">0</span>
@@ -2446,7 +2586,7 @@ input[type="radio"]:checked + .payment-option {
     </div>
 
     <button id="backToTopBtn" title="Voltar ao topo"><i class="fas fa-arrow-up"></i></button>
-
+    <div id="notification-container"></div>
 <script>
 const Params = new URLSearchParams(window.location.search);
     let blog; // Declarar 'blog' aqui, sem inicializar
@@ -2478,7 +2618,6 @@ const Params = new URLSearchParams(window.location.search);
   let cart = JSON.parse(localStorage.getItem(blog + 'cart')) || [];
   let orderHistory = JSON.parse(localStorage.getItem(blog)) || [];
     let products = [];
-
     let carouselProducts = [];
     let MeuPix = '';
     let whatsapp = '';
@@ -2512,23 +2651,28 @@ const Params = new URLSearchParams(window.location.search);
 
 function updatePaymentMethodUI() {
     const metodoSelecionado = document.querySelector('input[name="paymentMethod"]:checked').value;
+    const tabPix = document.querySelector('.payment-option[data-tab="pix"]');
+    const tabDinheiro = document.querySelector('.payment-option[data-tab="dinheiro"]');
     const btnFinalizar = document.getElementById('finalizarPedidoBtn');
 
     if (metodoSelecionado === 'pix') {
+        tabDinheiro.classList.remove('active');
+        tabPix.classList.add('active');
+
         btnFinalizar.innerHTML = '<i class="fas fa-qrcode"></i> Gerar QR Code Pix';
-        // Troca a classe para estilizar o botão (opcional)
-        btnFinalizar.classList.remove('btnInicio');
-        btnFinalizar.classList.add('ButtonFinalizarCompra');
+        btnFinalizar.classList.remove('ButtonCompraComDinheiro');
+        btnFinalizar.classList.add('ButtonCompraComPix');
     } else {
-        btnFinalizar.innerHTML = '<i class="fas fa-hand-holding-usd"></i> Finalizar Pedido em Dinheiro';
-        // Troca a classe para estilizar o botão (opcional)
-        btnFinalizar.classList.remove('ButtonFinalizarCompra');
-        btnFinalizar.classList.add('btnInicio');
+        tabPix.classList.remove('active');
+        tabDinheiro.classList.add('active');
+
+        btnFinalizar.innerHTML = '<i class="fas fa-hand-holding-usd"></i> Pagar em Dinheiro';
+        btnFinalizar.classList.remove('ButtonCompraComPix');
+        btnFinalizar.classList.add('ButtonCompraComDinheiro');
     }
 }
 
-
-    document.addEventListener('DOMContentLoaded', function () {
+function inicio() {
     const carouselContainer = document.getElementById('featuredProductsCarousel');
     if (carouselContainer) {
         carouselContainer.classList.add('loading');
@@ -2542,8 +2686,18 @@ function updatePaymentMethodUI() {
         <div class="product skeleton"></div>
     `;
 
-        if (!blog) {
-            exibirModalErro("Digitar o id da loja", true, false, 'trocaid');
+    if (!blog) {
+    exibirModalErro("Digitar o id da loja", true, false, 'trocaid');
+    const minecart = document.getElementById('floating-cart');
+    minecart.style.display = 'none';
+    const abasParaBloquear = ['cart', 'checkout', 'orderHistory'];
+    abasParaBloquear.forEach(tabId => {
+    const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+    if (tabButton) {
+    tabButton.classList.add('tab-disabled');
+    tabButton.disabled = true;
+    }
+    });
             return;
         }
 
@@ -2585,71 +2739,107 @@ function updatePaymentMethodUI() {
         exibirModalErro("Digitar o id da loja", true, true, 'trocaid');
     });
 
-});
+};
 
-function exibirModalErro(mensagem, comb, x, tipo = 'error') {
-    // Verifica se já existe um modal e remove antes de criar outro
-    let modalExistente = document.getElementById('modalErro');
-    if (modalExistente) {
-        modalExistente.remove();
-    }
+function exibirModalErro(mensagem, comb = false, mostrarFechar = true, tipo = 'error', extraData = null) {
+    // Remove modal anterior) {
+    // Remove qualquer modal anterior
+    const existente = document.getElementById('modalErro');
+    if (existente) existente.remove();
 
-    // Criação do modal
-    let modal2 = document.createElement('div');
-    modal2.id = 'modalErro';
+    const modal = document.createElement('div');
+    modal.id = 'modalErro';
+    modal.className = `modal show ${tipo}`;
 
-    // Criação do conteúdo do modal
-    let conteudo = document.createElement('div');
-    conteudo.className = "conteudo";
-    formGroupHTML = '';
-    if (comb) {
-    // Cria o form-group com input e botão
-    formGroupHTML = `
-        <div class="form-group">
-            <input type="text" id="addid" name="ADDid" placeholder="ID Da Loja">
-        </div>
-        <button class="ButtonFinalizarCompra" onclick="irParaLoja()">Ir para Loja</button>
-    `;
-    }
+    const icones = {
+        error: '✖️',
+        success: '✔️',
+        trocaid: '🏪',
+        aviso: '⚠️',
+        info: 'ℹ️',
+        confirmarLimpeza: '🗑️',
+        confirmarExclusao: '🗑️',
+    };
 
-    // Adiciona os elementos ao conteúdo
+    const conteudo = document.createElement('div');
+    conteudo.className = 'conteudo';
+
     conteudo.innerHTML = `
-        <h3>${tipo === 'error' ? '✖️ Erro' : '' || tipo === 'success' ? '✔️ Sucesso' : '' || tipo === 'trocaid' ? '🏪' : '' || tipo === 'aviso' ? '⚠️' : ''} </h3>
-        <p>${mensagem}</p>
-        ${formGroupHTML ? `${formGroupHTML}` : ``}
+        <p>${icones[tipo] || ''} ${mensagem || ''}</p>
     `;
 
-    // Adiciona o botão "Como criar um ID?" se `comb` for verdadeiro
+    // Campo ID da loja (se for necessário)
     if (comb) {
-        let botaoAjuda = document.createElement('a');
-        botaoAjuda.href = "https://chat-meupix.blogspot.com/p/cria-sua-loja-virtual-com-meupix.html";
-        botaoAjuda.target = "_blank";
+        const formGroup = document.createElement('div');
+        formGroup.className = 'form-group';
+        formGroup.innerHTML = `
+            <input type="text" id="addid" placeholder="ID da Loja">
+            <button class="category-button" onclick="irParaLoja()">Ir para Loja</button>
+        `;
+        conteudo.appendChild(formGroup);
 
-        let botao = document.createElement('button');
-        botao.className = "botaoAjuda";
-        botao.innerText = "Como criar um ID?";
-        botaoAjuda.appendChild(botao);
-        conteudo.appendChild(botaoAjuda);
+        const ajuda = document.createElement('a');
+        ajuda.href = 'https://meupix.vercel.app/lojavirtual/criarconfig';
+        ajuda.target = '_blank';
+        ajuda.innerHTML = `<button class="botaoAjuda">Como criar um ID?</button>`;
+        conteudo.appendChild(ajuda);
     }
 
-    // Adiciona o botão "Fechar" se `x` for verdadeiro
-    if (x) {
-        let botaoFechar = document.createElement('button');
-        botaoFechar.className = "botaoFechar";
-        botaoFechar.innerText = "Fechar";
-        botaoFechar.onclick = function () {
-            modal2.remove();
-        };
+    // Grupo de botões para confirmar ações
+    if (tipo === 'confirmarLimpeza' || tipo === 'confirmarExclusao') {
+        const botoes = document.createElement('div');
+        botoes.className = 'button-group';
 
+        const btnConfirmar = document.createElement('button');
+        btnConfirmar.className = 'ButtonFinalizarCompra';
+        btnConfirmar.innerHTML = '<i class="fas fa-check"></i> Confirmar';
+
+        // Define a ação correta de acordo com o tipo
+        if (tipo === 'confirmarLimpeza') {
+            btnConfirmar.onclick = () => {
+                orderHistory = [];
+                localStorage.removeItem(blog);
+                updateOrderHistoryDisplay();
+                showNotification("Histórico de pedidos apagado!", 'success');
+                modal.remove();
+            };
+        } else if (tipo === 'confirmarExclusao' && extraData !== null) {
+            btnConfirmar.onclick = () => {
+                executeDeleteOrder(extraData);
+                modal.remove();
+            };
+        }
+
+        const btnCancelar = document.createElement('button');
+        btnCancelar.className = 'ButtonEsvaziarCarrinho';
+        btnCancelar.innerHTML = '<i class="fas fa-times"></i> Cancelar';
+        btnCancelar.onclick = () => modal.remove();
+
+        botoes.appendChild(btnConfirmar);
+        botoes.appendChild(btnCancelar);
+        conteudo.appendChild(botoes);
+    }
+
+    // Botão de fechar padrão (para outros tipos)
+    if (mostrarFechar && tipo !== 'confirmarLimpeza' && tipo !== 'confirmarExclusao') {
+        const botaoFechar = document.createElement('button');
+        botaoFechar.className = 'botaoFechar';
+        botaoFechar.innerText = 'Fechar';
+        botaoFechar.onclick = () => modal.remove();
         conteudo.appendChild(botaoFechar);
     }
 
-    // Adiciona a classe do tipo ao modal
-    modal2.classList.add(tipo);
-    modal2.appendChild(conteudo);
-    document.body.appendChild(modal2);
-}
+    modal.appendChild(conteudo);
+    document.body.appendChild(modal);
 
+    // Fecha com tecla ESC
+    document.addEventListener('keydown', function escHandler(e) {
+        if (e.key === 'Escape') {
+            modal.remove();
+            document.removeEventListener('keydown', escHandler);
+        }
+    });
+}
 function irParaLoja() {
         const idLoja = document.getElementById('addid').value;
         if (idLoja) {
@@ -2678,8 +2868,19 @@ function verificarStatusDaLoja() {
     script.src = `https://www.blogger.com/feeds/${blog}/pages/default?start-index=1&max-results=500&alt=json-in-script&callback=processarStatusDaLoja`;
 
     script.onerror = function () {
+              const minecart = document.getElementById('floating-cart');
+    minecart.style.display = 'none';
+            const abasParaBloquear = ['cart', 'checkout', 'orderHistory'];
+    abasParaBloquear.forEach(tabId => {
+    const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+    if (tabButton) {
+    tabButton.classList.add('tab-disabled');
+    tabButton.disabled = true;
+    }
+    });
         exibirModalErro("ID do blog inválido.", true, false, 'error');
         script.remove(); // 🔹 remove em caso de erro
+
     };
 
     document.body.appendChild(script);
@@ -2924,56 +3125,60 @@ function processarStatusDaLoja(data) {
     }
 }
 
+function desativarInterface() {
+    const minecart = document.getElementById('floating-cart');
+}
 
 function atualizarInterface(fechada, manutencao, ativahorario) {
     const telaAtivada = document.querySelector('.products');
     const cartTabButton = document.querySelector('.tab-button[data-tab="cart"]');
     const checkoutTabButton = document.querySelector('.tab-button[data-tab="checkout"]');
     const minecart = document.getElementById('floating-cart');
-
-    function desativarInterface() {
-    if (minecart) minecart.style.display = 'none';
-    if (cartTabButton) {
-        cartTabButton.classList.add('disabled-tab');
-        cartTabButton.disabled = true;
-        cartTabButton.style.display = 'none';
-        document.getElementById('cart').style.display = 'none';
-    }
-    if (checkoutTabButton) {
-        checkoutTabButton.classList.add('disabled-tab');
-        checkoutTabButton.disabled = true;
-        checkoutTabButton.style.display = 'none';
-    }
-    const featuredProductsCarousel = document.getElementById('featuredProductsCarousel');
-    if (featuredProductsCarousel) featuredProductsCarousel.style.display = 'none';
-    }
+    const telahorarios = document.getElementById('tela-horarios');
+    const LojaAberta = document.getElementById('statusLoja');
+    const abasParaBloquear = ['cart', 'checkout'];
+    minecart.style.display = 'none';
 
     if (fechada) {
-    desativarInterface();
-    desativarAbasCarrinho();
-    clearCart();
-    const LojaAberta = document.getElementById('statusLoja');
+        isOpen = false;
+    abasParaBloquear.forEach(tabId => {
+    const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+    if (tabButton) {
+    tabButton.classList.add('tab-disabled');
+    tabButton.disabled = true;
+    }
+    });
     LojaAberta.innerHTML = '<h1 class="loja-fechada">Loja fechada!</h1>';
     telaAtivada.innerHTML = `
-    <div class="desativado">
+    <div class="desativado" style="text-align: center;">
     <h1>⚠️</h1>
     <p>A loja está temporariamente fechada. Por favor, volte mais tarde!</p>
     </div>
     `;
-    } else if (manutencao) {
-    desativarInterface();
+     minecart.style.display = 'none';
     clearCart();
-    const LojaAberta = document.getElementById('statusLoja');
+    } else if (manutencao) {
+        isOpen = false;
+    abasParaBloquear.forEach(tabId => {
+    const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+    if (tabButton) {
+    tabButton.classList.add('tab-disabled');
+    tabButton.disabled = true;
+    }
+    });
     LojaAberta.innerHTML = '<h1 class="loja-fechada">Loja em Manutenção!</h1>';
     telaAtivada.innerHTML = `
-    <div class="desativado">
+    <div class="desativado" style="text-align: center;">
     <h1>⚠️</h1>
     <p>Estamos trabalhando para melhorar sua experiência de compra. Por favor, volte mais tarde!</p>
     </div>
     `;
+     minecart.style.display = 'none';
+    clearCart();
     } else if (ativahorario) {
     if (horariosFuncionamento) {
-        getStoreStatus();
+       iniciarMonitoramento();
+       isOpen = true;
     }
     } else {
     isOpen = true;
@@ -2984,6 +3189,7 @@ function atualizarInterface(fechada, manutencao, ativahorario) {
     if (document.querySelector('.desativado')) {
         telaAtivada.innerHTML = ''; // Limpa a mensagem "Loja fechada"
     }
+  
     if (minecart) minecart.style.display = 'flex'; 
     //Reativa o carrinho caso a loja volte a estar disponível
     if (cartTabButton) {
@@ -3004,7 +3210,6 @@ function atualizarInterface(fechada, manutencao, ativahorario) {
 
 function fetchProducts() {
     if (!isOpen) return;
-
     const errorMessage = document.getElementById('errorMessage');
     errorMessage.classList.add('hidden');
 
@@ -3036,7 +3241,6 @@ function fetchProducts() {
 
 // Callback
 function processarProdutos(data) {
-    const loadingMessage = document.getElementById('loadingMessage');
 
     try {
         products = [];
@@ -3051,6 +3255,8 @@ function processarProdutos(data) {
         if (carouselProducts.length > 0) {
             initializeCarousel();
         } else {
+        const featuredtitle = document.querySelector('.featured-title');
+        featuredtitle.style.display = 'none';
             const carouselContainer = document.getElementById('featuredProductsCarousel');
             if (carouselContainer) {
                 carouselContainer.style.display = 'none';
@@ -3967,10 +4173,6 @@ async function finalizarPedido() {
             const dadospix = btoa(paramschaves);
             order.pixUrl = `index.html?codepix=${dadospix}`; 
 
-            // Salva o pedido no histórico
-            orderHistory.push(order);
-            localStorage.setItem(blog, JSON.stringify(orderHistory));
-            
             // Mostra o modal do QR Code
             document.getElementById('myModal').classList.add('fullscreen');
             document.getElementById('qrCode').innerHTML = `<iframe src='${order.pixUrl}' style="width:100%; height:100%; border:none;"></iframe>`;
@@ -3979,15 +4181,21 @@ async function finalizarPedido() {
 
         } else { // (metodoPagamento === 'dinheiro')
 
-            orderHistory.push(order);
-            localStorage.setItem(blog, JSON.stringify(orderHistory));
-
              window.open(pedidowhatsapp, '_blank');
             // Mostra uma mensagem de confirmação para o cliente
             const mensagemConfirmacao = `Pedido #${order.id} registrado com sucesso! \n\nPor favor, tenha o valor de ${realBR(order.total)} pronto para o pagamento na entrega/retirada. \n\nNão esqueça de enviar o pedido no nosso WhatsApp.`;
             exibirModalErro(mensagemConfirmacao.replace(/\n/g, '<br>'), false, true, 'success');
         }
         
+    let currentHistory = JSON.parse(localStorage.getItem(blog)) || [];
+
+        // 2. Adiciona o novo pedido a essa lista atualizada.
+        currentHistory.push(order);
+
+        // 3. Salva a lista correta e atualizada de volta no localStorage.
+        localStorage.setItem(blog, JSON.stringify(currentHistory));
+        
+        // O resto do seu código pode continuar normalmente
         cupomAplicado = null;
         document.getElementById('cupomInput').value = '';
         document.getElementById('cupomStatus').textContent = '';
@@ -4001,7 +4209,6 @@ async function finalizarPedido() {
         showNotification("Erro ao finalizar o pedido. Tente novamente.", 'error');
     }
 }
-
 
 
 function openModal() {
@@ -4103,7 +4310,6 @@ function updateOrderHistoryDisplay() {
         }
 
         const originalIndex = history.findIndex(h => h.id === order.id);
-
         li.innerHTML = `
             <div class="order-header" onclick="toggleOrderDetails(this)">
                 <div>
@@ -4131,14 +4337,14 @@ function updateOrderHistoryDisplay() {
                 <div class="button-container">
                     ${ order.StatusButton === false ? 
                         `<button onclick="AbrirWhatsapp();"><i class="fa-brands fa-whatsapp"></i> Entrar em contato</button>
-                         <button onclick="deleteOrderFromHistory(${originalIndex})">🗑️ Excluir do Histórico</button>` 
+                         <button onclick="deleteOrderFromHistory('${order.id}')">🗑️ Excluir do Histórico</button>` 
                         :
                         `${order.isPago ? `${buttonRetirada}` : ``}
                          ${metodoPagamentoTexto === 'Pix' && !order.isPago ? `<button onclick="showPixQrCode(${originalIndex})"><i class="fas fa-qrcode"></i> Ver QR Code Pix</button>` : ''}
                          ${!order.isPago ? `<button onclick="verificarPagamento(${originalIndex})"><i class="fa fa-check-to-slot"></i> Verificar Pagamento</button>` : ''}
                          ${!order.isPago ? `<button onclick="resendWhatsappMessage(${originalIndex})"><i class="fa-brands fa-whatsapp"></i> Reenviar Pedido no WhatsApp</button>` : ''}
                          ${order.isPago ? `<button onclick="printOrder(${originalIndex})">🖨️ Imprimir Pedido</button>` : ``}
-                         <button onclick="deleteOrderFromHistory(${originalIndex})">🗑️ Excluir do Histórico</button>`
+                         <button onclick="deleteOrderFromHistory('${order.id}')">🗑️ Excluir do Histórico</button>`
                     }
                 </div>
             </div>
@@ -4163,9 +4369,6 @@ function updateOrderHistoryDisplay() {
     }
 }
 
-// =========================================================
-// === NOVAS FUNÇÕES PARA CONTROLAR A PAGINAÇÃO ============
-// =========================================================
 function renderOrderHistoryPagination(totalOrders) {
     const paginationContainer = document.getElementById('orderHistoryPagination');
     paginationContainer.innerHTML = '';
@@ -4204,19 +4407,32 @@ function changeOrderHistoryPage(direction) {
     document.getElementById('orderHistory').scrollIntoView({ behavior: 'smooth' });
 }
 
-
 function deleteOrderFromHistory(index) {
+    exibirModalErro(
+        `Deseja realmente excluir o pedido #${index}? Essa ação não pode ser desfeita.`, false, false, 'confirmarExclusao', index);
+}
+
+function executeDeleteOrder(orderId) {
     let history = JSON.parse(localStorage.getItem(blog)) || [];
 
-    if (index >= 0 && index < history.length) {
-        const removedOrder = history[index];
+    // A MÁGICA ESTÁ AQUI: Convertemos ambos os IDs para String antes de comparar.
+    // Isso garante que a comparação '===' funcione, não importando se o ID original
+    // era um número ou uma string.
+    const index = history.findIndex(order => String(order.id) === String(orderId));
 
-        history.splice(index, 1); 
+    if (index !== -1) {
+        const removedOrder = history[index];
+        history.splice(index, 1);
         localStorage.setItem(blog, JSON.stringify(history));
+
+        // ATUALIZA A TELA IMEDIATAMENTE
         updateOrderHistoryDisplay();
-        showNotification(`Pedido #${removedOrder.id} foi excluído com sucesso!`, 'error');
+        
+        showNotification(`Pedido #${removedOrder.id} foi excluído com sucesso!`, 'success');
     } else {
-        showNotification("Erro ao excluir o pedido. Tente novamente.", 'error');
+        showNotification(`Pedido com ID #${orderId} não encontrado.`, 'error');
+        // Adiciona um log para sabermos que falhou, caso o problema persista.
+        console.error(`Falha ao encontrar o pedido com ID ${orderId} para exclusão.`);
     }
 }
 
@@ -4531,12 +4747,12 @@ function generatePaymentId() {
 }
 
 function clearOrderHistory() {
-    if (confirm("Tem certeza que deseja apagar o histórico de pedidos?")) {
-    orderHistory = [];
-    localStorage.removeItem(blog);
-    updateOrderHistoryDisplay();
-    showNotification("Histórico de pedidos apagado!", 'success');
-    }
+    exibirModalErro(
+        "Tem certeza que deseja apagar todo o histórico de pedidos? Essa ação não pode ser desfeita.",
+        false,
+        false,
+        'confirmarLimpeza'
+    );
 }
 
 function showTab(tabId) {
@@ -5272,178 +5488,242 @@ function toggleAddressFields() {
     updateCartDisplay(); // Mantém esta linha para recalcular o total
 }
 
+
+ let monitorIntervalID = null;
+
+function iniciarMonitoramento() {
+            if (monitorIntervalID) clearInterval(monitorIntervalID);
+            getStoreStatus();
+            monitorIntervalID = setInterval(getStoreStatus, 60000);
+}
+
 function getStoreStatus() {
-    // Desativa qualquer verificação automática anterior para evitar loops
-    if (window.intervalID2) {
-        clearInterval(window.intervalID2);
-    }
+            const now = new Date();
+            const dayOfWeek = now.getDay();
+            const currentTimeInMinutes = now.getHours() * 60 + now.getMinutes();
+            
+            const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+            AtualDia = diasSemana[dayOfWeek];
+            
+            let status = {
+                aberta: false,
+                emPausa: false,
+                mensagem: `Hoje estamos fechados.`
+            };
 
-    const now = new Date();
-    // Para testar um horário diferente, descomente a linha abaixo:
-    // now.setHours(13, 30); // Ex: Testando às 13:30
+            const parseTime = (timeStr) => {
+                if (!timeStr) return 0;
+                const [hour, minute] = timeStr.replace('h', ':').split(':');
+                return parseInt(hour) * 60 + parseInt(minute || 0);
+            };
 
-    const dayOfWeek = now.getDay();
-    const currentTimeInMinutes = now.getHours() * 60 + now.getMinutes();
-    
-    const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-    const diaAtual = diasSemana[dayOfWeek];
+            const horariosDoDiaStr = horariosFuncionamento.split(';')
+                .find(h => h.trim().startsWith(AtualDia));
+            
+            if (horariosDoDiaStr) {
+                const tempoStr = horariosDoDiaStr.split(':')[1].trim();
 
-    let status = {
-        aberta: false,
-        emPausa: false,
-        proximaAbertura: -1,
-        mensagem: `Hoje estamos fechados.`
-    };
+                if (!tempoStr.toUpperCase().includes('FECHADO')) {
+                    const periodos = tempoStr.split(',')
+                        .map(periodo => {
+                            const [inicioStr, fimStr] = periodo.trim().split('-');
+                            return { start: parseTime(inicioStr), end: parseTime(fimStr) };
+                        })
+                        .sort((a, b) => a.start - b.start);
 
-    // Função auxiliar para converter "HHhMM" em minutos
-    const parseTime = (timeStr) => {
-        const [hour, minute] = timeStr.split('h');
-        return parseInt(hour) * 60 + parseInt(minute || 0);
-    };
+                    let isOpenNow = false;
+                    for (const periodo of periodos) {
+                        if (currentTimeInMinutes >= periodo.start && currentTimeInMinutes < periodo.end) {
+                            isOpenNow = true;
+                            break;
+                        }
+                    }
 
-    // Encontra o horário para o dia atual
-    const horariosDoDiaStr = horariosFuncionamento.split(';')
-        .find(h => h.trim().startsWith(diaAtual));
-    
-    if (horariosDoDiaStr) {
-        const tempoStr = horariosDoDiaStr.split(':')[1].trim();
+                    if (isOpenNow) {
+                        status.aberta = true;
+                    } else {
+                        const firstOpening = periodos[0].start;
+                        const lastClosing = periodos[periodos.length - 1].end;
 
-        if (tempoStr.toUpperCase() !== 'FECHADO') {
-            const periodos = tempoStr.split(','); // Divide em múltiplos períodos, ex: "08h-12h, 14h-18h"
-
-            for (const periodo of periodos) {
-                const [inicioStr, fimStr] = periodo.trim().split('-');
-                const openingTime = parseTime(inicioStr);
-                const closingTime = parseTime(fimStr);
-
-                // Verifica se o horário atual está dentro de algum período de funcionamento
-                if (currentTimeInMinutes >= openingTime && currentTimeInMinutes < closingTime) {
-                    status.aberta = true;
-                    break; // Se está aberto em um período, não precisa checar os outros
-                }
-                
-                // Se ainda não estiver aberto, guarda o próximo horário de abertura
-                if (currentTimeInMinutes < openingTime && status.proximaAbertura === -1) {
-                    status.proximaAbertura = openingTime;
+                        if (currentTimeInMinutes < firstOpening) {
+                            desativarAbasCarrinho();
+                            status.emPausa = false; // FECHADA (antes de abrir)
+                            const proximaHora = Math.floor(firstOpening / 60).toString().padStart(2, '0');
+                            const proximoMinuto = (firstOpening % 60).toString().padStart(2, '0');
+                            status.mensagem = `Nossa loja abrirá hoje às ${proximaHora}h${proximoMinuto}.`;
+                        } else if (currentTimeInMinutes >= lastClosing) {
+                            desativarAbasCarrinho();
+                            status.emPausa = false; // FECHADA (depois de encerrar)
+                            status.mensagem = `Nosso horário de funcionamento hoje já encerrou.`;
+                        } else {
+                            desativarAbasCarrinho();
+                            const proximaAbertura = periodos.find(p => p.start > currentTimeInMinutes);
+                            if (proximaAbertura) {
+                                status.emPausa = true; // EM PAUSA (entre turnos)
+                                const proximaHora = Math.floor(proximaAbertura.start / 60).toString().padStart(2, '0');
+                                const proximoMinuto = (proximaAbertura.start % 60).toString().padStart(2, '0');
+                                status.mensagem = `Reabriremos às ${proximaHora}h${proximoMinuto}.`;
+                            }
+                        }
+                    }
                 }
             }
 
-            // Se a loja não está aberta, mas teve períodos hoje, verifica se está em pausa
-            if (!status.aberta && status.proximaAbertura !== -1) {
-                status.emPausa = true;
-                const proximaHora = Math.floor(status.proximaAbertura / 60).toString().padStart(2, '0');
-                const proximoMinuto = (status.proximaAbertura % 60).toString().padStart(2, '0');
-                status.mensagem = `Estamos em pausa! Reabriremos às ${proximaHora}h${proximoMinuto}.`;
-            } else if (!status.aberta) {
-                 status.mensagem = `Nosso horário de funcionamento hoje já encerrou.`;
+            updateInterface(status);
+        }
+
+        // --- ATUALIZAÇÃO DA INTERFACE DO USUÁRIO ---
+        function updateInterface(status) {
+            const lojaStatusEl = document.getElementById('statusLoja');
+            const telahorariosDiv = document.getElementById('tela-horarios');
+            if (status.aberta) {
+                lojaStatusEl.innerHTML = '<p class="loja-aberta">Loja Aberta! Boas compras!</p>';
+                ativarAbasCarrinho();
+            } else {
+                let statusMessage = status.emPausa ? '⏸️ Loja em Pausa!' : '🌙 Loja Fechada!';
+                lojaStatusEl.innerHTML = `<p class="loja-fechada">${statusMessage}</p>`;
+                telahorariosDiv.innerHTML = `
+                    <div class="desativado">
+                        <h1>${status.emPausa ? '⏸️' : '🌙'}</h1>
+                        <p style="font-size: 1.2em;">${status.mensagem}</p>
+                        <br>
+                        <h3>Nosso Horário de Funcionamento:</h3>
+                        ${generateScheduleTable(horariosFuncionamento)}
+                    </div>
+                `;
+               desativarAbasCarrinho();
             }
         }
-    }
-
-    // --- Atualiza a interface com base no status encontrado ---
-  const lojaStatusEl = document.getElementById('statusLoja');
-    const estavaAberto = isOpen; // Guarda o estado anterior da loja
-    isOpen = status.aberta;
-
-    if (isOpen) {
-        lojaStatusEl.innerHTML = '<p class="loja-aberta">Loja aberta, Boas compras!</p>';
-
-    } else {
-        desativarInterface();
-        desativarAbasCarrinho(); 
-
-        lojaStatusEl.innerHTML = `<p class="loja-fechada">${status.emPausa ? 'Loja em Pausa!' : 'Loja Fechada!'}</p>`;
-        
-        const productsDiv = document.getElementById('products');
-        productsDiv.innerHTML = `
-            <div class="desativado">
-                <h1>${status.emPausa ? '⏸️' : '🌙'}</h1>
-                <p style="font-size: 1.2em;">${status.mensagem}</p>
-                <br>
-                <h4>Nosso Horário de Funcionamento:</h4>
-                ${generateScheduleTable(horariosFuncionamento)}
-            </div>
-        `;
-    }
-
-    // Verifica o status novamente em 1 minuto
-    window.intervalID2 = setInterval(getStoreStatus, 60000);
-}
-
-// Sua função `desativarInterface()` continua a mesma.
-function desativarInterface() {
-    const minecart = document.getElementById('floating-cart');
-    // ... o resto da sua função ...
-}
 
 function generateScheduleTable(horarios) {
+    if (!horarios) return '';
+    const now = new Date();
+    const dayOfWeek = now.getDay();
+    const diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+    const AtualDia = diasSemana[dayOfWeek];
+
     const horariosArray = horarios.split(';');
     let tableHTML = `
-    <div class="schedule-table-container">
-        <table class="schedule-table">
-            <thead>
-                <tr>
-                    <th>Dia da Semana</th>
-                    <th>Horário de Funcionamento</th>
-                </tr>
-            </thead>
-            <tbody>`;
+        <div class="schedule-table-container">
+            <table class="schedule-table">
+                <thead>
+                    <tr>
+                        <th>Dia da Semana</th>
+                        <th>Horário de Funcionamento</th>
+                    </tr>
+                </thead>
+                <tbody>`;
 
-    horariosArray.forEach(horario => {
-        const [dia, tempo] = horario.split(':');
-        const diaTrimmed = dia.trim();
-        let tempoFormatado = tempo.trim();
+horariosArray.forEach(horario => {
+    if (!horario.includes(':')) return;
 
-        if (tempoFormatado.toUpperCase() === 'FECHADO') {
-            tempoFormatado = '<span>Fechado</span>'; 
-        } else {
-            // Formata múltiplos períodos com uma quebra de linha para melhor visualização
-            tempoFormatado = tempoFormatado.replace(/,\s*/g, '<br>');
-        }
-        
-        tableHTML += `<tr><td>${diaTrimmed}</td><td>${tempoFormatado}</td></tr>`;
-    });
+    const [dia, tempoRaw] = horario.split(':');
+    const diaTrimmed = dia.trim();
+    const tempoTrimmed = tempoRaw.trim();
+
+    // Divide períodos, remove espaços e partes vazias
+    const partes = tempoTrimmed.split(',').map(p => p.trim()).filter(Boolean);
+
+    // Filtra períodos válidos (remove "FECHADO-FECHADO")
+    const partesValidas = partes.filter(p => !/FECHADO-FECHADO/i.test(p));
+
+    const isFechado = partesValidas.length === 0;
+    const isCurrentDay = diaTrimmed === AtualDia;
+
+    let tempoFormatado;
+
+    if (isFechado) {
+        tempoFormatado = `<span class="fechado">Fechado</span>`;
+    } else {
+        tempoFormatado = partesValidas
+            .map(parte => {
+                const [inicio, fim] = parte.split('-').map(t => t.trim());
+                let label = 'Horário';
+
+                // Converte hora para número (ex: "14h30" -> 14.5)
+                const toHora = str => {
+                    const match = str.match(/(\d{1,2})h(\d{0,2})?/i);
+                    if (!match) return null;
+                    const hora = parseInt(match[1], 10);
+                    const min = parseInt(match[2] || '0', 10);
+                    return hora + min / 60;
+                };
+
+                const horaInicio = toHora(inicio);
+                const horaFim = toHora(fim);
+
+                if (horaInicio !== null && horaFim !== null) {
+                    if (horaFim <= 12) label = 'Manhã';
+                    else if (horaFim <= 18) label = 'Tarde';
+                    else label = 'Noite';
+                }
+
+                return `<strong>${label}</strong>: ${parte}`;
+            })
+            .join('<br>');
+    }
 
     tableHTML += `
-            </tbody>
-        </table>
-    </div>
+        <tr class="${isCurrentDay ? 'current-day' : ''}">
+            <td>${diaTrimmed}</td>
+            <td>${tempoFormatado}</td>
+        </tr>
     `;
+});
+
+
+
+    tableHTML += `</tbody></table></div>`;
     return tableHTML;
 }
 
+    // --- FUNÇÕES AUXILIARES DE UI ---
 function desativarAbasCarrinho() {
+    const telahorariosDiv = document.getElementById('tela-horarios');
+    const minecart = document.getElementById('floating-cart');
+    const productsDiv = document.getElementById('products');
+    minecart.style.display = 'none';
+    productsDiv.style.display = 'none';
     const abasParaBloquear = ['cart', 'checkout'];
+
     abasParaBloquear.forEach(tabId => {
-        const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-        if (tabButton) {
-            tabButton.classList.add('tab-disabled');
-            tabButton.disabled = true; // Impede o clique
-        }
+    const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+    if (tabButton) {
+    tabButton.classList.add('tab-disabled');
+    tabButton.disabled = true;
+    }
     });
 
-    // Garante que a aba de Histórico seja a ativa quando a loja fecha
-    showTab('orderHistory');
+    const activeTab = document.querySelector('.tab-content.active');
+    if (activeTab && abasParaBloquear.includes(activeTab.id)) {
+    showTab('products');
+    }
+
+    telahorariosDiv.style.display = 'block';
 }
 
 function ativarAbasCarrinho() {
+    const telahorariosDiv = document.getElementById('tela-horarios');
+    const minecart = document.getElementById('floating-cart');
+    const productsDiv = document.getElementById('products');
+
     const abasParaReativar = ['cart', 'checkout'];
-    abasParaReativar.forEach(tabId => {
-        const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
-        if (tabButton) {
-            tabButton.classList.remove('tab-disabled');
-            tabButton.disabled = false; // Permite o clique novamente
+     abasParaReativar.forEach(tabId => {
+      const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
+       if (tabButton) {
+        tabButton.classList.remove('tab-disabled');
+        tabButton.disabled = false;
         }
     });
-
-    // Volta para a aba do Carrinho como padrão
-    showTab('cart'); 
+    telahorariosDiv.style.display = 'none';
+    minecart.style.display = 'block';
+    productsDiv.style.display = 'block';
 }
 
 function openModalhorarios() {
     const modal = document.getElementById("horariosModal");
     const content = document.getElementById("horariosContent");
-    content.innerHTML = `<p class="loja-fechada">Horário de funcionamento:</p> ${generateScheduleTable(horariosFuncionamento)}`;
+    content.innerHTML = `${generateScheduleTable(horariosFuncionamento)}`;
     modal.style.display = "block";
 }
 
@@ -5574,6 +5854,8 @@ window.onscroll = function() {
 };
 
 backToTopButton.addEventListener('click', scrollToTop);
+
+document.addEventListener('DOMContentLoaded', inicio);
 </script>
 
 </body>
