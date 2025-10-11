@@ -5682,10 +5682,7 @@ function desativarAbasCarrinho() {
     const telahorariosDiv = document.getElementById('tela-horarios');
     const minecart = document.getElementById('floating-cart');
     const productsDiv = document.getElementById('products');
-    minecart.style.display = 'none';
-    productsDiv.style.display = 'none';
     const abasParaBloquear = ['cart', 'checkout'];
-
     abasParaBloquear.forEach(tabId => {
     const tabButton = document.querySelector(`.tab-button[data-tab="${tabId}"]`);
     if (tabButton) {
@@ -5698,7 +5695,8 @@ function desativarAbasCarrinho() {
     if (activeTab && abasParaBloquear.includes(activeTab.id)) {
     showTab('products');
     }
-
+    minecart.style.display = 'none';
+    productsDiv.style.display = 'none';
     telahorariosDiv.style.display = 'block';
 }
 
