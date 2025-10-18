@@ -1783,7 +1783,7 @@ to {
     bottom: 102px;
     right: 25px;
     z-index: 99;
-    background: linear-gradient(47deg, #ffa200e0, #ff5d00e0);
+    background: var(--floating-cart-bg);
     color: white;
     border: none;
     outline: none;
@@ -1793,7 +1793,8 @@ to {
     border-radius: 50%;
     font-size: 20px;
     transition: background-color 0.3s, transform 0.2s;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 40px;
+    box-shadow: 0 0 15px #000000ba;
+    backdrop-filter: blur(8px);
 }
 
 #backToTopBtn:hover {
@@ -2219,11 +2220,12 @@ input[type="radio"]:checked + .payment-option {
 }
 
 .schedule-table thead tr {
-    /* Gradiente laranja da sua identidade visual */
-    background: linear-gradient(135deg, #ffa200e0, #ff5d00e0);
+    background: linear-gradient(135deg, #ffa20075, #ff5d0094);
     color: #ffffff;
     text-align: left;
     font-weight: bold;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 30px #000000b0;
 }
 
      .schedule-table th,
@@ -2296,7 +2298,8 @@ tbody {
     display: table-row-group;
     vertical-align: middle;
     unicode-bidi: isolate;
-    background: linear-gradient(153deg, #206958, #05a582);
+    background: linear-gradient(153deg, #20695882, #05a58266);
+    backdrop-filter: blur(8px);
 }
 #tela-horarios {
     display: none;
@@ -2307,6 +2310,143 @@ tbody {
     text-align: center;
     flex: 2;
     padding-right: 20px;
+}
+/* =================================== */
+/*    ESTILOS DO ALERTA DE PRIVACIDADE   */
+/* =================================== */
+.local-storage-alert {
+    background: var(--floating-cart-bg);
+    color: #ecf0f1;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border-left: 5px solid #ff0000;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-size: 0.9em;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.local-storage-alert i {
+    font-size: 1.5em;
+    margin-right: 12px;
+    color: #df0505;
+}
+
+.local-storage-alert span {
+    flex-grow: 1; /* Faz o texto ocupar o espaço disponível */
+    padding-right: 25px; /* Espaço para o botão de fechar */
+}
+
+.close-alert-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    color: white;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.close-alert-btn:hover {
+    opacity: 1;
+}
+/* =================================== */
+/*    ESTILOS DO TRACKER FRETE GRÁTIS    */
+/* =================================== */
+.frete-gratis-tracker {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.frete-gratis-tracker p {
+    margin: 0 0 10px 0;
+    font-weight: 500;
+    font-size: 0.95em;
+}
+
+.progress-bar-container {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    height: 12px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%; /* Inicia em 0, será controlado pelo JS */
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    border-radius: 20px;
+    transition: width 0.5s ease-in-out;
+}
+
+/* Estilo de sucesso quando atinge o objetivo */
+.frete-gratis-tracker.success {
+    background-color: rgba(39, 174, 96, 0.2);
+    border-left: 5px solid #2ecc71;
+}
+
+.frete-gratis-tracker.success .progress-bar {
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+}
+/* =================================== */
+/*    ESTILOS REFINADOS PARA CUPOM     */
+/* =================================== */
+.cupom-input-wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#cupomInput:read-only {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    font-weight: bold;
+}
+
+.cupom-status {
+    margin-top: 8px;
+    font-weight: 500;
+    font-size: 0.9em;
+    min-height: 1.2em; /* Evita que o layout "pule" quando o texto aparece */
+}
+
+.cupom-status.success {
+    color: var(--success-color);
+}
+
+.cupom-status.error {
+    color: var(--error-color);
+}
+
+.removerCupomBtn {
+    background: linear-gradient(120deg, #e74c3c, #c0392b);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0px 12px; /* Menor para se alinhar melhor */
+    height: 38px; /* Altura similar ao input */
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9em;
+    transition: all 0.3s ease;
+    flex-shrink: 0; /* Impede que o botão encolha */
+}
+
+.removerCupomBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 </style>
 </head>
@@ -2356,6 +2496,13 @@ tbody {
     </div>
 
     <aside id="cartSection">
+
+        <div id="localStorageAlert" class="local-storage-alert">
+            <i class="fas fa-info-circle"></i>
+            <span>Seus dados (carrinho, histórico) são salvos <strong>localmente no seu navegador</strong>. Eles não estarão disponíveis em outros dispositivos ou navegadores.</span>
+            <div class="close-alert-btn" onclick="dismissAlert()">&times;</div>
+        </div>
+
     <div class="tabs">
         <button class="tab-button active" data-tab="cart">Meu Carrinho</button>
         <button class="tab-button" data-tab="checkout">Checkout</button>
@@ -2397,13 +2544,13 @@ tbody {
         <option value="">Retirar no Local</option>
         <option value="delivery">Entrega em Domicílio</option>
         </select>
-        <div id="avisoTaxaEntrega" class="aviso-taxa" style="display: none;"></div>
         </div>
 
         <div id="addressFields" style="display:none;">
         <div class="form-group">
         <label for="CEP" class="required">CEP</label>
         <input type="text" id="CEP" name="CEP" placeholder="00000-000" maxlength="9">
+        <small id="deliveryAreaInfo" class="delivery-area-info"></small>
         </div>
 
         <div class="form-group">
@@ -2427,10 +2574,16 @@ tbody {
         <textarea id="additionalInfo" name="additionalInfo"
         placeholder="Informações Adicionais (opcional)"></textarea>
         </div>
-
         <div id="carrinhocheckout">
         <h3>Resumo do Pedido</h3>
         <div id="cartListCheckout"></div>
+                <div id="freteGratisTracker" class="frete-gratis-tracker" style="display: none;">
+            <p id="freteGratisText"></p>
+            <div class="progress-bar-container">
+                <div id="freteGratisProgressBar" class="progress-bar"></div>
+            </div>
+        </div>
+        <div id="avisoTaxaEntrega" class="aviso-taxa" style="display: none;"></div>
         <hr>
         <p class="resumo-linha">Subtotal: <span id="TotalcartCheckout">R$ 0,00</span></p>
         <p id="linhaDesconto" class="resumo-linha" style="display: none;">Desconto: <span id="valorDescontoCheckout"> - R$ 0,00</span></p>
@@ -2438,16 +2591,16 @@ tbody {
         <h3 class="resumo-linha total-final">Total Final: <span id="totalFinalCheckout">R$ 0,00</span></h3>
         </div>
 
-        <div id="cupomcheckout" class="form-group">
+        <div id="cupomContainer" class="form-group">
         <label for="cupomInput">Cupom de Desconto</label>
-        <div style="display: flex; gap: 10px;">
+        <div id="cupomInputWrapper" class="cupom-input-wrapper">
         <input type="text" id="cupomInput" placeholder="Digite seu cupom">
         <button type="button" class="aplicarCupomBtn" id="aplicarCupomBtn">Aplicar</button>
+        <!-- O botão de remover será adicionado aqui pelo JS -->
         </div>
-        <p id="cupomStatus" style="margin-top: 5px; font-weight: bold;"></p>
+        <p id="cupomStatus" class="cupom-status"></p>
         </div>
 
-         
 <div class="form-group">
   <label class="required">Forma de Pagamento</label>
   <div class="payment-options-container">
@@ -2456,16 +2609,16 @@ tbody {
       <i class="fas fa-qrcode"></i> Pix
     </label>
     <label class="payment-option" data-tab="dinheiro">
-      <input type="radio" name="paymentMethod" value="dinheiro" onchange="updatePaymentMethodUI()">
+      <input type="radio" name="paymentMethod" value="dinheiro" onchange="updatePaymentMethodUI()" >
       <i class="fas fa-money-bill-wave"></i> Dinheiro
     </label>
   </div>
 </div>
 
 <div class="button-group">
-  <div class="ButtonCompraComPix" id="finalizarPedidoBtn" onclick="finalizarPedido()">
+  <button class="ButtonCompraComPix" id="finalizarPedidoBtn" onclick="finalizarPedido()" disabled>
     <i class="fas fa-qrcode"></i> Gerar QR Code Pix
-  </div>
+  </button>
 </div>
         </form>
     </div>
@@ -2641,6 +2794,7 @@ const Params = new URLSearchParams(window.location.search);
     let descricao = '';
     let logotipo = '';
     let taxadeenvio = 0;
+    let freteGratisValor = 0;
     let contatoHTML = '';
     var hashCupomParaVerificar = '';
     let cupomAplicado = null;
@@ -2673,6 +2827,14 @@ function updatePaymentMethodUI() {
 }
 
 function inicio() {
+
+    if (localStorage.getItem('storageAlertDismissed') === 'true') {
+      const alertBox = document.getElementById('localStorageAlert');
+        if (alertBox) {
+            alertBox.style.display = 'none';
+        }
+    }
+    
     const carouselContainer = document.getElementById('featuredProductsCarousel');
     if (carouselContainer) {
         carouselContainer.classList.add('loading');
@@ -2995,6 +3157,9 @@ function processarStatusDaLoja(data) {
     } else if (line.startsWith('taxadeenvio ')) {
     const valorTaxa = line.split('taxadeenvio =')[1].trim();
     taxadeenvio = parseFloat(valorTaxa.replace('R$', '').replace(',', '.').trim());
+    } else if (line.startsWith('fretegratis_acima_de')) { // <--- ADICIONE ESTE BLOCO
+        const valorFreteGratis = line.split('=')[1].trim();
+        freteGratisValor = parseFloat(valorFreteGratis);
     } else if (line.startsWith('avisonorodape')) {
         avisonorodape = line.split('avisonorodape =')[1].trim();
         document.getElementById('avisonorodape').textContent = avisonorodape;
@@ -3800,12 +3965,11 @@ function ComprarProdutos(product, selectedQuantity, selectedSize, selectedSabor,
 
 function updateCartDisplay() {
     // --- 1. Seleciona todos os elementos do DOM que serão manipulados ---
-    // Abas principais
+    // (Esta parte inicial permanece a mesma)
     const cartList = document.getElementById('cartList');
     const cartTotalElement = document.getElementById('cartTotal');
     const cartListCheckout = document.getElementById('cartListCheckout');
     
-    // Resumo do Pedido no Checkout
     const subtotalCheckoutEl = document.getElementById('TotalcartCheckout');
     const linhaDescontoEl = document.getElementById('linhaDesconto');
     const valorDescontoEl = document.getElementById('valorDescontoCheckout');
@@ -3814,24 +3978,22 @@ function updateCartDisplay() {
     const totalFinalEl = document.getElementById('totalFinalCheckout');
     const carrinhoCheckoutDiv = document.getElementById('carrinhocheckout');
 
-    // Botões de Ação
     const proceedToCheckoutButton = document.getElementById('proceedToCheckoutButton');
     const clearCartButton = document.getElementById('clearCartButton');
     const finalizarPedidoBtn = document.getElementById('finalizarPedidoBtn');
 
-    // --- 2. Limpa as listas para evitar itens duplicados na tela ---
+    // --- 2. Limpa as listas ---
     cartList.innerHTML = '';
     cartListCheckout.innerHTML = '';
     
-    // --- 3. Calcula o subtotal iterando sobre os itens do carrinho ---
+    // --- 3. Calcula o subtotal ---
     let subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
     // --- 4. Renderiza cada item do carrinho na tela ---
+    // (Esta seção permanece a mesma)
     cart.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
         const optionsString = [item.selectedSize, item.selectedsabor].filter(Boolean).join(' / ');
-
-        // HTML para a aba "Meu Carrinho" (com controles completos)
         const li = document.createElement('li');
         li.classList.add('cart-item');
         li.innerHTML = `
@@ -3853,10 +4015,8 @@ function updateCartDisplay() {
             </div>
         `;
         cartList.appendChild(li);
-
-        // HTML para a aba "Checkout" (resumo simples)
         const liCheckout = document.createElement('li');
-        liCheckout.classList.add('cart-item'); // Reutiliza o estilo se quiser
+        liCheckout.classList.add('cart-item');
         liCheckout.innerHTML = `
             <img src="${item.imageUrl}" alt="${item.name}" width="50" height="50">
             <span>${item.name} ${optionsString ? `(${optionsString})` : ''} (x${item.quantity})</span>
@@ -3865,55 +4025,56 @@ function updateCartDisplay() {
         cartListCheckout.appendChild(liCheckout);
     });
 
-    // --- 5. Lógica de Cálculo de Descontos e Taxas ---
+    // --- 5. Lógica de Cálculo de Descontos e Taxas (ATUALIZADA) ---
     let desconto = 0;
-    
-    // Calcula o desconto do cupom, se houver um válido aplicado
-    
-if (cupomAplicado && subtotal > 0) {
-    if (cupomAplicado.tipo === 'percentual') {
-        desconto = subtotal * (cupomAplicado.valor / 100);
-    } else if (cupomAplicado.tipo === 'fixo') {
-        desconto = cupomAplicado.valor;
-        // Garante que o desconto não seja maior que o subtotal
-        if (desconto > subtotal) desconto = subtotal;
-    }
-
-    // Só mostra se o desconto for maior que 0
-    if (desconto > 0) {
-        linhaDescontoEl.style.display = 'block';
-        valorDescontoEl.textContent = `- ${realBR(desconto)}`;
+    if (cupomAplicado && subtotal > 0) {
+        if (cupomAplicado.tipo === 'percentual') {
+            desconto = subtotal * (cupomAplicado.valor / 100);
+        } else if (cupomAplicado.tipo === 'fixo') {
+            desconto = cupomAplicado.valor;
+            if (desconto > subtotal) desconto = subtotal;
+        }
+        if (desconto > 0) {
+            linhaDescontoEl.style.display = 'block';
+            valorDescontoEl.textContent = `- ${realBR(desconto)}`;
+        } else {
+            linhaDescontoEl.style.display = 'none';
+        }
     } else {
         linhaDescontoEl.style.display = 'none';
     }
 
-} else {
-    linhaDescontoEl.style.display = 'none'; // Esconde a linha do desconto
-}
-
-    // Calcula a taxa de entrega
+    // --- INÍCIO DA NOVA LÓGICA DE FRETE GRÁTIS ---
     const deliveryOption = document.getElementById('deliveryOption').value;
     let taxaDeEntregaAplicada = 0;
+    let freteGratisAlcancado = false;
 
+    // A promoção só se aplica se for entrega em domicílio e houver um valor de taxa e um valor de promoção configurados
     if (deliveryOption === 'delivery' && taxadeenvio > 0) {
+        // Verifica se o cupom aplicado já é de frete grátis
         if (cupomAplicado && cupomAplicado.tipo === 'frete') {
-            taxaEnvioEl.innerHTML = `Taxa de Entrega: <span style="text-decoration: line-through; color: #e74c3c;"> ${realBR(taxadeenvio)}</span> <span style="color: var(--success-color);">Grátis!</span>`;
-        } else {
+            taxaEnvioEl.innerHTML = `Taxa de Entrega: <span style="text-decoration: line-through; color: #e74c3c;"> ${realBR(taxadeenvio)}</span> <span style="color: var(--success-color);">Grátis (Cupom)!</span>`;
+            freteGratisAlcancado = true;
+        } 
+        // Verifica se atingiu o valor mínimo para frete grátis
+        else if (freteGratisValor > 0 && subtotal >= freteGratisValor) {
+            taxaEnvioEl.innerHTML = `Taxa de Entrega: <strike>${realBR(taxadeenvio)}</strike> <span class="pago-success">Frete Grátis!</span>`;
+            freteGratisAlcancado = true;
+        } 
+        // Caso contrário, aplica a taxa normal
+        else {
             taxaDeEntregaAplicada = taxadeenvio;
             taxaEnvioEl.textContent = 'Taxa de Entrega: ' + realBR(taxadeenvio);
         }
-        linhaTaxaEnvioEl.style.display = 'flex'; // Mostra a linha da taxa
+        linhaTaxaEnvioEl.style.display = 'flex';
     } else {
-        linhaTaxaEnvioEl.style.display = 'none'; // Esconde a linha da taxa
+        linhaTaxaEnvioEl.style.display = 'none';
     }
+    // --- FIM DA NOVA LÓGICA DE FRETE GRÁTIS ---
 
     // --- 6. Calcula o Total Final ---
     let totalFinal = subtotal - desconto + taxaDeEntregaAplicada;
-    
-    // Garante que o total nunca seja negativo
-    if (totalFinal < 0) {
-        totalFinal = 0;
-    }
+    if (totalFinal < 0) { totalFinal = 0; }
 
     // --- 7. Atualiza todos os valores na interface ---
     cartTotalElement.textContent = realBR(subtotal);
@@ -3922,20 +4083,48 @@ if (cupomAplicado && subtotal > 0) {
 
     // --- 8. Gerencia o estado dos botões e da visibilidade do resumo ---
     const cartHasItems = cart.length > 0;
-    
-    // Habilita/desabilita botões
     proceedToCheckoutButton.disabled = !cartHasItems;
     clearCartButton.disabled = !cartHasItems;
     finalizarPedidoBtn.disabled = !cartHasItems;
-
-    // Mostra ou esconde o resumo do pedido no checkout
     carrinhoCheckoutDiv.style.display = cartHasItems ? 'block' : 'none';
 
-    // --- 9. Atualiza outros elementos da UI, como o carrinho flutuante ---
-    updateMiniCartCount(); // Se você ainda tiver esse elemento
+    // --- 9. ATUALIZA O TRACKER DE FRETE GRÁTIS ---
+    updateFreteGratisTracker(subtotal, freteGratisAlcancado);
+
+    // --- 10. Atualiza outros elementos da UI ---
+    updateMiniCartCount();
     updateFloatingCartCount();
     updateFloatingCartAccessibilityLabel();
 }
+
+// --- NOVA FUNÇÃO AUXILIAR PARA O TRACKER ---
+// Coloque esta função nova logo abaixo da `updateCartDisplay`
+function updateFreteGratisTracker(subtotal, freteGratisAlcancado) {
+    const tracker = document.getElementById('freteGratisTracker');
+    const textEl = document.getElementById('freteGratisText');
+    const progressBar = document.getElementById('freteGratisProgressBar');
+
+    // Só mostra o tracker se a promoção estiver configurada
+    if (freteGratisValor <= 0 || cart.length === 0) {
+        tracker.style.display = 'none';
+        return;
+    }
+
+    tracker.style.display = 'block';
+
+    if (freteGratisAlcancado || subtotal >= freteGratisValor) {
+        tracker.classList.add('success');
+        textEl.innerHTML = '🎉 <strong>Parabéns! Você conseguiu frete grátis!</strong>';
+        progressBar.style.width = '100%';
+    } else {
+        tracker.classList.remove('success');
+        const restante = freteGratisValor - subtotal;
+        textEl.innerHTML = `Faltam <strong>${realBR(restante)}</strong> para você ganhar <strong>FRETE GRÁTIS!</strong>`;
+        const progresso = (subtotal / freteGratisValor) * 100;
+        progressBar.style.width = `${progresso}%`;
+    }
+}
+
 function updateMiniCartCount() {
     const miniCartCount = document.getElementById('miniCartCount');
     if (miniCartCount) { // Check if the element exists
@@ -3974,6 +4163,8 @@ async function generateHash(value) {
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 }
+
+
 
 async function finalizarPedido() {
     // --- Validação dos campos do formulário (seu código existente) ---
@@ -5148,143 +5339,175 @@ function buyNowCarousel(button, productName) {
     ComprarProdutos(product, selectedQuantity, selectedSize, selectedSabor, true);
 }
 
+// --- INÍCIO DA NOVA ESTRUTURA DE CUPOM ---
+async function verifyCouponCode(code) {
+    // 1. Gera o hash para verificação, como antes.
+    const hashToVerify = await generateHash(code);
 
-async function aplicarCupom() {
-    const codigoInput = document.getElementById('cupomInput').value.toUpperCase();
-    const cupomStatusEl = document.getElementById('cupomStatus');
-    const aplicarBtn = document.getElementById('aplicarCupomBtn');
+    // 2. A "Mágica" da Promise:
+    return new Promise((resolve, reject) => {
+        // Gera um nome de callback único para evitar conflitos
+        const callbackName = 'processarCupom_' + Date.now();
 
-    // Se o campo estiver vazio, reseta tudo
-    if (!codigoInput) {
-        cupomAplicado = null;
-        cupomStatusEl.textContent = "";
-        updateCartDisplay();
-        return;
-    }
+        // 3. Define a função de callback que o Blogger vai chamar
+        window[callbackName] = (data) => {
+            let foundCoupon = null;
+            const couponRegex = /^[a-f0-9]{64}:(\d+(\.\d+)?):(percentual|fixo|frete)$/;
 
-    // Desabilita o botão e mostra feedback de carregamento
-    aplicarBtn.disabled = true;
-    aplicarBtn.textContent = 'Aguarde...';
-    cupomStatusEl.textContent = 'Verificando cupom...';
-    cupomStatusEl.style.color = '#ffa200e0'; // Laranja para "aguardando"
-
-    // Gera o hash a partir da entrada do usuário
-    hashCupomParaVerificar = await generateHash(codigoInput);
-    window.codigoOriginalCupom = codigoInput;
-
-    // Remove qualquer script de verificação de cupom anterior para evitar conflitos
-    const scriptAntigo = document.getElementById('cupomVerifierScript');
-    
-    if (scriptAntigo) {
-        scriptAntigo.remove();
-    }
-
-    // Cria o novo script para a chamada JSONP
-    const script = document.createElement('script');
-    script.id = 'cupomVerifierScript'; // ID para fácil remoção posterior
-    script.src = 'https://www.blogger.com/feeds/' + blog + '/pages/default?alt=json-in-script&callback=processarVerificacaodecupom';
-    
-    // Define o que fazer em caso de erro de rede ou blog inválido
-    script.onerror = () => {
-        showNotification("Erro de rede ao verificar o cupom. Tente novamente.", 'error');
-        cupomStatusEl.textContent = 'Erro na verificação.';
-        cupomStatusEl.style.color = 'var(--error-color)';
-        
-        window.codigoOriginalCupom = null;
-        aplicarBtn.disabled = false;
-        aplicarBtn.textContent = 'Aplicar';
-    };
-
-    // Adiciona o script ao corpo do documento, o que dispara a requisição
-    document.body.appendChild(script);
-
- window.processarVerificacaodecupom = (data) => {
-    const cupomStatusEl = document.getElementById('cupomStatus');
-    const aplicarBtn = document.getElementById('aplicarCupomBtn');
-    let cupomEncontrado = false;
-    let cupomValido = null;
-
-    const regexCupom = /^[a-f0-9]{64}:(\d+(\.\d+)?):(percentual|fixo|frete)$/;
-
-    if (data && data.feed && data.feed.entry) {
-        for (const entry of data.feed.entry) {
-            if (cupomEncontrado) break;
-
-            if (entry.content && entry.content.$t) {
-                const lines = entry.content.$t.split('\n').map(line => line.replace(/<[^>]*>/g, '').trim());
-
-                for (const line of lines) {
-                    if (regexCupom.test(line)) {
-                        const [hash, valor, tipo] = line.split(':');
-
-                        if (hash === hashCupomParaVerificar) {
-                            cupomValido = {
-                                hash: hash,
-                                valor: parseFloat(valor),
-                                tipo: tipo
-                            };
-                            cupomEncontrado = true;
-                            break;
+            if (data && data.feed && data.feed.entry) {
+                // Loop para encontrar o cupom correspondente
+                for (const entry of data.feed.entry) {
+                    if (foundCoupon) break; // Otimização: para o loop se já encontrou
+                    if (entry.content && entry.content.$t) {
+                        const lines = entry.content.$t.split('\n').map(line => line.replace(/<[^>]*>/g, '').trim());
+                        for (const line of lines) {
+                            if (line.startsWith(hashToVerify)) {
+                                const match = line.match(couponRegex);
+                                if (match) {
+                                    foundCoupon = {
+                                        hash: match[0].split(':')[0],
+                                        valor: parseFloat(match[1]),
+                                        tipo: match[3],
+                                        codigoOriginal: code // Guarda o código original para exibição
+                                    };
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
-    }
 
-    if (cupomEncontrado) {
-        cupomValido.codigoOriginal = window.codigoOriginalCupom;
-        cupomAplicado = cupomValido; // Armazena o objeto do cupom válido
-        
-        let mensagemSucesso = ''; // Variável para a mensagem personalizada
+            // 4. Limpa o callback e o script da página
+            delete window[callbackName];
+            document.body.removeChild(script);
 
-        // Constrói a mensagem com base no tipo do cupom
-        switch (cupomValido.tipo) {
-            case 'percentual':
-                mensagemSucesso = `Desconto de ${cupomValido.valor}% aplicado!`;
-                break;
-            case 'fixo':
-                // Usamos a função realBR para formatar o valor como moeda
-                mensagemSucesso = `Desconto de ${realBR(cupomValido.valor)} aplicado!`;
-                break;
-            case 'frete':
-                mensagemSucesso = `Frete Grátis ativado!`;
-                break;
-            default:
-                // Mensagem padrão caso algo inesperado aconteça
-                mensagemSucesso = `Cupom aplicado com sucesso!`;
-        }
+            // 5. Resolve ou Rejeita a Promise com o resultado
+            if (foundCoupon) {
+                resolve(foundCoupon); // SUCESSO!
+            } else {
+                reject(new Error('Cupom inválido ou expirado.')); // FALHA!
+            }
+        };
 
-        // Exibe a mensagem personalizada
-        cupomStatusEl.textContent = mensagemSucesso;
-        cupomStatusEl.style.color = 'var(--success-color)';
-        showNotification(mensagemSucesso, 'success');
-
-    } else {
-        cupomAplicado = null;
-        cupomStatusEl.textContent = 'Cupom inválido ou expirado.';
-        cupomStatusEl.style.color = 'var(--error-color)';
-        showNotification('Cupom inválido ou expirado!', 'error');
-    }
-
-    window.codigoOriginalCupom = null; 
-
-    // Limpa a variável global e o script, e reabilita o botão
-    hashCupomParaVerificar = '';
-    const scriptElement = document.getElementById('cupomVerifierScript');
-    if (scriptElement) {
-        scriptElement.remove();
-    }
-    aplicarBtn.disabled = false;
-    aplicarBtn.textContent = 'Aplicar';
-
-    // Recalcula o total e atualiza toda a exibição do carrinho
-    updateCartDisplay();
-};
+        // 6. Cria e injeta o script para fazer a chamada JSONP
+        const script = document.createElement('script');
+        script.src = `https://www.blogger.com/feeds/${blog}/pages/default?alt=json-in-script&callback=${callbackName}`;
+        script.onerror = () => {
+            // Limpeza em caso de erro de rede
+            delete window[callbackName];
+            if (document.body.contains(script)) {
+                document.body.removeChild(script);
+            }
+            reject(new Error('Erro de rede ao verificar o cupom.'));
+        };
+        document.body.appendChild(script);
+    });
 }
 
-// Não se esqueça de ligar a função ao botão "Aplicar"
-document.getElementById('aplicarCupomBtn').addEventListener('click', aplicarCupom);
+/**
+ * O GERENTE: Orquestra a aplicação do cupom e atualiza a UI.
+ */
+async function applyCoupon() {
+    const code = document.getElementById('cupomInput').value.toUpperCase().trim();
+    if (!code) return;
+
+    const statusEl = document.getElementById('cupomStatus');
+    const applyBtn = document.getElementById('aplicarCupomBtn');
+
+    // Desabilita o botão e mostra feedback de carregamento
+    applyBtn.disabled = true;
+    applyBtn.textContent = 'Verificando...';
+    statusEl.textContent = '';
+    statusEl.className = 'cupom-status';
+
+    try {
+        // Chama o nosso "fiscal" e espera pela resposta (sucesso ou falha)
+        const validCoupon = await verifyCouponCode(code);
+        
+        // Se chegou aqui, o cupom é VÁLIDO!
+        cupomAplicado = validCoupon;
+        showNotification("Cupom aplicado com sucesso!", 'success');
+
+    } catch (error) {
+        // Se chegou aqui, o cupom é INVÁLIDO ou houve um erro de rede
+        cupomAplicado = null;
+        showNotification(error.message, 'error');
+        
+    } finally {
+        // Este bloco SEMPRE executa, seja com sucesso ou falha
+        updateCouponUI();
+        updateCartDisplay();
+    }
+}
+
+/**
+ * AÇÃO DE REMOVER: Limpa o estado do cupom e atualiza a UI.
+ */
+function removeCoupon() {
+    cupomAplicado = null;
+    showNotification("Cupom removido.", 'atualizado');
+    updateCouponUI();
+    updateCartDisplay();
+}
+
+/**
+ * ATUALIZADOR DE UI: Mantém a aparência da seção de cupom em sincronia com o estado.
+ */
+function updateCouponUI() {
+    const wrapper = document.getElementById('cupomInputWrapper');
+    const input = document.getElementById('cupomInput');
+    const applyBtn = document.getElementById('aplicarCupomBtn');
+    const statusEl = document.getElementById('cupomStatus');
+
+    // Remove o botão de remover antigo, se existir
+    const existingRemoveBtn = document.getElementById('removerCupomBtn');
+    if (existingRemoveBtn) {
+        existingRemoveBtn.remove();
+    }
+
+    if (cupomAplicado) {
+        // ESTADO "APLICADO"
+        input.value = cupomAplicado.codigoOriginal;
+        input.readOnly = true; // Trava o input
+
+        applyBtn.style.display = 'none'; // Esconde o botão de aplicar
+
+        // Cria e adiciona o botão de remover
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.id = 'removerCupomBtn';
+        removeBtn.className = 'removerCupomBtn';
+        removeBtn.innerHTML = '&times; Remover';
+        removeBtn.onclick = removeCoupon;
+        wrapper.appendChild(removeBtn);
+
+        // Define a mensagem de sucesso
+        let successMessage = '';
+        switch(cupomAplicado.tipo) {
+            case 'percentual': successMessage = `Desconto de ${cupomAplicado.valor}% aplicado!`; break;
+            case 'fixo': successMessage = `Desconto de ${realBR(cupomAplicado.valor)} aplicado!`; break;
+            case 'frete': successMessage = 'Frete Grátis ativado!'; break;
+        }
+        statusEl.textContent = successMessage;
+        statusEl.className = 'cupom-status success';
+
+    } else {
+        // ESTADO "PADRÃO"
+        input.value = '';
+        input.readOnly = false; // Destrava o input
+        applyBtn.style.display = 'block'; // Mostra o botão de aplicar
+        applyBtn.disabled = false;
+        applyBtn.textContent = 'Aplicar';
+        statusEl.textContent = ''; // Limpa a mensagem
+        statusEl.className = 'cupom-status';
+    }
+}
+
+// Conecta o "gerente" ao botão "Aplicar"
+document.getElementById('aplicarCupomBtn').addEventListener('click', applyCoupon);
+
+// --- FIM DA NOVA ESTRUTURA DE CUPOM ---
 
 // Função para validar CEP
 async function isCepValido(cep) {
@@ -5447,7 +5670,7 @@ document.getElementById("CEP").addEventListener("blur", async function () {
 function toggleAddressFields() {
     const deliveryOption = document.getElementById('deliveryOption').value;
     const addressFields = document.getElementById('addressFields');
-    const avisoTaxaEl = document.getElementById('avisoTaxaEntrega'); // Pega o elemento do aviso
+    const avisoTaxaEl = document.getElementById('avisoTaxaEntrega');
 
     if (deliveryOption === 'delivery') {
         addressFields.style.display = 'block';
@@ -5456,24 +5679,45 @@ function toggleAddressFields() {
         document.getElementById('Cidade').setAttribute('required', '');
         document.getElementById('Bairro').setAttribute('required', '');
 
-        // --- LÓGICA DO AVISO ---
+        // --- INÍCIO DA NOVA LÓGICA PARA GERAR O TEXTO ---
+        let infoMessage = "No momento, realizamos entregas apenas para ";
+        const restrictions = [];
+
+        // Verifica e adiciona as restrições à lista
+        if (cidade) {
+            restrictions.push(`a(s) cidade(s) de <strong>${cidade}</strong>`);
+        }
+        if (bairro) {
+            restrictions.push(`o(s) bairro(s) de <strong>${bairro}</strong>`);
+        }
+        if (unidadefederativa) {
+            restrictions.push(`o estado de <strong>${unidadefederativa}</strong>`);
+        }
+
+        // Constrói a mensagem final
+        if (restrictions.length > 0) {
+            infoMessage += restrictions.join(', ');
+            infoMessage += ". Por favor, verifique se o seu CEP pertence a uma dessas localidades.";
+        } else {
+            // Mensagem padrão se nenhuma restrição estiver configurada
+            infoMessage = "Realizamos entregas em toda a região. Insira seu CEP para validar.";
+        }
+        
+
         if (taxadeenvio > 0) {
-            // Mostra o aviso fixo
             avisoTaxaEl.textContent = `Atenção: Será aplicada uma taxa de entrega no valor de ${realBR(taxadeenvio)}.`;
             avisoTaxaEl.style.display = 'block';
-            exibirModalErro("Atenção: Será aplicada uma taxa de entrega no valor de " + realBR(taxadeenvio) + ".", false, true, 'aviso');
+            exibirModalErro('<br>Atenção: Será aplicada uma taxa de entrega no valor de ' + realBR(taxadeenvio) + "." + '<br><br>' + infoMessage, false, true, 'aviso');
         } else {
-            // Se a taxa for 0 ou não definida, avisa que a entrega é grátis
             avisoTaxaEl.textContent = 'A entrega em domicílio é gratuita!';
             avisoTaxaEl.style.display = 'block';
             showNotification('A entrega é gratuita!', 'success');
         }
-        // --- FIM DA LÓGICA DO AVISO ---
 
     } else {
         addressFields.style.display = 'none';
-        avisoTaxaEl.style.display = 'none'; // Esconde o aviso se for retirada
-        
+        avisoTaxaEl.style.display = 'none';
+
         document.getElementById('CEP').removeAttribute('required');
         document.getElementById('Endereço').removeAttribute('required');
         document.getElementById('Cidade').removeAttribute('required');
@@ -5485,7 +5729,7 @@ function toggleAddressFields() {
         document.getElementById('Bairro').value = '';
     }
     
-    updateCartDisplay(); // Mantém esta linha para recalcular o total
+    updateCartDisplay();
 }
 
 
@@ -5808,6 +6052,12 @@ const inputWhatsApp = document.getElementById('WhatsApp');
         });
     }
 
+function dismissAlert() {
+    // Esconde o elemento da tela
+    document.getElementById('localStorageAlert').style.display = 'none';
+    // Salva uma marcação no localStorage para não mostrar novamente
+    localStorage.setItem('storageAlertDismissed', 'true');
+}
 
 const button = document.getElementById("whatswidget-button");
     const conversation = document.getElementById("whatswidget-conversation");
