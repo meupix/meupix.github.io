@@ -1,6 +1,7 @@
 <!DOCTYPE html><html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:site_name" content="MeuPix/Loja">
@@ -4855,6 +4856,7 @@ async function verificarPagamento(index) {
                                         history[index].isPago = false;
                                         showNotification(`Pedido #${iddopagamento} foi Cancelado.`, 'error');
                                         paymentFound = true;
+                                        updateOrderHistoryDisplay();
 
                                     } else if (order.Entregue === '' && status === 'Entregue') {
                                         history[index].Entregue = 'Entregue';
@@ -4863,6 +4865,7 @@ async function verificarPagamento(index) {
                                         history[index].isPago = true;
                                         showNotification(`Pedido #${iddopagamento} Pago e foi entregue.`, 'atualizado');
                                         paymentFound = true;
+                                        updateOrderHistoryDisplay();
 
                                     } else if (order.Enviado === '' && status === 'Enviado') {
                                         history[index].Enviado = 'Enviado';
@@ -4871,6 +4874,7 @@ async function verificarPagamento(index) {
                                         history[index].isPago = true;
                                         showNotification(`Pedido #${iddopagamento} Pago e foi enviado.`, 'atualizado');
                                         paymentFound = true;
+                                        updateOrderHistoryDisplay();
 
                                     } else if (order.StatusPedido === 'Aguardando Pagamento' && status === 'Pago') {
                                         history[index].isPago = true;
@@ -4878,6 +4882,7 @@ async function verificarPagamento(index) {
                                         history[index].StatusPedido = 'Pago';
                                         showNotification(`Pagamento #${iddopagamento} concluído com sucesso!`, 'success');
                                         paymentFound = true;
+                                        updateOrderHistoryDisplay();
                                     }
                                 }
                             }
@@ -4889,7 +4894,6 @@ async function verificarPagamento(index) {
                     }
 
                     localStorage.setItem(blog, JSON.stringify(history));
-                    updateOrderHistoryDisplay();
 
                 } else {
                     showNotification("Erro ao processar os dados da API.", 'error');
@@ -4902,7 +4906,7 @@ async function verificarPagamento(index) {
         };
 
         document.body.appendChild(script);
-
+        
         // Pequeno delay para simular tempo de rede (opcional)
         await new Promise(resolve => setTimeout(resolve, 2000));
     }
