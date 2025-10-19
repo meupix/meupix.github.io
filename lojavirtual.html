@@ -1,7 +1,6 @@
 <!DOCTYPE html><html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:site_name" content="MeuPix/Loja">
@@ -2707,7 +2706,7 @@ tbody {
     <span class="cart-count" id="floatingCartCount">0</span>
     </div>
 
-    <div id="whatswidget-pre-wrapper" class="">
+    <div id="whatswidget-pre-wrapper" style="display: none;">
         <div id="whatswidget-widget-wrapper" class="whatswidget-widget-wrapper">
         <div id="whatswidget-conversation" class="whatswidget-conversation" style="display: none; opacity: 0;">
         <div class="whatswidget-conversation-header" style="all:revert;">
@@ -3107,8 +3106,11 @@ function processarStatusDaLoja(data) {
     } else if (line.startsWith('pix')) {
         Pix = line.split('pix =')[1].trim();
         MeuPix = Pix.replace(/&amp;/g, "&");
-    } if (line.startsWith('whatsapp')) {
+    } else if (line.startsWith('whatsapp')) {
        whatsapp = line.split('=')[1].trim();
+               const whatswidget = document.getElementById("whatswidget-pre-wrapper");
+             whatswidget.style.display = whatsapp ? 'block' : 'none';
+       'whatswidget-pre-wrapper'; 
     } else if (line.startsWith('nome')) {
         nome = line.split('=')[1].trim();
         document.getElementById('nome1').textContent = nome;
@@ -3189,6 +3191,8 @@ function processarStatusDaLoja(data) {
         const twitterSeparator = document.getElementById("twitterSeparator");
         const privacidadeTermosParagrafo = document.getElementById("privacidadeTermosParagrafo");
         const privacidadeTermosSeparator = document.getElementById("privacidadeTermosSeparator");
+        const horariosButton = document.getElementById('openModalhorarios');
+        horariosButton.style.display = ativahorario ? 'block' : 'none';
 
         let contatoAdicionado = false;
         let redesSociaisAdicionadas = false;
