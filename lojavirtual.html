@@ -2540,7 +2540,7 @@ tbody {
 
         <div class="form-group">
         <label for="deliveryOption" class="required">Opção de Entrega</label>
-        <select id="deliveryOption" name="deliveryOption" class="custom-select" required
+        <select id="deliveryOption" name="deliveryOption" class="custom-select"
         onchange="toggleAddressFields()">
         <option value="">Retirar no Local</option>
         <option value="delivery">Entrega em Domicílio</option>
@@ -2617,7 +2617,7 @@ tbody {
 </div>
 
 <div class="button-group">
-  <button class="ButtonCompraComPix" id="finalizarPedidoBtn" onclick="finalizarPedido()" disabled>
+  <button type="button" class="ButtonCompraComPix" id="finalizarPedidoBtn" onclick="finalizarPedido()" disabled>
     <i class="fas fa-qrcode"></i> Gerar QR Code Pix
   </button>
 </div>
@@ -2799,7 +2799,6 @@ const Params = new URLSearchParams(window.location.search);
     let contatoHTML = '';
     var hashCupomParaVerificar = '';
     let cupomAplicado = null;
-    // --- NOVAS VARIÁVEIS DE ESTADO PARA PAGINAÇÃO DO HISTÓRICO ---
     let orderHistoryCurrentPage = 1;
     const ordersPerPage = 10;
 
@@ -2865,18 +2864,26 @@ function inicio() {
         }
 
     // Função que processa pagamentos sequencialmente
-    async function processarPagamentos() {
-        // Obtém o histórico uma vez
-        const history = JSON.parse(localStorage.getItem(blog)) || [];
-        const indicesAguardandoPagamento = history
-            .map((order, index) => (order.Entregue === "" || order.Enviado === "" || order.StatusPedido === "Aguardando Pagamento") ? index : -1)
-            .filter(index => index !== -1); // Filtra apenas os índices válidos
+async function processarPagamentos() {
+    const history = JSON.parse(localStorage.getItem(blog)) || [];
 
-        for (let i = 0; i < indicesAguardandoPagamento.length; i++) {
-            const index = indicesAguardandoPagamento[i];
-            await verificarPagamento(index); 
-        }
+    const indicesParaVerificar = history
+        .map((order, index) => {
+            const statusResolvidos = ["Pago", "Enviado", "Entregue"];
+            if (!statusResolvidos.includes(order.StatusPedido)) {
+                return index; 
+            }
+            return -1;
+        }).filter(index => index !== -1);
+
+    if (indicesParaVerificar.length === 0) {
+        return;
     }
+
+    for (const index of indicesParaVerificar) {
+        await verificarPagamento(index);
+    }
+}
 
     processarPagamentos(); // Inicia o processo de pagamento
 
@@ -2905,8 +2912,6 @@ function inicio() {
 };
 
 function exibirModalErro(mensagem, comb = false, mostrarFechar = true, tipo = 'error', extraData = null) {
-    // Remove modal anterior) {
-    // Remove qualquer modal anterior
     const existente = document.getElementById('modalErro');
     if (existente) existente.remove();
 
@@ -3965,8 +3970,6 @@ function ComprarProdutos(product, selectedQuantity, selectedSize, selectedSabor,
 }
 
 function updateCartDisplay() {
-    // --- 1. Seleciona todos os elementos do DOM que serão manipulados ---
-    // (Esta parte inicial permanece a mesma)
     const cartList = document.getElementById('cartList');
     const cartTotalElement = document.getElementById('cartTotal');
     const cartListCheckout = document.getElementById('cartListCheckout');
@@ -4071,9 +4074,7 @@ function updateCartDisplay() {
     } else {
         linhaTaxaEnvioEl.style.display = 'none';
     }
-    // --- FIM DA NOVA LÓGICA DE FRETE GRÁTIS ---
 
-    // --- 6. Calcula o Total Final ---
     let totalFinal = subtotal - desconto + taxaDeEntregaAplicada;
     if (totalFinal < 0) { totalFinal = 0; }
 
@@ -4098,12 +4099,13 @@ function updateCartDisplay() {
     updateFloatingCartAccessibilityLabel();
 }
 
-// --- NOVA FUNÇÃO AUXILIAR PARA O TRACKER ---
-// Coloque esta função nova logo abaixo da `updateCartDisplay`
+
 function updateFreteGratisTracker(subtotal, freteGratisAlcancado) {
     const tracker = document.getElementById('freteGratisTracker');
     const textEl = document.getElementById('freteGratisText');
     const progressBar = document.getElementById('freteGratisProgressBar');
+    const avisoTaxaEl = document.getElementById('avisoTaxaEntrega');
+    const deliveryOption = document.getElementById('deliveryOption').value;
 
     // Só mostra o tracker se a promoção estiver configurada
     if (freteGratisValor <= 0 || cart.length === 0) {
@@ -4117,13 +4119,20 @@ function updateFreteGratisTracker(subtotal, freteGratisAlcancado) {
         tracker.classList.add('success');
         textEl.innerHTML = '🎉 <strong>Parabéns! Você conseguiu frete grátis!</strong>';
         progressBar.style.width = '100%';
+        avisoTaxaEl.style.display = 'none';
     } else {
         tracker.classList.remove('success');
         const restante = freteGratisValor - subtotal;
         textEl.innerHTML = `Faltam <strong>${realBR(restante)}</strong> para você ganhar <strong>FRETE GRÁTIS!</strong>`;
         const progresso = (subtotal / freteGratisValor) * 100;
         progressBar.style.width = `${progresso}%`;
+
+    if (deliveryOption === 'delivery') {  
+        avisoTaxaEl.style.display = 'block';
+    } else {
+        avisoTaxaEl.style.display = 'none';
     }
+}
 }
 
 function updateMiniCartCount() {
@@ -4165,21 +4174,78 @@ async function generateHash(value) {
     return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
+const inputCep = document.getElementById('CEP');
+const inputWhatsApp = document.getElementById('WhatsApp');
 
+    if (inputCep) {
+        inputCep.addEventListener('input', () => {
+            let cep = inputCep.value.replace(/\D/g, '');
+            cep = cep.substring(0, 8);
+            cep = cep.replace(/(\d{5})(\d)/, '$1-$2');
+            inputCep.value = cep;
+        });
+    }
 
+    if (inputWhatsApp) {
+        inputWhatsApp.addEventListener('input', () => {
+            let whatsapp = inputWhatsApp.value.replace(/\D/g, '');
+            whatsapp = whatsapp.substring(0, 11);
+            if (whatsapp.length > 10) {
+                whatsapp = whatsapp.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+            } else if (whatsapp.length > 11) {
+                whatsapp = whatsapp.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
+            } else if (whatsapp.length > 2) {
+                whatsapp = whatsapp.replace(/^(\d{2})(\d*)$/, '($1) $2');
+            } else if (whatsapp.length > 0) {
+                whatsapp = whatsapp.replace(/^(\d*)$/, '($1');
+            }
+            inputWhatsApp.value = whatsapp;
+        });
+    }
+
+function isValidEmail(email) {
+    if (!email) return false;
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return emailRegex.test(email);
+}
 async function finalizarPedido() {
     // --- Validação dos campos do formulário (seu código existente) ---
     const deliveryOption = document.getElementById('deliveryOption').value;
-    let requiredFields = ['Nome', 'Email', 'WhatsApp'];
+    const nomeInput = document.getElementById('Nome');
+    const emailInput = document.getElementById('Email');
+    const whatsappInput = document.getElementById('WhatsApp');
+    
+    let requiredFields = [
+        { el: nomeInput, name: "Nome" },
+        { el: emailInput, name: "Email" },
+        { el: whatsappInput, name: "WhatsApp" }
+    ];
+
     if (deliveryOption === 'delivery') {
-        requiredFields = requiredFields.concat(['CEP', 'Endereço', 'Cidade', 'Bairro']);
+        requiredFields.push({ el: document.getElementById('CEP'), name: "CEP" });
+        requiredFields.push({ el: document.getElementById('Endereço'), name: "Endereço" });
+        requiredFields.push({ el: document.getElementById('Cidade'), name: "Cidade" });
+        requiredFields.push({ el: document.getElementById('Bairro'), name: "Bairro" });
     }
-    const missingFields = requiredFields.filter(field => !document.getElementById(field).value);
+
+    // 2. Verifica campos vazios
+    const missingFields = requiredFields.filter(field => !field.el.value.trim());
     if (missingFields.length > 0) {
-        showNotification(`Por favor, preencha os campos: ${missingFields.join(', ')}.`, 'error');
-        return;
+        const fieldNames = missingFields.map(field => field.name).join(', ');
+        showNotification(`Por favor, preencha os campos obrigatórios: ${fieldNames}.`, 'error');
+        
+        missingFields[0].el.focus();
+        missingFields[0].el.style.borderColor = 'var(--error-color)'; // Destaque visual
+        return; // Para a execução
     }
-    // ...outras validações que você tem...
+
+    // 3. Validação específica para o formato do E-mail
+    if (!isValidEmail(emailInput.value)) {
+        showNotification('O endereço de e-mail inserido não parece ser válido. Por favor, verifique.', 'error');
+        emailInput.focus();
+        emailInput.style.borderColor = 'var(--error-color)'; // Destaque visual
+        return; // Para a execução
+    }
 
     if (cart.length === 0) {
         showNotification("Carrinho de compras vazio!", 'error');
@@ -4205,42 +4271,49 @@ async function finalizarPedido() {
         const metodoPagamento = document.querySelector('input[name="paymentMethod"]:checked').value;
         const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
         let valorDesconto = 0;
-        let cupomInfo = null; // Objeto para salvar no histórico
+        let cupomInfo = null;
 
-        if (cupomAplicado && subtotal > 0) {
+        if (cupomAplicado && subtotal > 0 && cupomAplicado.tipo !== 'frete') {
             if (cupomAplicado.tipo === 'percentual') {
                 valorDesconto = subtotal * (cupomAplicado.valor / 100);
             } else if (cupomAplicado.tipo === 'fixo') {
                 valorDesconto = cupomAplicado.valor;
                 if (valorDesconto > subtotal) valorDesconto = subtotal;
             }
-            // Guarda a informação do cupom que foi usado
+
             cupomInfo = {
-                codigoHash: cupomAplicado.hash, // Salva o hash para referência
+                codigoHash: cupomAplicado.hash,
                 valor: cupomAplicado.valor,
                 tipo: cupomAplicado.tipo,
                 codigoOriginal: cupomAplicado.codigoOriginal
             };
         }
 
-        // --- 3. Calcula a taxa de entrega ---
+
         let taxaAplicada = 0;
+        let freteGratisAlcancado = false;
+
         if (deliveryOption === 'delivery' && taxadeenvio > 0) {
-            // Se o cupom NÃO for de frete, aplica a taxa
-            if (!cupomAplicado || cupomAplicado.tipo !== 'frete') {
-                taxaAplicada = taxadeenvio;
-            } else {
-                 // Se for cupom de frete, guarda a informação
-                 cupomInfo = {
+
+            if (cupomAplicado && cupomAplicado.tipo === 'frete') {
+                freteGratisAlcancado = true;
+                cupomInfo = {
                     codigoHash: cupomAplicado.hash,
                     valor: cupomAplicado.valor,
                     tipo: 'frete',
                     codigoOriginal: cupomAplicado.codigoOriginal
                  };
+            } 
+
+            else if (freteGratisValor > 0 && subtotal >= freteGratisValor) {
+                freteGratisAlcancado = true;
+            }
+
+            if (!freteGratisAlcancado) {
+                taxaAplicada = taxadeenvio;
             }
         }
-
-        // --- 4. Calcula o VALOR FINAL para o Pix e para o histórico ---
+        
         let valorFinal = subtotal - valorDesconto + taxaAplicada;
         if (valorFinal < 0) valorFinal = 0;
 
@@ -4854,6 +4927,7 @@ async function verificarPagamento(index) {
                                         history[index].Pagamento = ' ';
                                         history[index].Entregue = ' ';
                                         history[index].isPago = false;
+                                        localStorage.setItem(blog, JSON.stringify(history));
                                         showNotification(`Pedido #${iddopagamento} foi Cancelado.`, 'error');
                                         paymentFound = true;
                                         updateOrderHistoryDisplay();
@@ -4863,6 +4937,7 @@ async function verificarPagamento(index) {
                                         history[index].Pagamento = 'Pago';
                                         history[index].StatusPedido = 'Pago';
                                         history[index].isPago = true;
+                                        localStorage.setItem(blog, JSON.stringify(history));
                                         showNotification(`Pedido #${iddopagamento} Pago e foi entregue.`, 'atualizado');
                                         paymentFound = true;
                                         updateOrderHistoryDisplay();
@@ -4872,6 +4947,7 @@ async function verificarPagamento(index) {
                                         history[index].Pagamento = 'Pago';
                                         history[index].StatusPedido = 'Pago';
                                         history[index].isPago = true;
+                                        localStorage.setItem(blog, JSON.stringify(history));
                                         showNotification(`Pedido #${iddopagamento} Pago e foi enviado.`, 'atualizado');
                                         paymentFound = true;
                                         updateOrderHistoryDisplay();
@@ -4880,6 +4956,7 @@ async function verificarPagamento(index) {
                                         history[index].isPago = true;
                                         history[index].Pagamento = 'Pago';
                                         history[index].StatusPedido = 'Pago';
+                                        localStorage.setItem(blog, JSON.stringify(history));
                                         showNotification(`Pagamento #${iddopagamento} concluído com sucesso!`, 'success');
                                         paymentFound = true;
                                         updateOrderHistoryDisplay();
@@ -4893,7 +4970,7 @@ async function verificarPagamento(index) {
                         showNotification(`Estamos aguardando a confirmação do seu pagamento #${iddopagamento}. Assim que recebermos a confirmação, você será notificado.`, 'aguardando');
                     }
 
-                    localStorage.setItem(blog, JSON.stringify(history));
+
 
                 } else {
                     showNotification("Erro ao processar os dados da API.", 'error');
@@ -4906,7 +4983,7 @@ async function verificarPagamento(index) {
         };
 
         document.body.appendChild(script);
-        
+
         // Pequeno delay para simular tempo de rede (opcional)
         await new Promise(resolve => setTimeout(resolve, 2000));
     }
@@ -5706,7 +5783,6 @@ function toggleAddressFields() {
             // Mensagem padrão se nenhuma restrição estiver configurada
             infoMessage = "Realizamos entregas em toda a região. Insira seu CEP para validar.";
         }
-        
 
         if (taxadeenvio > 0) {
             avisoTaxaEl.textContent = `Atenção: Será aplicada uma taxa de entrega no valor de ${realBR(taxadeenvio)}.`;
@@ -6003,58 +6079,6 @@ function realBR2(input) { //R$ 325.325.232,53
 function AbrirWhatsapp() {
     window.open("https://api.whatsapp.com/send?phone=" + encodeURIComponent(whatsapp), '_blank');
 }
-
-    // --- SELECIONA OS ELEMENTOS DO FORMULÁRIO ---
-const inputCep = document.getElementById('CEP');
-const inputEmail = document.getElementById('Email');
-const inputWhatsApp = document.getElementById('WhatsApp');
-
-    // --- FORMATADOR DE CEP ---
-    if (inputCep) {
-        inputCep.addEventListener('input', () => {
-            let cep = inputCep.value.replace(/\D/g, '');
-            cep = cep.substring(0, 8);
-            cep = cep.replace(/(\d{5})(\d)/, '$1-$2');
-            inputCep.value = cep;
-        });
-    }
-
-    // --- VALIDADOR DE EMAIL ---
-    if (inputEmail) {
-        inputEmail.addEventListener('blur', () => {
-            const email = inputEmail.value;
-
-            const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-
-            if (emailRegex.test(email)) {
-                inputEmail.style.borderColor = ''; 
-            } else {
-                if (email.length > 0) {
-                   inputEmail.style.borderColor = 'red';
-                } else {
-                    inputEmail.style.borderColor = '';
-                }
-            }
-        });
-    }
-
-    // --- FORMATADOR DE WHATSAPP ---
-    if (inputWhatsApp) {
-        inputWhatsApp.addEventListener('input', () => {
-            let whatsapp = inputWhatsApp.value.replace(/\D/g, '');
-            whatsapp = whatsapp.substring(0, 11);
-            if (whatsapp.length > 10) {
-                whatsapp = whatsapp.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
-            } else if (whatsapp.length > 11) {
-                whatsapp = whatsapp.replace(/^(\d{2})(\d{4})(\d{0,4})$/, '($1) $2-$3');
-            } else if (whatsapp.length > 2) {
-                whatsapp = whatsapp.replace(/^(\d{2})(\d*)$/, '($1) $2');
-            } else if (whatsapp.length > 0) {
-                whatsapp = whatsapp.replace(/^(\d*)$/, '($1');
-            }
-            inputWhatsApp.value = whatsapp;
-        });
-    }
 
 function dismissAlert() {
     // Esconde o elemento da tela
