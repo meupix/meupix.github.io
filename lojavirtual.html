@@ -1,6 +1,7 @@
 <!DOCTYPE html><html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta property="og:site_name" content="MeuPix/Loja">
@@ -770,7 +771,7 @@ button:hover {
     overflow: hidden; /* Importante para a animação */
 }
 .order-header {
-    background-color: rgba(0, 0, 0, 0.2);
+    background: linear-gradient(120deg, #206958b8, #05a582a1);
     padding: 15px;
     cursor: pointer;
     display: flex;
@@ -2667,7 +2668,7 @@ tbody {
         <!-- Coluna 2: Links Úteis -->
         <div class="footer-column">
             <h4>Links Úteis</h4>
-            <ul class="footer-links">
+            <ul id="termospolitica" class="footer-links" style="display: none;">
                 <li><a id="politicaPrivacidadeLink" href="#" target="_blank">Política de Privacidade</a></li>
                 <li><a id="termosUsoLink" href="#" target="_blank">Termos de Uso</a></li>
             </ul>
@@ -2784,8 +2785,7 @@ const Params = new URLSearchParams(window.location.search);
     let instagramUsuario = '';
     let facebookPagina = '';
     let twitterUsuario = '';
-    let politicaPrivacidadeURL = '';
-    let termosUsoURL = '';
+    let termosepoliticaURL = '';
     let isOpen = false;
     let currentPage = 1;
     const productsPerPage = 10;
@@ -2868,11 +2868,12 @@ async function processarPagamentos() {
 
     const indicesParaVerificar = history
         .map((order, index) => {
-            const statusResolvidos = ["Pago", "Enviado", "Entregue"];
+            const statusResolvidos = ["Devolvido"];
             if (!statusResolvidos.includes(order.StatusPedido)) {
                 return index; 
             }
             return -1;
+
         }).filter(index => index !== -1);
 
     if (indicesParaVerificar.length === 0) {
@@ -3106,6 +3107,8 @@ function processarStatusDaLoja(data) {
     } else if (line.startsWith('pix')) {
         Pix = line.split('pix =')[1].trim();
         MeuPix = Pix.replace(/&amp;/g, "&");
+        const ParamsPix = new URLSearchParams(MeuPix);
+         meuCnpj = ParamsPix.get('cpf') || '';
     } else if (line.startsWith('whatsapp')) {
        whatsapp = line.split('=')[1].trim();
                const whatswidget = document.getElementById("whatswidget-pre-wrapper");
@@ -3158,10 +3161,8 @@ function processarStatusDaLoja(data) {
         twitterUsuario = line.split('twitterUsuario =')[1].trim();
     } else if (line.startsWith('facebookPagina')) {
         facebookPagina = line.split('facebookPagina =')[1].trim();
-    } else if (line.startsWith('politicaPrivacidadeURL')) {
-        politicaPrivacidadeURL = line.split('politicaPrivacidadeURL =')[1].trim();
-    } else if (line.startsWith('termosUsoURL')) {
-        termosUsoURL = line.split('termosUsoURL =')[1].trim();
+    } else if (line.startsWith('termosepoliticaURL')) {
+        termosepoliticaURL = line.split('termosepoliticaURL =')[1].trim();
     } else if (line.startsWith('taxadeenvio ')) {
     const valorTaxa = line.split('taxadeenvio =')[1].trim();
     taxadeenvio = parseFloat(valorTaxa.replace('R$', '').replace(',', '.').trim());
@@ -3189,8 +3190,6 @@ function processarStatusDaLoja(data) {
         const instagramSeparator = document.getElementById("instagramSeparator");
         const facebookSeparator = document.getElementById("facebookSeparator");
         const twitterSeparator = document.getElementById("twitterSeparator");
-        const privacidadeTermosParagrafo = document.getElementById("privacidadeTermosParagrafo");
-        const privacidadeTermosSeparator = document.getElementById("privacidadeTermosSeparator");
         const horariosButton = document.getElementById('openModalhorarios');
         horariosButton.style.display = ativahorario ? 'block' : 'none';
 
@@ -3259,38 +3258,20 @@ function processarStatusDaLoja(data) {
         removerRedeSocial(sigaNosParagrafo, null);
         removerRedeSocial(redesSociaisDiv, null);
     }
-
-        // Remove o parágrafo de termos de privacidade se não houver links
-        if (!isEmpty(politicaPrivacidadeURL)) {
-        politicaPrivacidadeLink.href = politicaPrivacidadeURL;
-        privacidadeTermosAdicionados = true;
-    } else {
-        removerRedeSocial(politicaPrivacidadeLink, null);
-    }
-
-        if (!isEmpty(termosUsoURL)) {
-        termosUsoLink.href = termosUsoURL;
-        privacidadeTermosAdicionados = true;
-    } else {
-        removerRedeSocial(termosUsoLink, null);
-    }
-
-        if (isEmpty(termosUsoURL) || isEmpty(politicaPrivacidadeURL)) {
-        if (privacidadeTermosSeparator) {
-        if (privacidadeTermosSeparator.parentNode) {
-        privacidadeTermosSeparator.parentNode.removeChild(
-            privacidadeTermosSeparator) //Remove a separação
-    }
-
+    if (!isEmpty(termosepoliticaURL)) {
+    EnderecoCompleto = `${Endereço1 ? `🏠 ${Endereço1}` : ``}, - ${Endereço2 ? `🏙️ ${Endereço2}` : ``}, ${meucep ? `📮 CEP: ${meucep}` : ``}`;
+    const parametrosUrl = 
+    `?nome=${encodeURIComponent(nomedaloja)}` +
+    `&cnpj=${encodeURIComponent(meuCnpj)}` +
+    `&email=${encodeURIComponent(emailEndereco)}` +
+    `&telefone=${encodeURIComponent(whatsapp)}` +
+    `&endereco=${encodeURIComponent(EnderecoCompleto)}`;
+    termospolitica.style.display = 'block';
+    politicaPrivacidadeLink.href = `${termosepoliticaURL}${parametrosUrl}#politica-de-privacidade`;
+    termosUsoLink.href = `${termosepoliticaURL}${parametrosUrl}#termos-de-uso`;
     }
     }
 
-        if (!privacidadeTermosAdicionados) {
-        if (privacidadeTermosParagrafo) {
-        removerRedeSocial(privacidadeTermosParagrafo, null);
-    }
-    }
-        }
 
         fetchProducts();
     } finally {
@@ -4586,7 +4567,7 @@ function updateOrderHistoryDisplay() {
                     <small>${new Date(order.timestamp).toLocaleString()}</small>
                 </div>
                 <div class="status-display">
-                   ${order.StatusButton === false ? `<span class='cancelado-falha'>Cancelado</span>` : `${order.Entregue ? `<span class='pago-success'>${order.Entregue}</span>` : `${order.Enviado ? `<span class='pago-success'>${order.Enviado}</span>` : `${order.Pagamento ? `<span class='pago-success'>${order.Pagamento}</span>` : `<span class='aguardando-paga'>Aguardando Pagamentos</span>`}`}`}`}
+                   ${order.StatusButton === false ? `<span class='cancelado-falha'>${order.StatusPedido}</span>` : `${order.Entregue ? `<span class='pago-success'>${order.Entregue}</span>` : `${order.Enviado ? `<span class='pago-success'>${order.Enviado}</span>` : `${order.Pagamento ? `<span class='pago-success'>${order.Pagamento}</span>` : `<span class='aguardando-paga'>Aguardando Pagamentos</span>`}`}`}`}
                 <i class="fas fa-chevron-down toggle-icon"></i>
                    </div>
             </div>
@@ -4610,7 +4591,7 @@ function updateOrderHistoryDisplay() {
                         :
                         `${order.isPago ? `${buttonRetirada}` : ``}
                          ${metodoPagamentoTexto === 'Pix' && !order.isPago ? `<button onclick="showPixQrCode(${originalIndex})"><i class="fas fa-qrcode"></i> Ver QR Code Pix</button>` : ''}
-                         ${!order.isPago ? `<button onclick="verificarPagamento(${originalIndex})"><i class="fa fa-check-to-slot"></i> Verificar Pagamento</button>` : ''}
+                         ${!order.isPago ? `<button id="checkBtn_${order.id}" onclick="handleCheckClick(${originalIndex})"><i class="fas fa-sync-alt"></i> Verificar Atualização</button>` : ''}
                          ${!order.isPago ? `<button onclick="resendWhatsappMessage(${originalIndex})"><i class="fa-brands fa-whatsapp"></i> Reenviar Pedido no WhatsApp</button>` : ''}
                          ${order.isPago ? `<button onclick="printOrder(${originalIndex})">🖨️ Imprimir Pedido</button>` : ``}
                          <button onclick="deleteOrderFromHistory('${order.id}')">🗑️ Excluir do Histórico</button>`
@@ -4881,6 +4862,60 @@ function printOrder(index) {
     }, 500);
 }
 
+function handleCheckClick(index) {
+    const history = JSON.parse(localStorage.getItem(blog)) || [];
+    if (index < 0 || index >= history.length) return;
+
+    const orderId = history[index].id;
+    const button = document.getElementById(`checkBtn_${orderId}`);
+    const cooldownTime = 60000; // 60 segundos em milissegundos
+
+    // 1. Pega os carimbos de tempo do sessionStorage
+    const checkTimestamps = JSON.parse(sessionStorage.getItem('checkTimestamps')) || {};
+    const lastCheckTime = checkTimestamps[orderId];
+
+    const now = new Date().getTime();
+
+    // 2. Verifica se o tempo de cooldown já passou
+    if (lastCheckTime && (now - lastCheckTime < cooldownTime)) {
+        const timeLeft = Math.ceil((cooldownTime - (now - lastCheckTime)) / 1000);
+        showNotification(`Por favor, aguarde ${timeLeft} segundos antes de verificar novamente.`, 'error');
+        return; // Bloqueia a ação
+    }
+
+    // 3. Se o cooldown passou, permite a verificação
+    // Salva o novo carimbo de tempo
+    checkTimestamps[orderId] = now;
+    sessionStorage.setItem('checkTimestamps', JSON.stringify(checkTimestamps));
+
+    // Desabilita o botão e inicia o contador regressivo visual
+    button.disabled = true;
+    let countdown = cooldownTime / 1000; // 60 segundos
+    
+    // O texto original do botão para restaurar depois
+    const originalButtonText = button.innerHTML; 
+    button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Verificando...`;
+
+    const interval = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+            // Apenas para o caso de querer mostrar o tempo no botão (opcional)
+            // button.innerHTML = `Aguarde (${countdown}s)`;
+        } else {
+            clearInterval(interval);
+            button.disabled = false;
+            button.innerHTML = originalButtonText; // Restaura o texto original
+        }
+    }, 1000);
+
+    // 4. Executa a lógica de verificação (sua antiga função forceCheckAndUpdate)
+    const notifiedStatuses = JSON.parse(sessionStorage.getItem('notifiedStatuses')) || {};
+    delete notifiedStatuses[orderId];
+    sessionStorage.setItem('notifiedStatuses', JSON.stringify(notifiedStatuses));
+
+    verificarPagamento(index);
+}
+
 async function verificarPagamento(index) {
     const history = JSON.parse(localStorage.getItem(blog)) || [];
 
@@ -4894,27 +4929,35 @@ async function verificarPagamento(index) {
         const paymentHash = order.paymentHash;
         const iddopagamento = order.id;
 
-        // 🔹 Antes de criar um novo script, remove qualquer antigo
+        // --- INÍCIO DA LÓGICA DE NOTIFICAÇÃO INTELIGENTE ---
+        // 1. Pega o "histórico de notificações" da sessão atual.
+        const notifiedStatuses = JSON.parse(sessionStorage.getItem('notifiedStatuses')) || {};
+        // Pega o último status notificado para ESTE pedido específico.
+        const lastNotifiedStatus = notifiedStatuses[iddopagamento];
+        // --- FIM DA LÓGICA ---
+
         const oldScript = document.getElementById('verificacaoPagamentoScript');
         if (oldScript) oldScript.remove();
 
-        // 🔹 Cria o novo script
         const script = document.createElement('script');
         script.id = 'verificacaoPagamentoScript';
         script.src = `https://www.blogger.com/feeds/${blog}/pages/default?alt=json-in-script&callback=processarVerificacaoPagamento`;
 
         script.onerror = () => {
             showNotification("Erro ao obter os dados de pagamento.", 'error');
-            script.remove(); // remove o script em caso de erro
+            script.remove();
         };
 
-        // 🔹 Define o callback
         window.processarVerificacaoPagamento = (data) => {
             try {
                 if (data && data.feed && data.feed.entry) {
-                    let paymentFound = false;
+                    // Guarda o status do pedido ANTES de qualquer alteração
+                    const statusAntesDaVerificacao = history[index].StatusPedido;
+                    let houveMudanca = false;
 
                     data.feed.entry.forEach(entry => {
+                        if (houveMudanca) return; // Otimização: para de procurar se já encontrou uma mudança
+
                         if (entry.content && entry.content.$t) {
                             const lines = entry.content.$t.split('\n').map(line => line.replace(/<[^>]*>/g, '').trim());
 
@@ -4922,74 +4965,120 @@ async function verificarPagamento(index) {
                                 const match = line.match(new RegExp(`${paymentHash}\\s+(\\w+)`));
 
                                 if (match) {
-                                    const status = match[1].trim();
-
-                                    if (status === 'Cancelado') {
-                                        history[index].StatusButton = false;
-                                        history[index].StatusPedido = 'Cancelado';
-                                        history[index].Enviado = ' ';
-                                        history[index].Pagamento = ' ';
-                                        history[index].Entregue = ' ';
-                                        history[index].isPago = false;
-                                        localStorage.setItem(blog, JSON.stringify(history));
-                                        showNotification(`Pedido #${iddopagamento} foi Cancelado.`, 'error');
-                                        paymentFound = true;
-                                        updateOrderHistoryDisplay();
-
-                                    } else if (order.Entregue === '' && status === 'Entregue') {
-                                        history[index].Entregue = 'Entregue';
-                                        history[index].Pagamento = 'Pago';
-                                        history[index].StatusPedido = 'Pago';
-                                        history[index].isPago = true;
-                                        localStorage.setItem(blog, JSON.stringify(history));
-                                        showNotification(`Pedido #${iddopagamento} Pago e foi entregue.`, 'atualizado');
-                                        paymentFound = true;
-                                        updateOrderHistoryDisplay();
-
-                                    } else if (order.Enviado === '' && status === 'Enviado') {
-                                        history[index].Enviado = 'Enviado';
-                                        history[index].Pagamento = 'Pago';
-                                        history[index].StatusPedido = 'Pago';
-                                        history[index].isPago = true;
-                                        localStorage.setItem(blog, JSON.stringify(history));
-                                        showNotification(`Pedido #${iddopagamento} Pago e foi enviado.`, 'atualizado');
-                                        paymentFound = true;
-                                        updateOrderHistoryDisplay();
-
-                                    } else if (order.StatusPedido === 'Aguardando Pagamento' && status === 'Pago') {
-                                        history[index].isPago = true;
-                                        history[index].Pagamento = 'Pago';
-                                        history[index].StatusPedido = 'Pago';
-                                        localStorage.setItem(blog, JSON.stringify(history));
-                                        showNotification(`Pagamento #${iddopagamento} concluído com sucesso!`, 'success');
-                                        paymentFound = true;
-                                        updateOrderHistoryDisplay();
+                                    const statusDaApi = match[1].trim();
+                                    
+                                    // Compara o status da API com o status atual do pedido
+                                    if (statusDaApi !== statusAntesDaVerificacao) {
+                                        // Apenas atualiza se houver uma mudança real
+                                        switch (statusDaApi) {
+                                            case 'Cancelado':
+                                                history[index].StatusButton = false;
+                                                history[index].StatusPedido = 'Cancelado';
+                                                houveMudanca = true;
+                                                break;
+                                            case 'Entregue':
+                                                history[index].Entregue = 'Entregue';
+                                                history[index].Pagamento = 'Pago';
+                                                history[index].StatusPedido = 'Entregue';
+                                                history[index].isPago = true;
+                                                houveMudanca = true;
+                                                break;
+                                            case 'Enviado':
+                                                history[index].Enviado = 'Enviado';
+                                                history[index].Pagamento = 'Pago';
+                                                history[index].StatusPedido = 'Enviado';
+                                                history[index].isPago = true;
+                                                houveMudanca = true;
+                                                break;
+                                            case 'Pago':
+                                                // Apenas atualiza se o status anterior era "Aguardando Pagamento"
+                                                if (statusAntesDaVerificacao === 'Aguardando Pagamento') {
+                                                    history[index].isPago = true;
+                                                    history[index].Pagamento = 'Pago';
+                                                    history[index].StatusPedido = 'Pago';
+                                                    houveMudanca = true;
+                                                }
+                                                break;
+                                            case 'Reembolsado':
+                                                history[index].StatusButton = false;
+                                                history[index].StatusPedido = 'Devolvido';
+                                                houveMudanca = true;
+                                                break;
+                                        }
                                     }
+                                    
+                                    if(houveMudanca) break; // Sai do loop interno se já achou
                                 }
                             }
                         }
                     });
 
-                    if (!paymentFound && order.StatusPedido === "Aguardando Pagamento") {
-                        showNotification(`Estamos aguardando a confirmação do seu pagamento #${iddopagamento}. Assim que recebermos a confirmação, você será notificado.`, 'aguardando');
+                    // Pega o status do pedido DEPOIS da verificação
+                    const statusDepoisDaVerificacao = history[index].StatusPedido;
+
+                    // --- LÓGICA CENTRAL DE NOTIFICAÇÃO ---
+                    // A notificação só é disparada se o status DEPOIS da verificação
+                    // for diferente do que foi notificado pela ÚLTIMA vez.
+                    if (statusDepoisDaVerificacao !== lastNotifiedStatus) {
+                        let mensagem = '';
+                        let tipo = 'success';
+
+                        // Monta a mensagem com base no status FINAL
+                        switch (statusDepoisDaVerificacao) {
+                            case 'Cancelado':
+                                mensagem = `O Pedido #${iddopagamento} foi cancelado.`;
+                                tipo = 'error';
+                                break;
+                            case 'Entregue':
+                                mensagem = `Seu Pedido #${iddopagamento} foi entregue!`;
+                                tipo = 'atualizado';
+                                break;
+                            case 'Enviado':
+                                mensagem = `Seu Pedido #${iddopagamento} foi enviado!`;
+                                tipo = 'atualizado';
+                                break;
+                            case 'Pago':
+                                mensagem = `Pagamento do Pedido #${iddopagamento} confirmado com sucesso!`;
+                                tipo = 'success';
+                                break;
+                            case 'Devolvido':
+                                mensagem = `O pagamento do Pedido #${iddopagamento} foi devolvido/reembolsado.`;
+                                tipo = 'error';
+                                break;
+                            case 'Aguardando Pagamento':
+                                // Só notifica sobre "aguardando" se for a primeira vez
+                                mensagem = `Aguardando confirmação do pagamento #${iddopagamento}.`;
+                                tipo = 'aguardando';
+                                break;
+                        }
+
+                        if (mensagem) {
+                            showNotification(mensagem, tipo);
+                        }
+                        
+                        // Atualiza a memória de notificações da sessão com o novo status
+                        notifiedStatuses[iddopagamento] = statusDepoisDaVerificacao;
+                        sessionStorage.setItem('notifiedStatuses', JSON.stringify(notifiedStatuses));
+    
                     }
 
-
+                    // Se houve qualquer mudança, salva no localStorage e atualiza a tela
+                    if (houveMudanca) {
+                        localStorage.setItem(blog, JSON.stringify(history));
+                        updateOrderHistoryDisplay();
+                    }
 
                 } else {
                     showNotification("Erro ao processar os dados da API.", 'error');
                 }
             } finally {
-                // 🔹 Sempre remove o script após o uso (mesmo em caso de erro)
                 const s = document.getElementById('verificacaoPagamentoScript');
                 if (s) s.remove();
             }
         };
 
         document.body.appendChild(script);
-
-        // Pequeno delay para simular tempo de rede (opcional)
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        await new Promise(resolve => setTimeout(resolve, 500));
     }
 }
 
@@ -5424,7 +5513,6 @@ function buyNowCarousel(button, productName) {
     ComprarProdutos(product, selectedQuantity, selectedSize, selectedSabor, true);
 }
 
-// --- INÍCIO DA NOVA ESTRUTURA DE CUPOM ---
 async function verifyCouponCode(code) {
     // 1. Gera o hash para verificação, como antes.
     const hashToVerify = await generateHash(code);
