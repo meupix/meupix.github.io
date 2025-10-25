@@ -2878,9 +2878,7 @@ async function processarPagamentos() {
     for (const index of indicesParaVerificar) {
         await verificarPagamento(index);
     }
-}
-
-    processarPagamentos(); // Inicia o processo de pagamento
+    }
 
     // Adiciona comportamento ao clique nas abas
     const tabButtons = document.querySelectorAll('.tab-button');
