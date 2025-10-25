@@ -2820,6 +2820,179 @@ function updatePaymentMethodUI() {
     }
 }
 
+function fetchOrderStatusFromAPI(paymentHash) {
+    return new Promise((resolve, reject) => {
+        const callbackName = `jsonp_${paymentHash}_${Date.now()}`;
+        const script = document.createElement('script');
+        script.src = `https://www.blogger.com/feeds/${blog}/pages/default?alt=json-in-script&callback=${callbackName}`;
+
+        script.onerror = () => reject(new Error('Network error'));
+
+        window[callbackName] = (data) => {
+            try {
+                let foundStatus = null;
+                if (data && data.feed && data.feed.entry) {
+                    for (const entry of data.feed.entry) {
+                        if (entry.content && entry.content.$t) {
+                            const lines = entry.content.$t.split('\n');
+                            for (const line of lines) {
+                                const cleanLine = line.replace(/<[^>]*>/g, '').trim();
+                                const match = cleanLine.match(new RegExp(`^${paymentHash}\\s+(\\w+)`));
+                                if (match) {
+                                    foundStatus = match[1].trim();
+                                    break;
+                                }
+                            }
+                        }
+                        if (foundStatus) break;
+                    }
+                }
+                resolve(foundStatus); // Resolve com o status ou com null
+            } catch (error) {
+                reject(error);
+            } finally {
+                delete window[callbackName];
+                if (document.body.contains(script)) {
+                    document.body.removeChild(script);
+                }
+            }
+        };
+        document.body.appendChild(script);
+    });
+}
+
+function updateOrderStatus(index, newStatus) {
+    const history = JSON.parse(localStorage.getItem(blog)) || [];
+    if (!history[index]) return;
+
+    let order = history[index];
+    
+    // Mapeia o status da API para as propriedades do objeto do pedido
+    switch (newStatus) {
+        case 'Pago':
+            order.Entregue = 'Pago';
+            order.Enviado = 'Pago';
+            order.Pagamento = 'Pago';
+            order.StatusPedido = 'Pago';
+            order.StatusButton = true;
+            order.isPago = true;
+            break;
+        case 'Enviado':
+            order.Entregue = 'Enviado';
+            order.Enviado = 'Enviado';
+            order.Pagamento = 'Pago';
+            order.StatusPedido = 'Enviado';
+            order.StatusButton = true;
+            order.isPago = true;
+            break;    
+        case 'Entregue':
+            order.Enviado = 'Entregue';
+            order.Entregue = 'Entregue';
+            order.Pagamento = 'Pago';
+            order.StatusPedido = 'Entregue';
+            order.StatusButton = true;
+            order.isPago = true;
+            break;
+        case 'Cancelado':
+            order.StatusButton = false;
+            order.StatusPedido = 'Cancelado';
+            break;
+        case 'Reembolsado':
+            order.StatusButton = false;
+            order.StatusPedido = 'Devolvido';
+            break;
+    }
+
+    localStorage.setItem(blog, JSON.stringify(history));
+    updateOrderHistoryDisplay();
+}
+
+function notifyUserOfStatusChange(order, newStatus) {
+    const notifiedStatuses = JSON.parse(localStorage.getItem(blog + '_notifiedStatuses')) || {};
+    const lastNotifiedStatus = notifiedStatuses[order.id];
+
+    if (newStatus !== lastNotifiedStatus) {
+        let mensagem = '', tipo = 'success';
+        switch (newStatus) {
+            case 'Pago': mensagem = `Pagamento do Pedido #${order.id} confirmado!`; tipo = 'success'; break;
+            case 'Enviado': mensagem = `Seu Pedido #${order.id} foi enviado!`; tipo = 'atualizado'; break;
+            case 'Entregue': mensagem = `Seu Pedido #${order.id} foi entregue!`; tipo = 'atualizado'; break;
+            case 'Cancelado': mensagem = `O Pedido #${order.id} foi cancelado.`; tipo = 'error'; break;
+            case 'Devolvido': mensagem = `O pagamento do Pedido #${order.id} foi devolvido.`; tipo = 'error'; break;
+        }
+
+        if (mensagem) showNotification(mensagem, tipo);
+        
+        notifiedStatuses[order.id] = newStatus;
+        localStorage.setItem(blog + '_notifiedStatuses', JSON.stringify(notifiedStatuses));
+
+    } else if (newStatus === 'Aguardando Pagamento') {
+        showNotification(`Continuamos aguardando a confirmação do Pedido #${order.id}.`, 'aguardando');
+    }
+}
+
+async function monitorDePedidos(options = {}) {
+    const history = JSON.parse(localStorage.getItem(blog)) || [];
+    const verificationTimestamps = JSON.parse(sessionStorage.getItem('verificationTimestamps')) || {};
+    const cooldownTime = 25000; // 25 segundos
+
+    // Determina quais pedidos verificar
+    let indicesParaVerificar;
+    if (typeof options.forceCheckIndex === 'number') {
+        indicesParaVerificar = [options.forceCheckIndex]; // Apenas o pedido do clique manual
+    } else {
+        const estadosFinais = ['Devolvido'];
+        indicesParaVerificar = history
+            .map((order, index) => (estadosFinais.includes(order.StatusPedido) ? -1 : index))
+            .filter(index => index !== -1); // Todos os pedidos ativos
+    }
+
+    if (indicesParaVerificar.length === 0) return;
+
+    for (const index of indicesParaVerificar) {
+        const order = history[index];
+        const now = new Date().getTime();
+        const lastVerificationTime = verificationTimestamps[order.id];
+
+        // Gerencia o cooldown
+        if (lastVerificationTime && (now - lastVerificationTime < cooldownTime)) {
+            if (options.forceCheckIndex) { // Informa o usuário apenas no clique manual
+                const timeLeft = Math.ceil((cooldownTime - (now - lastVerificationTime)) / 1000);
+                showNotification(`Por favor, aguarde ${timeLeft}s antes de verificar novamente.`, 'error');
+            }
+            continue; // Pula para o próximo pedido
+        }
+
+        try {
+            // Orquestração: 1. Busca -> 2. Atualiza -> 3. Notifica
+            const newStatus = await fetchOrderStatusFromAPI(order.paymentHash);
+            
+            verificationTimestamps[order.id] = new Date().getTime();
+            sessionStorage.setItem('verificationTimestamps', JSON.stringify(verificationTimestamps));
+
+            if (newStatus && newStatus !== order.StatusPedido) {
+                updateOrderStatus(index, newStatus);
+            }
+            
+            // Passa o objeto do pedido (possivelmente já atualizado) para o notificador
+            const currentOrderState = (JSON.parse(localStorage.getItem(blog)) || [])[index];
+            if (currentOrderState) {
+                notifyUserOfStatusChange(currentOrderState, currentOrderState.StatusPedido);
+            }
+        } catch (error) {
+            console.error(`Falha ao verificar pedido #${order.id}:`, error);
+        }
+    }
+}
+
+let monitorIntervalIDy = null;
+
+function iniciarMonitoramentoDePedidos() {
+    if (monitorIntervalIDy) clearInterval(monitorIntervalIDy);
+    monitorDePedidos(); // Roda uma vez imediatamente
+    monitorIntervalIDy = setInterval(monitorIntervalIDy, 30000); // E depois a cada 30 segundos
+}
+
 function inicio() {
 
     if (localStorage.getItem('storageAlertDismissed') === 'true') {
@@ -2854,32 +3027,11 @@ function inicio() {
     tabButton.disabled = true;
     }
     });
-            return;
-        }
-
-    // Função que processa pagamentos sequencialmente
-async function processarPagamentos() {
-    const history = JSON.parse(localStorage.getItem(blog)) || [];
-
-    const indicesParaVerificar = history
-        .map((order, index) => {
-            const statusResolvidos = ["Devolvido"];
-            if (!statusResolvidos.includes(order.StatusPedido)) {
-                return index; 
-            }
-            return -1;
-
-        }).filter(index => index !== -1);
-
-    if (indicesParaVerificar.length === 0) {
-        return;
+         return;
     }
 
-    for (const index of indicesParaVerificar) {
-        await verificarPagamento(index);
-    }
-}
- processarPagamentos();
+    iniciarMonitoramentoDePedidos();
+
     // Adiciona comportamento ao clique nas abas
     const tabButtons = document.querySelectorAll('.tab-button');
     tabButtons.forEach(button => {
@@ -2903,6 +3055,8 @@ async function processarPagamentos() {
     });
 
 };
+
+
 
 function exibirModalErro(mensagem, comb = false, mostrarFechar = true, tipo = 'error', extraData = null) {
     const existente = document.getElementById('modalErro');
@@ -4867,212 +5021,27 @@ function printOrder(index) {
     }, 500);
 }
 
-/**
- * Lida com o clique no botão "Verificar Atualização" de um pedido no histórico.
- * Gerencia um cooldown para evitar abuso e fornece feedback visual durante a verificação.
- * @param {number} index O índice do pedido no array de histórico.
- */
 async function handleCheckClick(index) {
-    // 1. Pega os dados essenciais e o elemento do botão
-    const history = JSON.parse(localStorage.getItem(blog)) || [];
-    const order = history[index];
-
-    // Se o pedido não existir por algum motivo, interrompe a execução.
-    if (!order) {
-        console.error(`Pedido no índice ${index} não encontrado.`);
-        return;
-    }
+    const order = (JSON.parse(localStorage.getItem(blog)) || [])[index];
+    if (!order) return;
     
-    const orderId = order.id;
-    const button = document.getElementById(`checkBtn_${orderId}`);
-    if (!button) return; // Se o botão não estiver na tela, não faz nada.
+    const button = document.getElementById(`checkBtn_${order.id}`);
+    if (!button) return;
 
-    // 2. Lógica de Cooldown para evitar cliques repetidos
-    const cooldownTime = 30000; // 30 segundos de cooldown
-    const checkTimestamps = JSON.parse(sessionStorage.getItem('checkTimestamps')) || {};
-    const lastCheckTime = checkTimestamps[orderId];
-    const now = new Date().getTime();
-
-    if (lastCheckTime && (now - lastCheckTime < cooldownTime)) {
-        const timeLeft = Math.ceil((cooldownTime - (now - lastCheckTime)) / 1000);
-        showNotification(`Por favor, aguarde ${timeLeft} segundos antes de verificar novamente.`, 'error');
-        return; // Interrompe a função se estiver em cooldown
-    }
-
-    // 3. Bloco de Ação: Tenta verificar e sempre restaura o botão no final
-    const originalButtonHTML = button.innerHTML; // Salva o conteúdo original do botão
+    const originalButtonHTML = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Verificando...`;
     
     try {
-        // Atualiza o timestamp para iniciar um novo cooldown
-        checkTimestamps[orderId] = now;
-        sessionStorage.setItem('checkTimestamps', JSON.stringify(checkTimestamps));
-
-        // Fornece feedback visual imediato ao usuário
-        button.disabled = true;
-        button.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Verificando...`;
-
-        // Chama a verificação e ESPERA (await) ela terminar.
-        // A execução do código pausa aqui até que a promise de verificarPagamento seja resolvida.
-        await verificarPagamento(index);
-
-    } catch (error) {
-        // Se a função `verificarPagamento` falhar (ex: erro de rede),
-        // uma notificação já é mostrada lá. Aqui não precisamos fazer nada extra.
-        console.error(`Falha ao verificar o pedido #${orderId}:`, error);
-        
+        // Chama o Gerente para verificar apenas este pedido específico
+        await monitorDePedidos({ forceCheckIndex: index });
     } finally {
-        // O bloco `finally` é GARANTIDO que será executado,
-        // tenha a verificação dado certo ou errado.
-        // Isso garante que o botão nunca fique travado.
+        // Garante que o botão sempre seja restaurado
         button.disabled = false;
-        button.innerHTML = originalButtonHTML; // Restaura o conteúdo original do botão
+        button.innerHTML = originalButtonHTML;
     }
 }
-async function verificarPagamento(index) {
-    const history = JSON.parse(localStorage.getItem(blog)) || [];
 
-    if (!blog || index < 0 || index >= history.length) {
-        return; 
-    }
-    
-    const order = history[index];
-    const paymentHash = order.paymentHash;
-    const iddopagamento = order.id;
-
-    // =========================================================================
-    // === NOVO: MECANISMO INTERNO DE LIMITAÇÃO DE TAXA (RATE LIMITING)      ===
-    // =========================================================================
-    const cooldownTime = 25000; // 25 segundos de cooldown interno
-    const verificationTimestamps = JSON.parse(sessionStorage.getItem('verificationTimestamps')) || {};
-    const lastVerificationTime = verificationTimestamps[iddopagamento];
-    const now = new Date().getTime();
-
-    if (lastVerificationTime && (now - lastVerificationTime < cooldownTime)) {
-        // Se a função foi chamada muito recentemente, ela para silenciosamente.
-        // Isso protege tanto o monitor de fundo quanto os cliques manuais.
-        // console.log(`Verificação para o pedido #${iddopagamento} bloqueada (cooldown).`); // Para depuração
-        return; // Interrompe a execução
-    }
-    // =========================================================================
-
-    return new Promise((resolve, reject) => {
-        const callbackName = `processarVerificacao_${iddopagamento}_${Date.now()}`;
-        
-        const script = document.createElement('script');
-        script.id = `verificacaoPagamentoScript_${iddopagamento}`;
-        script.src = `https://www.blogger.com/feeds/${blog}/pages/default?alt=json-in-script&callback=${callbackName}`;
-
-        script.onerror = () => {
-            delete window[callbackName];
-            if (document.body.contains(script)) document.body.removeChild(script);
-            reject(new Error('Network error'));
-        };
-
-        window[callbackName] = (data) => {
-            try {
-                // Se a verificação foi bem-sucedida, atualizamos o timestamp
-                verificationTimestamps[iddopagamento] = new Date().getTime();
-                sessionStorage.setItem('verificationTimestamps', JSON.stringify(verificationTimestamps));
-
-                const statusAntesDaVerificacao = history[index].StatusPedido;
-                let novoStatus = null;
-
-                if (data && data.feed && data.feed.entry) {
-                    for (const entry of data.feed.entry) {
-                        if (entry.content && entry.content.$t) {
-                            const lines = entry.content.$t.split('\n').map(line => line.replace(/<[^>]*>/g, '').trim());
-                            for (const line of lines) {
-                                const match = line.match(new RegExp(`^${paymentHash}\\s+(\\w+)`));
-                                if (match) {
-                                    novoStatus = match[1].trim();
-                                    break; 
-                                }
-                            }
-                        }
-                        if (novoStatus) break;
-                    }
-                }
-
-                let houveMudanca = false;
-                if (novoStatus && novoStatus !== statusAntesDaVerificacao) {
-                     switch (novoStatus) {
-                        case 'Cancelado':
-                            history[index].StatusButton = false;
-                            history[index].StatusPedido = 'Cancelado';
-                            houveMudanca = true;
-                            break;
-                        case 'Entregue':
-                            history[index].Entregue = 'Entregue';
-                            history[index].Pagamento = 'Pago';
-                            history[index].StatusPedido = 'Entregue';
-                            history[index].isPago = true;
-                            houveMudanca = true;
-                            break;
-                        case 'Enviado':
-                            history[index].Enviado = 'Enviado';
-                            history[index].Pagamento = 'Pago';
-                            history[index].StatusPedido = 'Enviado';
-                            history[index].isPago = true;
-                            houveMudanca = true;
-                            break;
-                        case 'Pago':
-                            if (statusAntesDaVerificacao === 'Aguardando Pagamento') {
-                                history[index].isPago = true;
-                                history[index].Pagamento = 'Pago';
-                                history[index].StatusPedido = 'Pago';
-                                houveMudanca = true;
-                            }
-                            break;
-                        case 'Reembolsado':
-                            history[index].StatusButton = false;
-                            history[index].StatusPedido = 'Devolvido';
-                            houveMudanca = true;
-                            break;
-                    }
-                }
-
-                if (houveMudanca) {
-                    localStorage.setItem(blog, JSON.stringify(history));
-                    updateOrderHistoryDisplay();
-                }
-
-                const notifiedStatuses = JSON.parse(sessionStorage.getItem('notifiedStatuses')) || {};
-                const lastNotifiedStatus = notifiedStatuses[iddopagamento];
-                const statusDepoisDaVerificacao = history[index].StatusPedido;
-
-                if (statusDepoisDaVerificacao !== lastNotifiedStatus) {
-                    let mensagem = '';
-                    let tipo = 'success';
-                    switch (statusDepoisDaVerificacao) {
-                        case 'Cancelado': mensagem = `O Pedido #${iddopagamento} foi cancelado.`; tipo = 'error'; break;
-                        case 'Entregue': mensagem = `Seu Pedido #${iddopagamento} foi entregue!`; tipo = 'atualizado'; break;
-                        case 'Enviado': mensagem = `Seu Pedido #${iddopagamento} foi enviado!`; tipo = 'atualizado'; break;
-                        case 'Pago': mensagem = `Pagamento do Pedido #${iddopagamento} confirmado!`; tipo = 'success'; break;
-                        case 'Devolvido': mensagem = `O pagamento do Pedido #${iddopagamento} foi devolvido.`; tipo = 'error'; break;
-                    }
-                    if (mensagem) showNotification(mensagem, tipo);
-                    notifiedStatuses[iddopagamento] = statusDepoisDaVerificacao;
-                    sessionStorage.setItem('notifiedStatuses', JSON.stringify(notifiedStatuses));
-
-                } else if (statusDepoisDaVerificacao === 'Aguardando Pagamento') {
-                    showNotification(`Continuamos aguardando a confirmação do Pedido #${iddopagamento}.`, 'aguardando');
-                }
-                
-                resolve();
-            } catch (error) {
-                console.error("Erro ao processar verificação de pagamento:", error);
-                reject(error);
-            } finally {
-                delete window[callbackName];
-                if (document.body.contains(script)) {
-                    document.body.removeChild(script);
-                }
-            }
-        };
-
-        document.body.appendChild(script);
-    });
-}
 
 function goToAddress() {
     const addressElement = document.querySelector('.rodape');
