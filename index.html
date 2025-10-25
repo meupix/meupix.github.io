@@ -2782,7 +2782,7 @@ function criaplacapix() {
 
     // Gera o link do Pix criptografado e redireciona
 	const LinkCriptografado = btoa(ParamsChaves); 
-    location.href = "https://meupix.github.io/criarplaca?dadospix=" + encodeURIComponent(LinkCriptografado);
+    location.href = "https://meupix.vercel.app/criarplaca?dadospix=" + encodeURIComponent(LinkCriptografado);
   }
 }
 
@@ -4767,7 +4767,7 @@ function mostrarLinks() {
       btnCriaPlaca.textContent = 'Cria Placa';
       btnCriaPlaca.classList.add('open-link');
       btnCriaPlaca.onclick = function() {
-        window.location.href = "https://meupix.github.io/criarplaca?dadospix=" + links[j].gerarPix;
+        window.location.href = "https://meupix.vercel.app/criarplaca?dadospix=" + links[j].gerarPix;
       };
 	  
 	    const btnCriaVenda = document.createElement('button');
@@ -5052,7 +5052,7 @@ function atualizarAba(abaIndex) {
       btnCriaPlaca.textContent = 'Cria Placa';
       btnCriaPlaca.classList.add('open-link');
       btnCriaPlaca.onclick = function() {
-        window.location.href = "https://meupix.github.io/criarplaca?dadospix=" + links[j].gerarPix;
+        window.location.href = "https://meupix.vercel.app/criarplaca?dadospix=" + links[j].gerarPix;
       };
 
       const btnCriaVenda = document.createElement('button');
