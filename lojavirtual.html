@@ -3696,6 +3696,12 @@ function parseProductFromEntry(entry) {
         imageUrls.push(imgMatch[1]);
     }
 
+    if (!imageUrls || imageUrls.length === 0) {
+        imageUrls = [
+            'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgRlizRb5kyLXSQ8P8w6hhv7DsQjm82JUQia943JRHcdu_p-BOghPdbS3Gvomxr5Sx8ivfRwuJd4OB1cjQtXLclAIPv1tMjOCKk_p6wzL6GPp2WZ6IWDCumKCmdNHjpW4-5qqZNp_HpFQhxXHlTO7pH86wbTCLxj0L5Ae7aypZyGngU0fj6eNqjWsyigvhO/s320/Captura%20de%20tela%202025-11-13%20220454.png'
+        ];
+    }
+
     let price = 0;
     let originalPrice = 0;
     let discount = 0;
