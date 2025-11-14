@@ -2442,7 +2442,6 @@ function criaplacapix() {
 
   if (pixkey !== '' && merchantName !== '' && merchantCity !== '') {
     let ParamsChaves;
-ParamsChaves = "?chave=" + pixkey + (amount ? "&valor=" + amount.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagem=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + CPFLink + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
 
     if (cpf.length === 11) {
       const CPFLink = LinkCPF(cpf); 
