@@ -2386,7 +2386,7 @@ function CriarLojaVirtual() {
 
     // Gera o link do Pix criptografado e redireciona
 	const LinkCriptografado = btoa(ParamsChaves); 
-    location.href = "lojavirtual/criarconfig?dadospix=" + encodeURIComponent(LinkCriptografado);
+    location.href = "https://meupix.vercel.app/lojavirtual/criarconfig?dadospix=" + encodeURIComponent(LinkCriptografado);
   }
 }
 
