@@ -2231,9 +2231,9 @@ if (pixkey !== '' && merchantName !== '' && merchantCity !== '') {
 
     if (cpf.length === 11) {
       const CPFLink = LinkCPF(cpf); 
-        ParamsChaves = "?chave=" + pixkey + (amount ? "&valor=" + amount.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagem=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + CPFLink + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
+        textoOriginal = "?chave=" + pixkey + (amount ? "&valor=" + amount.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagem=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + CPFLink + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
       } else if (cpf.length === 14) {
-        ParamsChaves = "?chave=" + pixkey + (amount ? "&valor=" + amount.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagem=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + cpf + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
+        textoOriginal = "?chave=" + pixkey + (amount ? "&valor=" + amount.replace(/[^\d,.]/g, '') : "") + "&nome=" + merchantName + "&cidade=" + merchantCity + (description ? "&mensagem=" + description : "") + (txid ? "&txid=" + txid : "") + "&banco=" + banco + "&cpf=" + cpf + (whatsapp ? "&whatsapp=" + whatsapp : "") + (minhalogo ? "&logo=" + minhalogo : "") + (voltar ? "&voltar=" + voltar : "");
     }
 	
 	textoOriginal += personalizationString;
