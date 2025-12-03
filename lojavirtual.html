@@ -10,13 +10,12 @@
     <meta property="og:locale" content="pt_BR">
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#ffa200e0">
-    <!-- Configurações PWA e Mobile -->
+
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="MuePix/LojaVirtual">
-
-    <!-- Manifesto PWA embutido (base64) -->
-    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIk1pbmhhIExvamEgUGl4IiwKICAic2hvcnRfbmFtZSI6ICJMb2phUGl4IiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmZmZmYiLAogICJ0aGVtZV9jb2xvciI6ICIjZmY2YjZiIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAicGFnYW1lbnRvcy5maWxlcy9pbWFnZW5zL2Zhdmljb24ucG5nIiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9LAogICAgewogICAgICAic3JjIjogInBhZ2FtZW50b3MuZmlsZXMvaW1hZ2Vucy9mYXZpY29uLnBuZyIsCiAgICAgICJzaXplcyI6ICI1MTJ4NTEyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfQogIF0KfQ==">
+    <meta name="apple-mobile-web-app-title" content="Loja Virtual">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" id="dynamic-manifest">
 
     <link rel="icon" href="pagamentos.files/imagens/favicon.png" type="image/png">
     <link href="pagamentos.files/imagens/favicon.png" rel="shortcut icon" type="image/png">
@@ -4461,7 +4460,7 @@ function processarStatusDaLoja(data) {
         } else {
             exibirModalErro("A loja não possui uma configuração válida.", true, false, 'error');
         }
-
+        atualizarManifestoPWA(); 
         fetchProducts();
 
     } finally {
@@ -8289,6 +8288,46 @@ async function generateAdminHash() {
     
     display.innerHTML = `<strong>Copie e cole no Blogger:</strong><br><br>admin = ${hash}`;
     area.style.display = 'block';
+}
+
+// --- GERADOR DE MANIFESTO PWA PERSONALIZADO ---
+function atualizarManifestoPWA() {
+    const linkEl = document.getElementById('dynamic-manifest');
+    if (!linkEl) return;
+
+    const currentUrl = window.location.href.split('?')[0];
+    const nomeApp = nomedaloja;
+    const iconeApp = logotipo; 
+
+    const manifest = {
+        "name": nomeApp,
+        "short_name": nomeApp.substring(0, 12), 
+        "start_url": currentUrl,
+        "display": "standalone",
+        "background_color": "#ffffff",
+        "theme_color": "#ffa200e0",
+        "orientation": "portrait",
+        "icons": [
+            {
+                "src": iconeApp,
+                "sizes": "192x192",
+                "type": "image/png",
+                "purpose": "any maskable"
+            },
+            {
+                "src": iconeApp,
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "any maskable"
+            }
+        ]
+    };
+
+    const stringManifest = JSON.stringify(manifest);
+    const blob = new Blob([stringManifest], {type: 'application/json'});
+    const manifestURL = URL.createObjectURL(blob);
+    linkEl.setAttribute('href', manifestURL);
+    document.querySelector('meta[name="apple-mobile-web-app-title"]').setAttribute("content", nomeApp);
 }
  
 document.addEventListener('DOMContentLoaded', inicio);
