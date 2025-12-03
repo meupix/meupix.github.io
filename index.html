@@ -11,7 +11,14 @@
   <meta property="og:locale" content="pt_BR">
   <meta property="og:type" content="website">
   <meta name="robots" content="index, follow">
-	<meta name="theme-color" content="#ffa200e0">
+  <!-- Meta Tags do PWA -->
+<meta name="theme-color" content="#ffa200e0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Meu Pix">
+<meta name="mobile-web-app-capable" content="yes">
+<!-- Link do Manifesto (Será preenchido dinamicamente pelo JS) -->
+<link rel="manifest" id="dynamic-manifest">
 <!--  -->
 
   <link href="pagamentos.files/imagens/favicon.png" rel="shortcut icon" type="image/png">
@@ -4899,6 +4906,59 @@ function getCRC16(payload) {
 
 function ord(char) {
     return char.charCodeAt(0);
+}
+
+document.addEventListener("DOMContentLoaded", atualizarManifestoPWA);
+
+// --- GERADOR DE MANIFESTO PWA PERSONALIZADO (LINK DIRETO) ---
+function atualizarManifestoPWA() {
+    const linkEl = document.getElementById('dynamic-manifest');
+    if (!linkEl) return;
+    
+    // ALTERAÇÃO AQUI: Usamos o href completo, sem limpar os parâmetros (?)
+    // Isso garante que o PWA abra exatamente no link que você está acessando agora
+    const currentUrl = window.location.href;
+    
+    const nomeApp = 'Meu Pix';
+    
+    // Mantém a correção da URL absoluta para a imagem para não dar erro
+    const iconeApp = 'https://meupix.github.io/pagamentos.files/imagens/favicon.png';
+
+    const manifest = {
+        "name": nomeApp,
+        "short_name": nomeApp.substring(0, 12),
+        "start_url": currentUrl, // O app vai abrir neste link específico
+        "display": "standalone",
+        "background_color": "#ffffff",
+        "theme_color": "#ffa200e0",
+        "orientation": "portrait",
+        "icons": [
+            {
+                "src": iconeApp,
+                "sizes": "192x192",
+                "type": "image/png",
+                "purpose": "any maskable"
+            },
+            {
+                "src": iconeApp,
+                "sizes": "512x512",
+                "type": "image/png",
+                "purpose": "any maskable"
+            }
+        ]
+    };
+
+    // Transforma o objeto JSON em um arquivo Blob (Arquivo virtual)
+    const stringManifest = JSON.stringify(manifest);
+    const blob = new Blob([stringManifest], {type: 'application/json'});
+    const manifestURL = URL.createObjectURL(blob);
+    
+    // Atualiza a tag no HTML
+    linkEl.setAttribute('href', manifestURL);
+    
+    // Atualiza também a meta tag da Apple
+    const appleTitle = document.querySelector('meta[name="apple-mobile-web-app-title"]');
+    if (appleTitle) appleTitle.setAttribute("content", nomeApp);
 }
 
 function formatPhoneWithCountryCode(value) {
