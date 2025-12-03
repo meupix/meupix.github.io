@@ -3814,12 +3814,15 @@ const Params = new URLSearchParams(window.location.search);
 
             if (lojaLogada && lojaLogada !== blog) {
                 localStorage.setItem('lojalogada', blog);
+                sessionStorage.removeItem('isAdminLoggedIn');
+                document.getElementById('pedidoColado').value = '';
+                document.getElementById('resultadoVerificacao').innerHTML = '';
             } else if (!lojaLogada) {
                 localStorage.setItem('lojalogada', blog);
+                sessionStorage.removeItem('isAdminLoggedIn');
+                document.getElementById('pedidoColado').value = '';
+                document.getElementById('resultadoVerificacao').innerHTML = '';
             }
-        } else {
-            blog = localStorage.getItem('lojalogada'); // Tenta obter o ID do localStorage
-        }
         return blog;
     }
 
