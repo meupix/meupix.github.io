@@ -521,7 +521,22 @@ display: none;
     backdrop-filter: blur(10px);
     transition: transform 0.3s ease;
 }
-
+.novosbotaocompartilhar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 5px;
+    font-size: 12px;
+    color: #fff;
+    background: var(--fundo-vidro-claro);
+    border-radius: 8px;
+    transition: background 0.3s;
+    height: 100%;
+}
+ .novosbotaocompartilhar:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
 #compartilhar .StickyDemo {
     transform: scale(1);
 }
@@ -1645,13 +1660,15 @@ background: linear-gradient(47deg, #0081ff, #4800ff, #00a4ff);
                                 <a class="facebook" data-height="650" data-width="550" onclick="compartilharlink('https://www.facebook.com/sharer.php?u=')" rel="nofollow" title="Facebook">Facebook</a>
                             </li>
                             <li>
-                            <a data-height="460" data-width="550" onclick="Compartilhamentos()" title="outros Compartilhamentos"> <img class="Compartilhamentos"/> Outros</a>
+                            <div class="novosbotaocompartilhar" onclick="Compartilhamentos()" title="outros Compartilhamentos">
+                               <img class="Compartilhamentos"/> Outros</div>
                             </li>
                             <li class="email">
                                 <a class="email" data-height="460" data-width="550" onclick="compartilharlink('mailto:?subject=Meu Pix&body=')" rel="nofollow" title="Email">Email</a>
                             </li>
-							<li>
-							<a  data-height="460" data-width="550" onclick="LinkCurto()" title="Gerador Por https://is.gd/"><img class="logois"/>Link Curto</a> 
+                            <li>
+                                <div  class="novosbotaocompartilhar" onclick="LinkCurto()" title="Gerador Por https://is.gd/">
+                                <img class="logois"/>Link Curto</div> 
                             </li>
                         </div>
 
@@ -2662,10 +2679,10 @@ let qrPreviewInstance = null;
 
 function updateQrPreview() {
     const pixKeyInput = document.getElementById('pixkey').value || '';
-    const merchantName = (document.getElementById('merchantName').value || 'Beneficiario').substring(0, 25);
-    const merchantCity = (document.getElementById('merchantCity').value || 'Cidade').substring(0, 15);
+    const merchantName = (document.getElementById('merchantName').value || '').substring(0, 25);
+    const merchantCity = (document.getElementById('merchantCity').value || '').substring(0, 15);
     const amount = document.getElementById('amount').value.replace(/[^\d,.]/g, '') || '';
-    const txid = (document.getElementById('txid').value || '***').substring(0, 20);
+    const txid = (document.getElementById('txid').value || '').substring(0, 20);
     const description = (document.getElementById('description').value || '').substring(0, 28);
     const minhalogo = document.getElementById('add-logo').value || 'pagamentos.files/imagens/logo.png';
     const documento = document.getElementById('documento').value.replace(/\D/g, '');
@@ -5516,6 +5533,15 @@ function openChat() {
 }
 
 </script>
-
+<!-- Registrar Service Worker -->
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('SW registrado:', reg.scope))
+            .catch(err => console.error('Erro ao registrar SW:', err));
+    });
+}
+</script>
 </body>
 </html>
