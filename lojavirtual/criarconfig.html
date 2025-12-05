@@ -278,7 +278,7 @@
                   <div class="toggle-switch"><input type="checkbox" id="manutencao" class="toggle-input"><label for="manutencao" class="toggle-label"></label><span>Manutenção</span></div>
                   <div class="toggle-switch"><input type="checkbox" id="ativacupom" class="toggle-input" checked><label for="ativacupom" class="toggle-label"></label><span>Ativar Cupons</span></div>
                   </div>
-                <div class="form-group"><label for="logo">URL do Logo</label><input id="logo" type="text" value="https://meupix.github.io/pagamentos.files/imagens/logo.png"></div>
+                <div class="form-group"><label for="logo">URL do Logo</label><input id="logo" type="text" value="https://meupix.github.io/pagamentos.files/imagens/favicon.png"></div>
                 <div class="grid-2-cols">
                   <div class="form-group"><label for="whatsapp" class="required">WhatsApp</label><input id="whatsapp" type="text" placeholder="+55 (11) 90000-0000"></div>
                   <div class="form-group"><label for="nome" class="required">Nome no Botão WhatsApp</label><input id="nome" type="text" placeholder="Nome e Sobrenome"></div>
@@ -367,7 +367,7 @@
                 <div class="form-group"><label for="politica">URL Termos de Uso e Política de Privacidade</label><input id="politica" type="text" placeholder="URL" value="https://meupix.vercel.app/lojavirtual/termoseprivacidade"></div>
                 <h3>Prévia de sua logo</h3>
                 <div class="form-actions">
-                  <img id="logo-preview" class="logo-preview" src="https://meupix.vercel.app/pagamentos.files/imagens/logo.png" alt="Prévia">
+                  <img id="logo-preview" class="logo-preview" src="https://meupix.vercel.app/pagamentos.files/imagens/favicon.png" alt="Prévia">
                 </div>
                 <div class="form-group">
                 <div class="form-actions">
@@ -479,7 +479,7 @@ Params = new URLSearchParams(ParamsB);
   document.getElementById('pix_banco').value = Params.get('banco') || '';
   document.getElementById('pix_documento').value = (Params.get('cpf') || '').substring(0, 14);
   document.getElementById('whatsapp').value = Params.get('whatsapp') || '';
-  document.getElementById('logo').value = Params.get('logo') || 'https://meupix.vercel.app/pagamentos.files/imagens/logo.png';
+  document.getElementById('logo').value = Params.get('logo') || 'https://meupix.vercel.app/pagamentos.files/imagens/favicon.png';
   
   personalizationParams = [
   'qr_shape', 'qr_corner_shape', 'qr_color1', 'qr_color2', 'qr_gradient_type',
