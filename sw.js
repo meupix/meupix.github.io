@@ -12,7 +12,6 @@ const ASSETS = [
   'pagamentos.files/imagens/loading-pix.png',
   'pagamentos.files/imagens/error.png',
   'pagamentos.files/imagens/logo.png',
-  'https://is.gd/isgd_favicon.ico',
   // scripts
   'pagamentos.files/script/jquery.min.js',
   'pagamentos.files/script/qr-code-styling.js',
