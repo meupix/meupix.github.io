@@ -10,7 +10,6 @@ const ASSETS = [
   'pagamentos.files/imagens/logo-pix.png',
   'pagamentos.files/imagens/Compartilhamentos.png',
   'pagamentos.files/imagens/loading-pix.png',
-  'pagamentos.files/imagens/loading-compartilhar.png',
   'pagamentos.files/imagens/error.png',
   'pagamentos.files/imagens/logo.png',
   'https://is.gd/isgd_favicon.ico',
