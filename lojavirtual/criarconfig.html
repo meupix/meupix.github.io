@@ -1,0 +1,1015 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <!-- Scripts Externos (Analytics/Ads) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4362465010095434" crossorigin="anonymous"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-4SV7F9T34D"></script>
+  <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-4SV7F9T34D');
+  </script>
+
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta property="og:site_name" content="MeuPix/Loja">
+  <meta property="article:author" content="@DaviMaTaeus">
+  <meta property="og:description" content="Aprenda a criar sua loja virtual no Blogger e use nossas ferramentas para gerar configurações e cupons de desconto.">
+  <meta property="og:image" content="https://meupix.vercel.app/pagamentos.files/imagens/metaTag.png">
+  <meta name="theme-color" content="#00007e">
+
+  <link rel="icon" href="https://meupix.vercel.app/pagamentos.files/imagens/favicon.png" type="image/png">
+  <link href="https://meupix.vercel.app/pagamentos.files/imagens/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <!-- Ícones FontAwesome (Necessário para o olhinho da senha) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <title>Criar sua Loja - MeuPix/LojaVirtual</title>
+  
+  <style>
+    :root {
+      --box-shadow: 0 0 15px #ff9100b7;
+      --floating-cart-bg: linear-gradient(120deg, #ff00009d, #1900ffad);
+      --bg: #ffffff;           
+      --card: #161b22;         
+      --primary: #06920d;      
+      --primary-hover: #06d406;
+      --secondary-color: #4ecdc4;
+      --danger: #F43F5E;
+      --text: #000000;         
+      --muted: #ffffff;        
+      --border: #ffffff4d;
+      --radius: 8px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body { background-image: url(https://meupix.vercel.app/pagamentos.files/imagens/capa-pix.png); color: #fff; font-size: 16px; line-height: 1.6;}
+    body.modal-open { overflow: hidden; }
+
+    .container { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; }
+    header { text-align: center; margin-bottom: 3rem; }
+    header h1 { font-size: 2.5rem; color: white; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+    header p { color: #f0f0f0; font-size: 1.1rem; max-width: 700px; margin: 0.5rem auto 0; }
+
+    .tutorial-panel { background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); border-radius: var(--radius); padding: 2rem; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+    .tutorial-panel h2 { font-size: 1.75rem; margin-bottom: 2rem; color: white; border-bottom: 1px solid var(--border); padding-bottom: 1rem; text-align: center; }
+    
+    .passo-a-passo { list-style: none; padding-left: 0; }
+    .passo-a-passo li { display: flex; flex-direction: column; align-items: center; }
+    .passo-a-passo .step-title { font-size: 1.4rem; font-weight: 700; color: #ff9100; display: block; margin-bottom: 0.5rem; }
+    .passo-a-passo p { margin: 0.5rem 0 1rem; }
+    
+    /* IMAGEM CLICÁVEL DO TUTORIAL */
+    .clickable-image { max-width: 100%; height: auto; border-radius: var(--radius); margin-top: 1rem; border: 2px solid var(--border); cursor: zoom-in; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .clickable-image:hover { transform: scale(1.02); box-shadow: 0 5px 20px rgba(0,0,0,0.4); }
+    
+    /* BOTÕES */
+    .btn-container { display: flex; justify-content: center; margin: 1.5rem 0; }
+    .btn { border: none; padding: 0.85rem 1.75rem; border-radius: var(--radius); font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block; }
+    .btn-primary { background: var(--primary); color: var(--bg); font-size: 1rem; }
+    .btn-primary:hover { background-color: var(--primary-hover); transform: translateY(-3px); box-shadow: 0 6px 15px rgba(6, 212, 6, 0.3); }
+    
+    /* Geradores Retráteis */
+    .toggle-btn { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0.75rem 1.25rem; font-size: 1.2rem; font-weight: 600; color: var(--bg); background: var(--primary); border: none; border-radius: var(--radius); cursor: pointer; transition: all 0.2s; margin-top: 1rem; }
+    .toggle-btn:hover { background: var(--primary-hover); transform: translateY(-2px); }
+    .toggle-icon { font-size: 1.2rem; transition: transform 0.3s ease; }
+    .toggle-btn[aria-expanded="true"] .toggle-icon { transform: rotate(180deg); }
+    .collapsible-content { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.7s ease-in-out, opacity 0.5s ease-in-out, margin-top 0.5s ease; }
+    .collapsible-content.is-open { max-height: 5000px; opacity: 1; margin-top: 1.5rem; overflow-y: auto; }
+
+    .form-panel { background: var(--floating-cart-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
+    h3 { font-size: 1.1rem; margin-top: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    .grid-2-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    label { display: block; font-weight: 500; color: var(--muted); margin-bottom: 0.5rem; font-size: 0.875rem; }
+    label.required::after { content: ' *'; color: var(--danger); }
+
+    input[type="text"], input[type="tel"], input[type="email"], input[type="number"], input[type="password"], textarea, select { width: 100%; background-color: var(--bg); border: 2px solid transparent; border-radius: var(--radius); padding: 0.75rem; color: var(--text); font-size: 0.875rem; transition: border-color 0.2s, box-shadow 0.2s; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.3); }
+    input.is-invalid { border-color: var(--danger) !important; }
+
+    .horarios-grid { display: grid; grid-template-columns: 80px 1fr 1fr auto 20px 1fr 1fr auto; gap: 0.5rem; align-items: center; padding: 0.5rem 0; }
+    .form-actions { display: flex; gap: 1rem; padding-top: 1.2rem; border-top: 1px solid var(--border); flex-wrap: wrap; align-items: center; justify-content: center; flex-direction: column-reverse; }
+
+    /* Cupon */
+    #resultado-cupom { margin-top: 30px; padding: 20px; border-radius: 10px; background-color: rgba(0, 0, 0, 0.2); border-left: 5px solid var(--secondary-color); word-wrap: break-word; text-align: left; display: none; }
+    #resultado-cupom.show { display: block; }
+    #resultado p { margin: 0 0 10px 0; }
+    #resultado-cupom code { display: block; background-color: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 5px; font-family: 'Courier New', Courier, monospace; font-size: 1.1em; color: #f1c40f; user-select: all; cursor: copy; }
+    
+    #copyFeedback { color: var(--primary-hover); font-weight: bold; margin-top: 10px; opacity: 0; transition: opacity 0.3s ease; }
+    #copyFeedback.visible { opacity: 1; }
+
+    /* === Modals (Config & Image) === */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(13, 17, 23, 0.9); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; }
+    .modal-overlay.active { display: flex; opacity: 1; }
+    .modal-close-btn { background: none; border: none; color: white; font-size: 2.5rem; cursor: pointer; line-height: 1; position: absolute; top: 15px; right: 20px; z-index: 1010; }
+    
+    /* Modal de Configuração */
+    .modal-content { background: var(--floating-cart-bg); border-radius: var(--radius); padding: 1.5rem; width: 90%; max-width: 700px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; transform: scale(0.95); transition: transform 0.3s ease; }
+    .modal-overlay.active .modal-content { transform: scale(1); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
+    .modal-header h2 { margin: 0; padding: 0; border: none; font-size: 1.5rem; }
+    .modal-body pre { white-space: pre-wrap; word-wrap: break-word; font-family: 'Fira Code', monospace; font-size: 0.85rem; max-height: 60vh; overflow-y: auto; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: var(--radius); }
+    .modal-footer { display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.5rem; }
+    .btn-secondary { background-color: transparent; border: 1px solid var(--border); color: var(--muted); }
+    .btn-secondary:hover { background-color: rgba(255,255,255,0.1); }
+    
+    /* Modal de Imagem (Lightbox) */
+    .image-modal-content { max-width: 95vw; max-height: 90vh; }
+    .image-modal-content img { display: block; max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--radius); }
+    .logo-preview { height: 100px; width: 100px; object-fit: cover; border: 2px solid var(--border); background-color: var(--bg); margin-bottom: 24px; }
+
+    /* Horários */
+    input[type="time"] { border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); padding: 0.5rem; }
+
+    /* === ESTILOS DA SEÇÃO DE SEGURANÇA === */
+    .security-section { background: rgba(0, 0, 0, 0.3); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-top: 2rem; border-left: 4px solid var(--secondary-color); }
+    .security-section h3 { margin-top: 0; border-bottom: none; display: flex; align-items: center; gap: 10px; color: #fff; }
+    .security-desc { font-size: 0.9em; color: #ccc; margin-bottom: 1.5rem; }
+    
+    .password-wrapper { position: relative; display: flex; align-items: center; }
+    .password-wrapper input { padding-right: 45px; }
+    
+    .btn-toggle-pass { position: absolute; right: 10px; background: transparent; border: none; color: #000; cursor: pointer; font-size: 1.1rem; padding: 5px; transition: color 0.2s; z-index: 2; }
+    .btn-toggle-pass:hover { color: var(--primary); }
+    
+    .btn-security { background: linear-gradient(135deg, #2c3e50, #4ca1af); color: white; width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 10px; }
+    .btn-security:hover { filter: brightness(1.2); transform: translateY(-2px); }
+    
+    .hash-status { margin-top: 15px; padding: 12px; border-radius: var(--radius); background-color: rgba(46, 204, 113, 0.2); border: 1px solid #2ecc71; color: #2ecc71; display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 0.9rem; animation: fadeIn 0.5s ease; }
+    .hash-status.hidden { display: none; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* === Design Responsivo === */
+    @media (max-width: 768px) {
+      body { font-size: 15px; }
+      .container { padding: 0 1rem; margin: 1rem auto; }
+      header h1 { font-size: 2rem; }
+      .tutorial-panel { padding: 1.5rem 1rem; }
+      .passo-a-passo li { display: flex; flex-direction: column; align-items: center; }
+      .grid-2-cols { grid-template-columns: 1fr; }
+      .horarios-grid { grid-template-columns: 1fr; text-align: center; }
+      .horarios-grid span:first-child { margin-bottom: 0.5rem; display: block; }
+      .modal-header h2 { font-size: 1.25rem; }
+      .btn { padding: 0.75rem 1.25rem; }
+    }
+    
+    /* Outros Estilos */
+    .location-chooser { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .location-chooser label { background-color: #ff8800; border: 1px solid transparent; padding: 0.5rem 1rem; border-radius: var(--radius); cursor: pointer; transition: all 0.2s ease; }
+    .location-chooser input[type="radio"] { display: none; }
+    .location-chooser input[type="radio"]:checked + label { background-color: var(--primary); color: var(--bg); font-weight: 600; }
+    .location-input-panel { display: none; }
+    .location-input-panel.active { display: block; }
+    .toggle-group { display: flex; flex-wrap: wrap; gap: 2rem; margin-bottom: 1.5rem; }
+    .toggle-switch { display: flex; align-items: center; gap: 0.75rem; }
+    .toggle-input { display: none; }
+    .toggle-label { position: relative; display: inline-block; width: 44px; height: 24px; background-color: #a81d09; border-radius: 999px; cursor: pointer; transition: background-color 0.2s ease; }
+    .toggle-label::before { content: ''; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; background-color: white; border-radius: 50%; transition: transform 0.2s ease; }
+    .toggle-input:checked + .toggle-label { background-color: var(--primary); }
+    .toggle-input:checked + .toggle-label::before { transform: translateX(20px); }
+    .toggle-switch-small .toggle-label { width: 36px; height: 20px; background-color: var(--primary); }
+    .toggle-switch-small .toggle-label::before { left: 2px; top: 2px; width: 16px; height: 16px; }
+    .toggle-switch-small input:checked + .toggle-label { background-color: #a81d09; }
+    .toggle-switch-small input:checked + .toggle-label::before { transform: translateX(16px); }
+    /* --- Botão Voltar (Go Back) --- */
+.btn-back {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 100;
+  background-color: rgba(0, 0, 0, 0.4); /* Fundo escuro transparente */
+  color: #fff;
+  padding: 10px 25px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  cursor: pointer; /* Importante para botões */
+}
+
+.btn-back:hover {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  transform: translateX(-3px);
+  box-shadow: 0 6px 20px rgba(6, 146, 13, 0.4);
+}
+
+/* Ajuste para Celular */
+@media (max-width: 768px) {
+  .btn-back {
+    position: static; /* Remove fixação no topo */
+    display: inline-flex;
+    margin-bottom: 1.5rem;
+    background-color: rgba(0, 0, 0, 0.3);
+    width: auto;
+  }
+}
+  </style>
+</head>
+<body>
+
+  <main class="container">
+        <!-- Botão de Voltar Histórico -->
+    <button onclick="window.history.back()" class="btn-back">
+      <i class="fas fa-arrow-left"></i> Voltar
+    </button>
+    <header>
+      <h1>Como Criar sua Loja: Passo a Passo</h1>
+      <p>Siga os passos abaixo para configurar sua loja no Blogger e utilize os geradores para criar suas configurações e cupons de desconto.</p>
+    </header>
+
+    <section class="tutorial-panel">
+      <h2>Configuração e gerador de cupom da Loja Virtual</h2>
+      <ol class="passo-a-passo">
+        
+        <li>
+          <span class="step-title">1. Crie um Blog e Obtenha o ID</span>
+          <p>Para começar, crie um novo blog no Blogger. Após a criação, copie o ID dele, que é o número que aparece na URL do painel de administração.</p>
+          <div class="btn-container"><a class="btn btn-primary" href="https://www.blogspot.com.br/" target="_blank">Criar um Blog no Blogger</a></div>
+          <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjWXuODBXvgCBYWbBgdXyd120iWem_JaRTfQmS6022nrh7N8Tt3VbnhwFKB-HKKNyQOVAJSL63NXJYN-Zeng2ZlHpWADZZlGQ1sADjT1i-iqjboXh1esPlcToAozi_7bdYAIy5zX-hR8PN6Be2l_tmDJj0y1pjSzSowytNL8CogA8k7ViEMOfO0Iz0TZDOO/s363/Captura%20de%20tela%202025-03-06%20030332idblog.png" >
+            <img class="clickable-image" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjWXuODBXvgCBYWbBgdXyd120iWem_JaRTfQmS6022nrh7N8Tt3VbnhwFKB-HKKNyQOVAJSL63NXJYN-Zeng2ZlHpWADZZlGQ1sADjT1i-iqjboXh1esPlcToAozi_7bdYAIy5zX-hR8PN6Be2l_tmDJj0y1pjSzSowytNL8CogA8k7ViEMOfO0Iz0TZDOO/s363/Captura%20de%20tela%202025-03-06%20030332idblog.png" alt="Onde encontrar o ID do blog" />
+          </a>
+          <p style="margin-top: 20px;">Use o ID da loja de demonstração para ver como ficará:</p>
+          <div class="btn-container"><a class="btn btn-primary" href="https://meupix.github.io/lojavirtual?id=1364727178420957300" target="_blank">Acessar Loja de Teste</a></div>
+        </li>
+
+        <li>
+          <span class="step-title">2. Importe o Conteúdo da Loja</span>
+          <p>Baixe o arquivo de modelo (feed.atom) e importe-o para o seu novo blog. Vá em <strong>Configurações &gt; Gerenciar blog</strong> e clique em <strong>"Importar conteúdo"</strong>.</p>
+          <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6jGERf0bOasgQTIwigwWOaT6_5RYX43tMc8sQ_tuOilDqQAnhtsO1M0SJA7eIzPNNNXXNplbeglyVdbFTBbJHuVdfiGGNuk2sO4Y4k1S9CqBKj2XNOIXE77UZoxljGHA6waACLOwbiWYS36w6oh3NWXZanAwVb0pYoK6S2PQykGaEKqVGs-W6LmMXFFbu/s1340/Captura%20de%20tela%202025-09-28%20011815.png" >
+            <img class="clickable-image" alt="Importar o conteúdo no blog" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi6jGERf0bOasgQTIwigwWOaT6_5RYX43tMc8sQ_tuOilDqQAnhtsO1M0SJA7eIzPNNNXXNplbeglyVdbFTBbJHuVdfiGGNuk2sO4Y4k1S9CqBKj2XNOIXE77UZoxljGHA6waACLOwbiWYS36w6oh3NWXZanAwVb0pYoK6S2PQykGaEKqVGs-W6LmMXFFbu/s1340/Captura%20de%20tela%202025-09-28%20011815.png" />
+          </a>
+          <div class="btn-container"><a class="btn btn-primary" href="https://github.com/meupix/meupix.github.io/blob/main/feed.atom" target="_blank">Baixar Arquivo XML (feed.atom)</a></div>
+        </li>
+        <li>
+          <span class="step-title">3. Criar as páginas como configuração da loja.</span>
+          <p>Após a importação, você verá as páginas dos produtos criadas automaticamente na seção "Páginas".</p>
+          <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEga1yjYB8xuhE-OIm9hqRdCbiiFvx6l1eMc2XEX1apYHCjeMAZhsKxh2NkpDvFEQhfWdm2uMaDKgbJAghSQFL39qum78fWNZ6mQWf8g6gdA5lf_gXD7Jnv1u2tTO_qZIX8zCfqdWRFJrHd5Cxe2V51BPH43q_SgXDK_CuMfHDRFhsg7AwSsc1UZ-VGdtQXA/s1600/Captura%20de%20tela%202025-10-08%20153357.png" >
+            <img class="clickable-image" alt="Importar o conteúdo no blog" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEga1yjYB8xuhE-OIm9hqRdCbiiFvx6l1eMc2XEX1apYHCjeMAZhsKxh2NkpDvFEQhfWdm2uMaDKgbJAghSQFL39qum78fWNZ6mQWf8g6gdA5lf_gXD7Jnv1u2tTO_qZIX8zCfqdWRFJrHd5Cxe2V51BPH43q_SgXDK_CuMfHDRFhsg7AwSsc1UZ-VGdtQXA/s1600/Captura%20de%20tela%202025-10-08%20153357.png" />
+          </a>
+        </li>
+        <li>
+          <span class="step-title">4. Configure sua Loja</span>
+          <p>Após a importação, edite a página <strong>"config-loja"</strong>. Use o gerador abaixo para criar o texto de configuração facilmente!</p>
+          <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj5sCJdkDrhVSNq5-xt0TN96_dTeuJg4IHxQ8xaR61viX-V-taCmi2PCy91KGQe3FJtlFtM84DvaRXiLZf3ejuYdXPmcIPYtvotBtgqFbR41sBuJ26_eZVqdElXeR9R7uqkfEGzy8Nt-xPobxmrFWTXqYm_LYtGw9qmY6UdXzMuRleRtHB56b_Sii3sVp__/s1600/Captura%20de%20tela%202025-10-08%20155915.png" >
+            <img class="clickable-image" alt="Página de configuração da loja" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj5sCJdkDrhVSNq5-xt0TN96_dTeuJg4IHxQ8xaR61viX-V-taCmi2PCy91KGQe3FJtlFtM84DvaRXiLZf3ejuYdXPmcIPYtvotBtgqFbR41sBuJ26_eZVqdElXeR9R7uqkfEGzy8Nt-xPobxmrFWTXqYm_LYtGw9qmY6UdXzMuRleRtHB56b_Sii3sVp__/s1600/Captura%20de%20tela%202025-10-08%20155915.png" />
+          </a>
+          <button class="toggle-btn" aria-expanded="false" aria-controls="mostrateladecriarconfig">
+            <span>Abrir Gerador de Configuração</span>
+            <span class="toggle-icon">▼</span>
+          </button>
+          <div class="collapsible-content" id="mostrateladecriarconfig">
+<section class="form-panel">
+              <form id="config-form" onsubmit="return false;">
+                <h2>Configurações Gerais</h2>
+                <div class="toggle-group">
+                  <div class="toggle-switch"><input type="checkbox" id="fechada" class="toggle-input"><label for="fechada" class="toggle-label"></label><span>Loja Fechada</span></div>
+                  <div class="toggle-switch"><input type="checkbox" id="manutencao" class="toggle-input"><label for="manutencao" class="toggle-label"></label><span>Manutenção</span></div>
+                  <div class="toggle-switch"><input type="checkbox" id="ativacupom" class="toggle-input" checked><label for="ativacupom" class="toggle-label"></label><span>Ativar Cupons</span></div>
+                  </div>
+                <div class="form-group"><label for="logo">URL do Logo</label><input id="logo" type="text" value="https://meupix.github.io/pagamentos.files/imagens/logo.png"></div>
+                <div class="grid-2-cols">
+                  <div class="form-group"><label for="whatsapp" class="required">WhatsApp</label><input id="whatsapp" type="text" placeholder="+55 (11) 90000-0000"></div>
+                  <div class="form-group"><label for="nome" class="required">Nome no Botão WhatsApp</label><input id="nome" type="text" placeholder="Nome e Sobrenome"></div>
+                </div>
+                <div class="form-group"><label for="taxadeenvio">Adiciona Taxa de Envio (R$ 5,00)</label><input id="taxadeenvio" type="text" placeholder="R$ 5,00"></div>
+                <div class="form-group"><label for="fretegratisacimade">Adiciona Frete Grátis Acima de (R$ 15,00)</label><input id="fretegratisacimade" type="text" placeholder="R$ 15,00"></div>
+              
+                <!-- Seção de Segurança Aprimorada -->
+                <div class="security-section">
+                    <h3><i class="fas fa-user-shield"></i> Segurança do Painel</h3>
+                    <p class="security-desc">Defina uma senha para proteger a área de verificação de pedidos e impressão. A senha será convertida em um código criptografado (Hash) para sua segurança.</p>
+                    
+                    <div class="form-group">
+                        <label for="admin_pass" class="required">Senha de Acesso</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="admin_pass" placeholder="Digite sua senha secreta aqui...">
+                            <button type="button" class="btn-toggle-pass" onclick="togglePasswordVisibility()" title="Mostrar/Ocultar">
+                                <i class="fas fa-eye" id="pass-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="security-actions">
+                        <button type="button" class="btn btn-security" onclick="gerarHashAdmin()">
+                            <i class="fas fa-lock"></i> Criptografar e Salvar
+                        </button>
+                    </div>
+
+                    <!-- Feedback de Sucesso (Inicia Oculto) -->
+                    <div id="hash-success-msg" class="hash-status hidden">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Senha criptografada com sucesso! O código foi anexado à configuração.</span>
+                    </div>
+
+                    <!-- Input Oculto que guarda o Hash para o gerador final -->
+                    <input type="hidden" id="admin_hash_final">
+                </div>
+
+                <h3>Dados do PIX</h3>
+                <div class="grid-2-cols">
+
+              <div class="form-group">
+              <select id="ChavesSelector">
+                  <option value="celular">Telefone</option>
+                  <option value="email">Email</option>
+                  <option value="cnpj">CNPJ</option>
+                  <option value="cpf">CPF</option>
+                  <option value="aleatoria">Chave Aleatória</option>
+              </select>
+                 <label>Tipo de Chave <b class="infor">*</b></label>
+                </div>
+                  <div class="form-group"><input type="text" id="pix_chave" placeholder=" "> <label id="pixKeyLabel">Chave Pix (Telefone) <b class="infor">*</b></label></div>
+                  <div class="form-group"><label for="pix_nome" class="required">Nome Completo</label><input id="pix_nome" type="text" placeholder="Nome e Sobrenome"></div>
+                  <div class="form-group"><label for="pix_cidade" class="required">Cidade</label><input id="pix_cidade" type="text" placeholder="Sua Cidade"></div>
+                  <div class="form-group"><label for="pix_documento" class="required">CPF ou CNPJ</label><input maxlength="18" id="pix_documento" type="text" placeholder="CPF ou CNPJ"></div>
+                  <div class="form-group"><label for="pix_banco" class="required">Banco</label><input id="pix_banco" type="text" placeholder="Nome do Seu Banco"></div>
+                  <div class="form-group"><label for="pix_mensagem">Mensagem Padrão (opcional)</label><input id="pix_mensagem" type="text" placeholder="Msg no Pix"></div>
+                </div>
+                <h3>Horários da Loja</h3>
+                <div class="toggle-switch"><input type="checkbox" id="ativahorario" class="toggle-input" checked><label for="ativahorario" class="toggle-label"></label><span>Ativar Horários</span></div>
+                <div id="horarios-container"></div>
+                <h3>Endereço e Área de Entrega no rodape da loja</h3>
+                <div class="form-group"><label for="end1">Endereço Fixo (Linha 1)</label><input id="end1" type="text" value="Rua Aqui, Nº Aqui"></div>
+                <div class="grid-2-cols">
+                    <div class="form-group"><label for="end2">Endereço Fixo (Linha 2)</label><input id="end2" type="text" value="Bairro: Aqui - Cidade: Aqui - RJ"></div>
+                    <div class="form-group"><label for="meucep">CEP Fixo</label><input id="meucep" type="text" placeholder="00000-000"></div>
+                </div>        
+                <label>Vai ser o local onde você vai pode entrega os produtos. (escolha uma opção)</label> 
+                <div class="toggle-switch"><input type="checkbox" id="ativaentrega" class="toggle-input" checked><label for="ativaentrega" class="toggle-label"></label><span>Aitva ou Desativa</span></div>
+                <div class="location-chooser" id="location-chooser">
+                  <input type="radio" id="loc_uf" name="location_type" value="uf" checked><label for="loc_uf">Estado (UF)</label>
+                  <input type="radio" id="loc_cidade" name="location_type" value="cidade"><label for="loc_cidade">Cidade</label>
+                  <input type="radio" id="loc_bairro" name="location_type" value="bairro"><label for="loc_bairro">Bairro</label>
+                </div>
+                <div id="uf-panel" class="location-input-panel active"><div class="form-group"><input id="uf" type="text" placeholder="Ex: PA RJ MA"></div></div>
+                <div id="cidade-panel" class="location-input-panel"><div class="form-group"><input id="cidade" type="text" placeholder="Ex: Belém Ananindeua Santarém"></div></div>
+                <div id="bairro-panel" class="location-input-panel"><div class="form-group"><input id="bairro" type="text" placeholder="Ex: Tenoné Jurunas Guamá"></div></div>
+                <div class="form-group"><label for="avisonorodape">Aviso no rodapé (opcional)</label><input id="avisonorodape" type="text" placeholder="Texto" value="⚠️ Este site é administrado por pessoa física. Todas as vendas são feitas sob encomenda e conforme disponibilidade ⚠️"></div>
+                <h3>Redes Sociais e Links</h3>
+                <div class="grid-2-cols">
+                    <div class="form-group"><label for="email">E-mail</label><input id="email" type="text" placeholder="email@gmail.com"></div>
+                    <div class="form-group"><label for="insta">Instagram</label><input id="insta" type="text" placeholder="/SEUinstagram"></div>
+                    <div class="form-group"><label for="fb">Facebook</label><input id="fb" type="text" placeholder="/SEUfacebook"></div>
+                    <div class="form-group"><label for="tw">Twitter</label><input id="tw" type="text" placeholder="/SEUtwitter"></div>
+                </div>
+                <div class="form-group"><label for="politica">URL Termos de Uso e Política de Privacidade</label><input id="politica" type="text" placeholder="URL" value="https://meupix.vercel.app/lojavirtual/termoseprivacidade"></div>
+                <h3>Prévia de sua logo</h3>
+                <div class="form-actions">
+                  <img id="logo-preview" class="logo-preview" src="https://meupix.vercel.app/pagamentos.files/imagens/logo.png" alt="Prévia">
+                </div>
+                <div class="form-group">
+                <div class="form-actions">
+                <button id="gerar-btn" class="btn btn-primary" type="button">Criar Configuração</button>
+                </div>
+                </div>
+              </form>
+            </section>
+          </div>
+        </li>
+        
+        <li>
+          <span class="step-title">5. Gerencie os Pagamentos</span>
+          <p>Na página <strong>"pagamentos"</strong>, você irá atualizar o status dos pedidos. Adicione o ID do pagamento seguido do status, por exemplo: <code>PagamentoSKAFKS Pago</code>, <code>Pagamento4ZI3O2 Enviado</code>.</p>
+          <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjvQr2dgjm1hUbKA7gnpc2N3LU1-0qVJf6B_TH4iBRGHgFvsUpQmEI1cRUHSApnfgLdRR0HPoTlxqItgMH-DfWYazAxOdiqBApvd9B48hC0t_n2uPVwtSgQMripr67QLv7msZK7LYQQx-ZsP2Fqb38PQ_fy2uNP_fLzIAk1F0WgEc_AQ8jinIF1UrG6UbbI/s1357/Captura%20de%20tela%202025-09-28%20001227.png" >
+            <img class="clickable-image" alt="Página de gerenciamento de pagamentos" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjvQr2dgjm1hUbKA7gnpc2N3LU1-0qVJf6B_TH4iBRGHgFvsUpQmEI1cRUHSApnfgLdRR0HPoTlxqItgMH-DfWYazAxOdiqBApvd9B48hC0t_n2uPVwtSgQMripr67QLv7msZK7LYQQx-ZsP2Fqb38PQ_fy2uNP_fLzIAk1F0WgEc_AQ8jinIF1UrG6UbbI/s1357/Captura%20de%20tela%202025-09-28%20001227.png" />
+          </a>
+        </li>
+        
+        <li>
+          <span class="step-title">6. Cadastre seus Produtos no Post do seu blog</span>
+          <p>Os produtos são criados como <strong>Postagens</strong> normais no Blogger. O modelo importado já vem com exemplos para você se basear. Edite-os ou crie novos seguindo o mesmo formato.</p>
+          <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEje-29ly3vRhbRdpIB3USlGhbltXqbZt6U9IHurlcDq3pj6Y0fUsD7h2VDJdHSaZIK5m5sITjYyQqNlLasHeZOfosCS2sHN84UqPbP4Ntf7KyVjtK326-uVuOVX7EZWHp-aYCDg-4tTjBrDLud7DpUpduJ_zG6ZWUFqzKthKFjam17_YgbKHjUM1fqSmF4x/s1340/Captura%20de%20tela%202025-09-28%20000943.png" >
+            <img class="clickable-image" alt="Lista de postagens de produtos" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEje-29ly3vRhbRdpIB3USlGhbltXqbZt6U9IHurlcDq3pj6Y0fUsD7h2VDJdHSaZIK5m5sITjYyQqNlLasHeZOfosCS2sHN84UqPbP4Ntf7KyVjtK326-uVuOVX7EZWHp-aYCDg-4tTjBrDLud7DpUpduJ_zG6ZWUFqzKthKFjam17_YgbKHjUM1fqSmF4x/s1340/Captura%20de%20tela%202025-09-28%20000943.png" />
+          </a>
+        </li>
+                  <li>
+          <span class="step-title">7. Permitir feed do blog na Versão completa.</span>
+          <p>Ativar o feed do blog na versão completa permite que todo o conteúdo das postagens seja exibido nos leitores de feed (como RSS ou Atom). Isso facilita para os leitores acompanharem suas publicações sem precisar acessar diretamente o blog, além de aumentar o alcance e a visibilidade das postagens.</p>
+          <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiLDa2kQyZLPE0R21fWa8Ps8vc5zk3q3TrWfK8HiRfE3eaTXEvyMt2sTw8mWD-Zzie8XPcSjeUaPc7nyMZ77yIv4RXYnhuW5SjdiJCikATqQOYrR4Ih8brxGpGdbxY7IMY6Y5a6kI_dfpUAf9UXH5ZQO2TqOSQlFgeySjAyE185m8g6roMxFv7P5GI3Qful/s1600/Captura%20de%20tela%202025-10-10%20162640.png" >
+            <img class="clickable-image" alt="Lista de postagens de produtos" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiLDa2kQyZLPE0R21fWa8Ps8vc5zk3q3TrWfK8HiRfE3eaTXEvyMt2sTw8mWD-Zzie8XPcSjeUaPc7nyMZ77yIv4RXYnhuW5SjdiJCikATqQOYrR4Ih8brxGpGdbxY7IMY6Y5a6kI_dfpUAf9UXH5ZQO2TqOSQlFgeySjAyE185m8g6roMxFv7P5GI3Qful/s1600/Captura%20de%20tela%202025-10-10%20162640.png" />
+          </a>
+        </li>
+          <span class="step-title">8. Crie Cupons de Desconto</span>
+          <p>Na página <strong>"Cupom"</strong>, cole cada linha gerada em uma nova linha. Use o gerador abaixo para criar seus cupons.</p>
+          <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj8Kj-LOOOvewmDR0F0jdDK90g8NytAALH7BHzCsijMn62dCwhdEz8Ov6GX5kXT2NFWrxJfouxwk0bXQWgyDMTpLL79xJLU2CY-ffjW7M18w9Go5WBX8M8TYQ52qQAKnWgL45f2MhV0LAryTh20PdAo99ELuNYhb4Cy06SQOKGToD6m5SYibycmUuOyq11b/s1600/Captura%20de%20tela%202025-10-08%20164339.png" >
+            <img class="clickable-image" alt="Lista de postagens de produtos" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj8Kj-LOOOvewmDR0F0jdDK90g8NytAALH7BHzCsijMn62dCwhdEz8Ov6GX5kXT2NFWrxJfouxwk0bXQWgyDMTpLL79xJLU2CY-ffjW7M18w9Go5WBX8M8TYQ52qQAKnWgL45f2MhV0LAryTh20PdAo99ELuNYhb4Cy06SQOKGToD6m5SYibycmUuOyq11b/s1600/Captura%20de%20tela%202025-10-08%20164339.png" />
+          </a> 
+          <button class="toggle-btn" aria-expanded="false" aria-controls="mostrateladecriacupom">
+            <span>Abrir Gerador de Cupons</span>
+            <span class="toggle-icon">▼</span>
+          </button>
+          <div class="collapsible-content" id="mostrateladecriacupom">
+          <section class="form-panel">
+              <h2>Gerador de Cupons</h2>
+              <div class="form-group">
+                  <label for="codigo">Código do Cupom (ex: BEMVINDO15)</label>
+                  <input type="text" id="codigo" placeholder="Digite o código que o cliente usará">
+              </div>
+              <div class="form-group">
+                  <label for="valor">Valor do Desconto</label>
+                  <input type="number" id="valor" placeholder="Ex: 15 para 15% ou 10 para R$10,00">
+              </div>
+              <div class="form-group">
+                  <label for="tipo">Tipo de Desconto</label>
+                  <select id="tipo">
+                      <option value="percentual">Percentual (%)</option>
+                      <option value="fixo">Valor Fixo (R$)</option>
+                      <option value="frete">Frete Grátis</option>
+                  </select>
+              </div>
+              <div id="resultado-cupom">
+                  <p><strong>Copie a linha abaixo e cole no seu Blogger:</strong></p>
+                  <code id="linhaFinal" title="Clique para copiar"></code>
+                  <div id="copyFeedback">Copiado para a área de transferência!</div>
+              </div>
+              <div class="form-actions">
+                  <button id="gerar-cupom-btn" class="btn btn-primary">Gerar Cupom</button>
+              </div>
+            </ol>
+          </section>
+  </main>
+  
+  <!-- Modal para exibir o resultado da configuração -->
+  <div class="modal-overlay" id="result-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Configuração Gerada</h2>
+        <button id="modal-close-btn" class="modal-close-btn">&times;</button>
+      </div>
+      <div class="modal-body"><pre id="output-text"></pre></div>
+      <div class="modal-footer">
+        <button id="baixar-btn" class="btn btn-secondary">Baixar .txt</button>
+        <button id="copiar-btn" class="btn btn-primary">Copiar Texto</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para exibir imagens (Lightbox) -->
+  <div class="modal-overlay" id="image-modal">
+    <button id="image-modal-close" class="modal-close-btn">&times;</button>
+    <div class="image-modal-content">
+      <img src="" id="modal-image-content" alt="Visualização da Imagem">
+    </div>
+  </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+let personalizationOptions = {};
+ const Paramsbase = new URLSearchParams(window.location.search);
+ ParamsB = atob(Paramsbase.get('dadospix'));
+ if (ParamsB) {
+Params = new URLSearchParams(ParamsB);
+   nome = (Params.get('nome') || '').substring(0, 25);
+  document.getElementById('pix_chave').value = Params.get('chave') || '';
+
+  document.getElementById('pix_cidade').value = (Params.get('cidade') || '').substring(0, 15);
+  document.getElementById('pix_mensagem').value = (Params.get('mensagem') || '').substring(0, 28);
+  document.getElementById('pix_banco').value = Params.get('banco') || '';
+  document.getElementById('pix_documento').value = (Params.get('cpf') || '').substring(0, 14);
+  document.getElementById('whatsapp').value = Params.get('whatsapp') || '';
+  document.getElementById('logo').value = Params.get('logo') || 'https://meupix.vercel.app/pagamentos.files/imagens/logo.png';
+  
+  personalizationParams = [
+  'qr_shape', 'qr_corner_shape', 'qr_color1', 'qr_color2', 'qr_gradient_type',
+  'qr_rotation', 'qr_use_corner_colors', 'qr_corner_color1', 'qr_corner_color2',
+  'qr_corner_gradient_type', 'qr_corner_rotation'
+  ].map(key => Params.has(key) ? `${key}=${Params.get(key)}` : null).filter(Boolean).join('&');
+
+  document.getElementById('pix_nome').value = nome;
+  document.getElementById('nome').value = nome;
+
+  const tipoChaveDetectado = detectarTipoChave(Params.get('chave'));
+  const chSelector = document.getElementById('ChavesSelector');
+  if (chSelector) {
+   chSelector.value = tipoChaveDetectado;
+   chSelector.dispatchEvent(new Event('change'));
+  }
+    initPixFormatters();
+  initFormConfig();
+  if (document.getElementById('logo')) document.getElementById('logo').dispatchEvent(new Event('input'));
+  if (document.getElementById('whatsapp')) document.getElementById('whatsapp').dispatchEvent(new Event('input'));
+  if (document.getElementById('pix_chave')) document.getElementById('pix_chave').dispatchEvent(new Event('input'));
+  if (document.getElementById('pix_documento')) document.getElementById('pix_documento').dispatchEvent(new Event('input'));
+ }
+
+   limparParametros();
+
+  // Dispara os eventos para forçar a formatação inicial
+      function init() {
+        initToggles();
+        initCouponGenerator(); // E o deste também
+        initImageModal(); // NOVA FUNÇÃO
+      }
+
+      // --- LÓGICA PARA SEÇÕES RETRÁTEIS (COLLAPSIBLE) ---
+      function initToggles() {
+        document.querySelectorAll('.toggle-btn').forEach(button => {
+          const content = document.getElementById(button.getAttribute('aria-controls'));
+          if (!content) return;
+
+          button.addEventListener('click', () => {
+            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+            button.setAttribute('aria-expanded', !isExpanded);
+            content.classList.toggle('is-open');
+            
+            // Atualiza ícone e texto
+            const icon = button.querySelector('.toggle-icon');
+            const text = button.querySelector('span:first-child');
+            if (!isExpanded) {
+                icon.textContent = '▲';
+                text.textContent = text.textContent.replace('Abrir', 'Fechar');
+            } else {
+                icon.textContent = '▼';
+                text.textContent = text.textContent.replace('Fechar', 'Abrir');
+            }
+          });
+        });
+      }
+
+      function initCouponGenerator() {
+        const gerarBtn = document.getElementById('gerar-cupom-btn');
+        const codigoEl = document.getElementById('codigo');
+        const valorEl = document.getElementById('valor');
+        const tipoEl = document.getElementById('tipo');
+        const resultadoEl = document.getElementById('resultado-cupom');
+        const linhaFinalEl = document.getElementById('linhaFinal');
+        const copyFeedbackEl = document.getElementById('copyFeedback');
+        
+        gerarBtn.addEventListener('click', async () => {
+          const codigo = codigoEl.value.toUpperCase().trim();
+          const valor = valorEl.value;
+
+          if (!codigo || !valor) {
+            linhaFinalEl.textContent = 'ERRO: Preencha os campos de código e valor.';
+            resultadoEl.classList.add('show');
+            return;
+          }
+
+          const encoder = new TextEncoder();
+          const data = encoder.encode(codigo);
+          const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          const hashGerado = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+          
+          const linhaFinal = `${hashGerado}:${valor}:${tipoEl.value}`;
+          linhaFinalEl.textContent = linhaFinal;
+          resultadoEl.classList.add('show');
+        });
+
+        linhaFinalEl.addEventListener('click', () => {
+          navigator.clipboard.writeText(linhaFinalEl.textContent).then(() => {
+            copyFeedbackEl.classList.add('visible');
+            setTimeout(() => copyFeedbackEl.classList.remove('visible'), 2000);
+          });
+        });
+      }
+
+      // --- LÓGICA DO GERADOR DE CONFIGURAÇÃO ---
+      function initFormConfig() {
+          const gerarBtn = document.getElementById('gerar-btn');
+          const resultModal = document.getElementById('result-modal');
+          const outputText = document.getElementById('output-text');
+          const closeModalBtn = document.getElementById('modal-close-btn');
+          const copiarBtn = document.getElementById('copiar-btn');
+          const baixarBtn = document.getElementById('baixar-btn');
+          const locationChooser = document.getElementById('location-chooser');
+          const locationPanels = document.querySelectorAll('.location-input-panel');
+          const horariosContainer = document.getElementById('horarios-container');
+          const logoInput = document.getElementById('logo');
+          const logoPreview = document.getElementById('logo-preview');
+          const diasDaSemana = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+
+          // Gerar campos de horário dinamicamente
+          diasDaSemana.forEach(dia => {
+              const isFimDeSemana = dia === "Domingo" || dia === "Sábado";
+              const row = document.createElement('div');
+              row.className = 'horarios-grid';
+              row.innerHTML = `
+                  <span>${dia}:</span>
+                  <input type="time" id="abre1_${dia}" value="09:00" ${isFimDeSemana ? 'disabled' : ''}>
+                  <input type="time" id="fecha1_${dia}" value="12:00" ${isFimDeSemana ? 'disabled' : ''}>
+                  <label class="toggle-switch toggle-switch-small" title="Fechar período da manhã">
+                      <input type="checkbox" id="fechado1_${dia}" class="toggle-input" ${isFimDeSemana ? 'checked' : ''}>
+                      <span class="toggle-label"></span>
+                  </label>
+                  <span class="time-separator">,</span>
+                  <input type="time" id="abre2_${dia}" value="14:00" ${isFimDeSemana ? 'disabled' : ''}>
+                  <input type="time" id="fecha2_${dia}" value="18:00" ${isFimDeSemana ? 'disabled' : ''}>
+                  <label class="toggle-switch toggle-switch-small" title="Fechar período da tarde">
+                      <input type="checkbox" id="fechado2_${dia}" class="toggle-input" ${isFimDeSemana ? 'checked' : ''}>
+                      <span class="toggle-label"></span>
+                  </label>
+              `;
+              horariosContainer.appendChild(row);
+          });
+
+          // Adicionar Event Listeners
+          gerarBtn.addEventListener('click', handleGerar);
+          copiarBtn.addEventListener('click', handleCopiar);
+          baixarBtn.addEventListener('click', handleBaixar);
+          closeModalBtn.addEventListener('click', handleCloseModal);
+          resultModal.addEventListener('click', (e) => { if (e.target === resultModal) handleCloseModal(); });
+          logoInput.addEventListener('input', (e) => { logoPreview.src = e.target.value; });
+          locationChooser.addEventListener('change', (e) => {
+              locationPanels.forEach(panel => {
+                  panel.querySelector('input[type="text"]').value = '';
+                  panel.classList.toggle('active', panel.id === `${e.target.value}-panel`);
+              });
+          });
+          
+      // NOVO Listener para os checkboxes de horário (mais inteligente)
+        horariosContainer.addEventListener('change', (e) => {
+            if (e.target.type === 'checkbox' && e.target.id.startsWith('fechado')) {
+                const parts = e.target.id.split('_'); // ex: ['fechado1', 'Domingo']
+                const period = parts[0].replace('fechado', ''); // '1' ou '2'
+                const dia = parts[1];
+                const isChecked = e.target.checked;
+                // Desabilita os inputs de hora correspondentes
+                document.getElementById(`abre${period}_${dia}`).disabled = isChecked;
+                document.getElementById(`fecha${period}_${dia}`).disabled = isChecked;
+            }
+        });
+
+                // Listeners para formatação automática
+        ['fretegratisacimade', 'taxadeenvio', 'whatsapp', 'pix_documento', 'meucep'].forEach(id => {
+            const input = document.getElementById(id);
+            if(input) input.addEventListener('input', () => formatInput(input));
+        });
+      
+
+            const formatters = {
+        'fretegratisacimade': (v) => (parseFloat(v.replace(/\D/g, '') || 0) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
+        'taxadeenvio': (v) => (parseFloat(v.replace(/\D/g, '') || 0) / 100).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }),
+        'whatsapp': (v) => formatPhoneWithCountryCode(v),
+        'pix_documento': (v) => v.length > 11 ? formatCNPJ(v) : formatCPF(v),
+        'meucep': (v) => v.replace(/^(\d{5})(\d{3})$/, '$1-$2')
+      };
+        function formatInput(input) {
+        let v = input.value.replace(/\D/g, '');
+        const maxLength = { 'whatsapp': 16, 'pix_documento': 18, 'meucep': 8 }[input.id] || Infinity;
+        v = v.substring(0, maxLength);
+        if (formatters[input.id]) {
+            input.value = formatters[input.id](v);
+        }
+      }
+
+      // Funções Auxiliares
+      const getVal = (id) => document.getElementById(id)?.value || '';
+      const getToggleVal = (id) => document.getElementById(id)?.checked ? 'ativado' : 'desativa';
+      const LinkCPF = (cpf) => cpf.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '000$2$300');
+
+          // Validação e Geração da Configuração
+          function handleGerar() {
+              document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+              const requiredFields = ['whatsapp', 'nome', 'pix_chave', 'pix_nome', 'pix_cidade', 'pix_documento', 'pix_banco'];
+              const missingFields = requiredFields.filter(id => !getVal(id).trim());
+              
+              if (missingFields.length > 0) {
+                  missingFields.forEach(id => document.getElementById(id).classList.add('is-invalid'));
+                  document.getElementById(missingFields[0]).focus();
+                  return;
+              }
+
+              outputText.textContent = gerarTextoCompleto();
+              resultModal.classList.add('active');
+              document.body.classList.add('modal-open');
+          }
+
+          function gerarTextoCompleto() {
+              const LinkCPF = (cpf) => cpf.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '000$2$300');
+              const documento = getVal('pix_documento').replace(/\D/g, '');
+              let docFormatado = (documento.length === 11) ? LinkCPF(documento) : getVal('pix_documento');
+
+              const data = {
+                  'fechada': getToggleVal('fechada'), 'manutenção': getToggleVal('manutencao'), 'logo': getVal('logo'), 
+                  'whatsapp': formatchavepix(getVal('whatsapp')), 'nome': getVal('nome'),
+                  'pix': `chave=${formatchavepix(getVal('pix_chave'))}&nome=${getVal('pix_nome')}&cidade=${getVal('pix_cidade')}&mensagem=${getVal('pix_mensagem')}&banco=${getVal('pix_banco')}&cpf=${docFormatado}&${personalizationParams}`,
+                  'ativaentrega': getToggleVal('ativaentrega'),
+                  'taxadeenvio': getVal('taxadeenvio').replace(/[^\d,.]/g, '').replace(',', '.') || '0',
+                  'fretegratis_acima_de': getVal('fretegratisacimade').replace(/[^\d,.]/g, '').replace(',', '.') || '0',
+                  'ativacupom': getToggleVal('ativacupom'), 'ativahorário': getToggleVal('ativahorario'),
+                  'horários': gerarStringHorarios(), 'avisonorodape': getVal('avisonorodape'),
+                  'Endereço1': getVal('end1'), 'Endereço2': getVal('end2'), 'meucep': getVal('meucep'),
+                  'unidadefederativa': getVal('uf'), 'cidade': getVal('cidade'), 'bairro': getVal('bairro'),
+                  'emailEndereco': getVal('email'), 'instagramUsuario': getVal('insta'), 'facebookPagina': getVal('fb'),
+                  'twitterUsuario': getVal('tw'), 'termosepoliticaURL': getVal('politica'),
+                  'admin': getVal('admin_hash_final')
+              };
+              
+              return Object.entries(data).map(([key, value]) => `${key} = ${value}`).join('\n');
+          }
+
+          function gerarStringHorarios() {
+              return diasDaSemana.map(dia => {
+                  const formatTime = t => t ? t.replace(':', 'h') : '';
+                  const periodos = [1, 2].map(p => {
+                      if (document.getElementById(`fechado${p}_${dia}`).checked) return 'FECHADO-FECHADO';
+                      const abre = getVal(`abre${p}_${dia}`);
+                      const fecha = getVal(`fecha${p}_${dia}`);
+                      return (abre && fecha) ? `${formatTime(abre)}-${formatTime(fecha)}` : null;
+                  }).filter(Boolean); // Remove períodos nulos
+                  
+                  return `${dia}: ${periodos.length > 0 ? periodos.join(', ') : 'FECHADO-FECHADO'}`;
+              }).join('; ');
+          }
+
+          // Ações do Modal
+          function handleCloseModal() { resultModal.classList.remove('active'); document.body.classList.remove('modal-open'); }
+          async function handleCopiar() {
+              try {
+                  await navigator.clipboard.writeText(outputText.textContent);
+                  copiarBtn.textContent = 'Copiado ✓';
+                  setTimeout(() => { copiarBtn.textContent = 'Copiar Texto'; }, 1500);
+              } catch (err) { alert('Falha ao copiar.'); }
+          }
+          function handleBaixar() {
+              const blob = new Blob([outputText.textContent], { type: 'text/plain;charset=utf-8' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url; a.download = 'configuracao-loja.txt'; a.click(); URL.revokeObjectURL(url);
+          }
+      }
+
+      // --- NOVA LÓGICA PARA O MODAL DE IMAGEM (LIGHTBOX) ---
+      function initImageModal() {
+        const images = document.querySelectorAll('.clickable-image');
+        const modal = document.getElementById('image-modal');
+        const modalImg = document.getElementById('modal-image-content');
+        const closeBtn = document.getElementById('image-modal-close');
+
+        if (!modal || !modalImg || !closeBtn) return;
+
+        images.forEach(image => {
+          // A imagem está dentro de um link <a>, vamos usar o wrapper para o evento
+          const linkWrapper = image.closest('a');
+          if (linkWrapper) {
+            linkWrapper.addEventListener('click', (e) => {
+              e.preventDefault(); // Impede que o link seja seguido
+              openImageModal(image.src);
+            });
+          }
+        });
+
+        const openImageModal = (src) => {
+          modalImg.src = src;
+          modal.classList.add('active');
+          document.body.classList.add('modal-open');
+        };
+
+        const closeImageModal = () => {
+          modal.classList.remove('active');
+          document.body.classList.remove('modal-open');
+        };
+
+        closeBtn.addEventListener('click', closeImageModal);
+        modal.addEventListener('click', (e) => {
+          // Fecha se clicar no fundo (overlay), mas não na imagem
+          if (e.target === modal) {
+            closeImageModal();
+          }
+        });
+
+        // Fecha o modal com a tecla 'Escape'
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeImageModal();
+          }
+        });
+      }
+      init();
+});
+
+function limparParametros() {
+  const url = window.location.href.split('?')[0];
+  window.history.replaceState({}, document.title, url);
+}
+
+ function formatchavepix(raw) { // Função corrigida e aprimorada
+    if (!raw) return '';
+    const v = raw.trim();
+    // 1. Chave Aleatória (UUID)
+    if (/^[a-f0-9-]{32,36}$/i.test(v)) {
+        return v.toLowerCase();
+    }
+
+    // 2. E-mail
+    if (v.includes('@')) {
+        return v.toLowerCase();
+    }
+
+    // 3. Telefone (começa com '+', '(', ou tem muitos espaços/hífens)
+    if (v.includes('55')) {
+    return '+' + v.replace(/\D+/g, '');
+    } 
+
+    // 4. CPF ou CNPJ (contém apenas números, pontos, traços ou barras)
+    if (/^[\d.\-\/]+$/.test(v)) {
+        // Remove tudo que não for dígito para obter o valor completo
+        return v.replace(/\D/g, '');
+    }
+
+    // 5. Fallback: se não corresponder a nenhum padrão, retorna o valor limpo
+    return v;
+}
+
+function formatCPF(value) {
+    const numbers = value.replace(/\D/g, '');
+    if (numbers.length <= 11) {
+        return numbers
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    }
+    return formatCNPJ(value);
+}
+
+function formatarChavePix(chave) {
+    if (!chave) return '';
+
+    // 1. E-mail: não precisa de formatação
+    if (chave.includes('@')) {
+        return chave;
+    }
+
+    // 2. Telefone: Formata como (+55 XX XXXXX-XXXX)
+    if (chave.startsWith('+55')) {
+        const numeros = chave.substring(3); // Remove o '+55'
+        return `+55 (${numeros.substring(0, 2)}) ${numeros.substring(2, 7)}-${numeros.substring(7)}`;
+    }
+
+    // 3. CPF (11 dígitos) ou CNPJ (14 dígitos)
+    const numeros = chave.replace(/\D/g, '');
+    if (numeros.length === 11) return formatCPF(numeros);
+    if (numeros.length === 14) return formatCNPJ(numeros);
+
+    // 4. Chave Aleatória ou outro tipo: retorna como está
+    return chave;
+}
+
+function formatCNPJ(value) {
+    const numbers = value.replace(/\D/g, '');
+    return numbers
+        .replace(/(\d{2})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1.$2')
+        .replace(/(\d{3})(\d)/, '$1/$2')
+        .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+}
+
+function formatPhoneWithCountryCode(value) {
+    if (!value) return '';
+
+    // Extrai apenas os dígitos do valor completo
+    let numbers = value.replace(/\D/g, '');
+
+    // Se o usuário digitou '55' no início, removemos para evitar duplicidade
+    if (numbers.startsWith('55')) {
+        numbers = numbers.substring(2);
+    }
+    
+    // Limita ao tamanho máximo de um número brasileiro (DDD + 9 dígitos)
+    if (numbers.length > 11) {
+        numbers = numbers.substring(0, 11);
+    }
+
+    // Aplica a máscara de formatação
+    let formatted = numbers;
+    if (numbers.length > 10) { // Celular com 9º dígito
+        formatted = numbers.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    } else if (numbers.length > 6) {
+        formatted = numbers.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+    } else if (numbers.length > 2) {
+        formatted = numbers.replace(/(\d{2})(\d{1,4})/, '($1) $2');
+    } else if (numbers.length > 0) {
+        formatted = numbers.replace(/(\d*)/, '($1');
+    }
+
+    // Retorna sempre com o +55 no início se houver algum número
+    return numbers.length > 0 ? `+55 ${formatted}` : '';
+}
+
+function detectarTipoChave(chave) {
+    if (!chave) return 'aleatoria';
+    const chaveLimpa = chave.trim();
+    if (chaveLimpa.includes('@')) {
+        return 'email';
+    }
+    const numeros = chaveLimpa.replace(/\D/g, '');
+    if (numeros.length === 10 || (numeros.length > 11 && numeros.startsWith('55'))) {
+        return 'celular';
+    }
+    if (numeros.length === 14) {
+        return 'cnpj';
+    }
+    if (numeros.length === 11) {
+        return 'cpf';
+    }
+    return 'aleatoria';
+}
+function initPixFormatters() {
+    const keyTypeSelector = document.getElementById('ChavesSelector');
+    const pixKeyInput = document.getElementById('pix_chave');
+    const pixKeyLabel = document.getElementById('pixKeyLabel');
+    if (keyTypeSelector && pixKeyInput && pixKeyLabel) {
+        const keyTypeSettings = {
+            'celular': { label: 'Chave Pix (Telefone) <b class="infor">*</b>', placeholder: '+55 (11) 90000-0000', maxlength: 20, type: 'tel', formatter: formatPhoneWithCountryCode },
+            'email': { label: 'Chave Pix (Email) <b class="infor">*</b>', placeholder: 'seu-email@provedor.com', maxlength: 77, type: 'email', formatter: (value) => value.trim() },
+            'cnpj': { label: 'Chave Pix (CNPJ) <b class="infor">*</b>', placeholder: '00.000.000/0000-00', maxlength: 18, type: 'tel', formatter: formatCNPJ },
+            'cpf': { label: 'Chave Pix (CPF) <b class="infor">*</b>', placeholder: '000.000.000-00', maxlength: 14, type: 'tel', formatter: formatCPF },
+            'aleatoria': { label: 'Chave Pix (Aleatória) <b class="infor">*</b>', placeholder: 'Sua chave aleatória (UUID)', maxlength: 36, type: 'text', formatter: (value) => value.trim() }
+        };
+  
+        const updateInputForType = (type) => { 
+            const settings = keyTypeSettings[type];
+             if (!settings) return;
+              pixKeyLabel.innerHTML = settings.label;
+               pixKeyInput.placeholder = settings.placeholder;
+                pixKeyInput.maxLength = settings.maxlength;
+                 pixKeyInput.type = settings.type;
+                 };
+
+        keyTypeSelector.addEventListener('change', (e) => {
+             updateInputForType(e.target.value);
+              if (e.isTrusted) { 
+                pixKeyInput.value = '';
+                 pixKeyInput.focus();
+
+                 } 
+                });
+
+        pixKeyInput.addEventListener('input', function() {
+             if (this.value.trim() === '' || (keyTypeSelector.value === 'celular' && this.value.trim() === '+55')) {
+             this.value = ''; 
+             return; 
+             }
+             const currentType = keyTypeSelector.value;
+             const settings = keyTypeSettings[currentType];
+             if (settings && settings.formatter) this.value = settings.formatter(this.value);
+        });
+
+        updateInputForType(keyTypeSelector.value);
+    }
+}
+
+// --- FUNÇÕES DE SEGURANÇA ---
+
+// 1. Alternar visualização da senha (Olhinho)
+function togglePasswordVisibility() {
+    const input = document.getElementById('admin_pass');
+    const icon = document.getElementById('pass-icon');
+    
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        input.type = "password";
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+// 2. Gerar Hash SHA-256 e Salvar no Input Oculto
+async function gerarHashAdmin() {
+    const passInput = document.getElementById('admin_pass');
+    const pass = passInput.value;
+    const successMsg = document.getElementById('hash-success-msg');
+    const hiddenInput = document.getElementById('admin_hash_final');
+
+    if (!pass) {
+        alert("Por favor, digite uma senha antes de criptografar.");
+        passInput.focus();
+        return;
+    }
+
+    try {
+        const msgBuffer = new TextEncoder().encode(pass);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        
+        // Salva o hash no input oculto para ser pego pelo gerador final
+        hiddenInput.value = hash;
+        successMsg.classList.remove('hidden');
+        
+    } catch (e) {
+        console.error(e);
+        alert("Erro ao gerar criptografia. Tente um navegador mais moderno.");
+    }
+}
+</script>
+
+
+</body>
+</html>

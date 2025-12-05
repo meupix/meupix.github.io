@@ -521,6 +521,10 @@ display: none;
     backdrop-filter: blur(10px);
     transition: transform 0.3s ease;
 }
+
+#compartilhar .StickyDemo {
+    transform: scale(1);
+}
 .novosbotaocompartilhar {
     display: flex;
     flex-direction: column;
@@ -537,10 +541,6 @@ display: none;
  .novosbotaocompartilhar:hover {
     background: rgba(255, 255, 255, 0.3);
 }
-#compartilhar .StickyDemo {
-    transform: scale(1);
-}
-
 .StickyTab {
     align-items: center;
     padding-bottom: 15px;
@@ -651,7 +651,7 @@ display: none;
 .share-wrapper-icons .telegram a:before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" fill="white"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm121.8 169.9l-40.7 191.8c-3 13.6-11.1 16.9-22.4 10.5l-62-45.7-29.9 28.8c-3.3 3.3-6.1 6.1-12.5 6.1l4.4-63.1 114.9-103.8c5-4.4-1.1-6.9-7.7-2.5l-142.3 89.4-61.2-19.1c-13.3-4.2-13.5-13.3 2.8-19.7l239.1-92.2c11.1-4.2 20.8 2.7 17.2 15.1z"/></svg>'); }
 .share-wrapper-icons .whatsapp a:before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="white"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.8 0-67.6-9.5-97.8-26.7l-7-4.1-72.5 19.1 19.4-71.3-4.5-7.4c-18.5-30.7-29.9-66.5-29.9-103.3 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>'); }
 .share-wrapper-icons .facebook-f a:before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="white"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z"/></svg>'); }
-.share-wrapper-icons .email a:before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="white"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>'); }
+.share-wrapper-icons .email a:before { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="white"><path d="M48 64C21.5 64 0 85.5 0 112v288c0 26.5 21.5 48 48 48h416c26.5 0 48-21.5 48-48V112c0-26.5-21.5-48-48-48H48zM256 295.1L464 159.4V128L256 262.6 48 128v31.4L256 295.1zM48 416V194.6l192.6 128.4c8.3 5.5 18.4 5.5 26.7 0L464 194.6V416H48z"/></svg>'); }
 .logoencurtador { content: url(https://www.encurtador.dev/assets/icons/icon-144x144.png); }
 .Compartilhamentos {
     content: url(pagamentos.files/imagens/Compartilhamentos.png);
@@ -2191,7 +2191,7 @@ function CompartilharPix() {
   $('#compartilhar').show(); 
   $('#close-check').show();
   $('#CarregaCompartilhar').show();
-  $('#CarregaCompartilhar').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-compartilhar.png" alt="">`);
+  $('#CarregaCompartilhar').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-pix.png" alt="">`);
 }
 function AbrirPixCriptografardo() {
   // Obtém os valores dos campos do formulário
@@ -2410,7 +2410,7 @@ function CriarLojaVirtual() {
 
     // Gera o link do Pix criptografado e redireciona
 	const LinkCriptografado = btoa(ParamsChaves); 
-    location.href = "https://meupix.vercel.app/lojavirtual/criarconfig?dadospix=" + encodeURIComponent(LinkCriptografado);
+    location.href = "lojavirtual/criarconfig.html?dadospix=" + encodeURIComponent(LinkCriptografado);
   }
 }
 
@@ -2476,7 +2476,7 @@ function criaplacapix() {
 	
     // Gera o link do Pix criptografado e redireciona
 	const LinkCriptografado = btoa(ParamsChaves); 
-    location.href = "https://meupix.vercel.app/criarplaca?dadospix=" + encodeURIComponent(LinkCriptografado);
+    location.href = "criarplaca?dadospix=" + encodeURIComponent(LinkCriptografado);
   }
 }
 
@@ -2760,9 +2760,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // Obtém a URL atual e seus parâmetros
   var url = window.location.href;		 
   const Params = new URLSearchParams(window.location.search);
-
-
-
   // Verifica se existem parâmetros na URL
   if (!Params || Params.keys().next().done) {return;} // Se não houver parâmetros, sai da função
   if (!Params.has('codepix')) {
@@ -3261,7 +3258,7 @@ const displayHistory = () => {
                         $('#compartilhar').show();
                         $('#close-check').show();
                         $('#CarregaCompartilhar').show();
-                        $('#CarregaCompartilhar').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-compartilhar.png" alt="">`);
+                        $('#CarregaCompartilhar').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-pix.png" alt="">`);
                         GerarLinkCurto(transaction.compartilharPix, transaction.compartilharPix);
                         document.getElementById('textocopiado').innerText = transaction.status + ' ID: ' + transaction.id + ' Valor: ' + transaction.amount;
                         document.getElementById('titulocopiado').innerText = 'Pagamento criado com sucesso!';
@@ -3505,7 +3502,7 @@ const handleDeleteProduct = (event) => {
        $('#compartilhar').show();
        $('#close-check').show();
        $('#CarregaCompartilhar').show();
-       $('#CarregaCompartilhar').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-compartilhar.png" alt="">`);
+       $('#CarregaCompartilhar').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-pix.png" alt="">`);
        GerarLinkCurto(compartilharPix, compartilharPix);
 
         displayHistory();
@@ -4006,7 +4003,7 @@ document.getElementById('export-txt').addEventListener('click', (e) => { e.preve
   exibirErro('Insira o valor no parâmetros &codepix=');
   return;
   }
-  ParamsPix = new URLSearchParams(Paramsdescriptografado); // Obtém a URL atual e seus  ex:?codepix=P2NoYXZlPVN1YUNoYXZlJnZhbG9yPTAwLjAwJm5vbWU9U2V1Tm9tZSZjaWRhZGU9U3VhQ2lkYWRlJm1lbnNhZ2VuPU1pbmhhIExvamEmdHhpZD1JRGRvUGFnYW1lbnRvJmJhbmNvPSoqKiZjcGY9U2V1RlBGb3VDTlBKJndoYXRzYXBwPXRydWUmdm9sdGFyPXRydWUmbG9nbz1odHRwczovL2ZmY29kaWd1aW4udmVyY2VsLmFwcC92ZXJpZmljYWRvci9pbWFnZW5zL0xvZ29fbm92YS5wbmc=
+  ParamsPix = new URLSearchParams(Paramsdescriptografado); // Obtém a URL atual e seus  ex:?codepix=P2NoYXZlPVN1YUNo...
   }
   
   const pixKeyInput = ParamsPix.get('chave') || '';
@@ -4404,7 +4401,7 @@ function mostrarLinks() {
           $('#close-check').show(); 
           $('#CarregaCompartilhar').show(); 
           // Define o HTML do elemento 'CarregaCompartilhar'
-          $('#CarregaCompartilhar').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-compartilhar.png" alt="">`); 
+          $('#CarregaCompartilhar').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-pix.png" alt="">`); 
           GerarLinkCurto(links[j].compartilharPix, links[j].compartilharPix);
         };
 
@@ -4423,7 +4420,7 @@ function mostrarLinks() {
       btnCriaPlaca.textContent = 'Cria Placa';
       btnCriaPlaca.classList.add('open-link');
       btnCriaPlaca.onclick = function() {
-        window.location.href = "https://meupix.vercel.app/criarplaca?dadospix=" + links[j].gerarPix;
+        window.location.href = "criarplaca?dadospix=" + links[j].gerarPix;
       };
 	  
 	    const btnCriaVenda = document.createElement('button');
@@ -4437,7 +4434,7 @@ function mostrarLinks() {
       btnlojavirtual.textContent = 'Criar Loja Virtual';
       btnlojavirtual.classList.add('open-link');
       btnlojavirtual.onclick = function() {
-        window.location.href = "https://meupix.vercel.app/lojavirtual/criarconfig?dadospix=" + links[j].gerarPix;
+        window.location.href = "lojavirtual/criarconfig.html?dadospix=" + links[j].gerarPix;
       };
 
       linkActions.appendChild(btnAbrir);
@@ -4694,7 +4691,7 @@ function atualizarAba(abaIndex) {
         $('#compartilhar').show();
         $('#close-check').show();
         $('#CarregaCompartilhar').show();
-        $('#CarregaCompartilhar').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-compartilhar.png" alt="">`);
+        $('#CarregaCompartilhar').html(`<img class="CarrengandoQR" src="pagamentos.files/imagens/loading-pix.png" alt="">`);
         GerarLinkCurto(links[j].compartilharPix, links[j].compartilharPix);
       };
 	  
@@ -4711,7 +4708,7 @@ function atualizarAba(abaIndex) {
       btnCriaPlaca.textContent = 'Cria Placa';
       btnCriaPlaca.classList.add('open-link');
       btnCriaPlaca.onclick = function() {
-        window.location.href = "https://meupix.vercel.app/criarplaca?dadospix=" + links[j].gerarPix;
+        window.location.href = "criarplaca?dadospix=" + links[j].gerarPix;
       };
 
       const btnCriaVenda = document.createElement('button');
@@ -4725,7 +4722,7 @@ function atualizarAba(abaIndex) {
       btnlojavirtual.textContent = 'Criar Loja Virtual';
       btnlojavirtual.classList.add('open-link');
       btnlojavirtual.onclick = function() {
-        window.location.href = "https://meupix.vercel.app/lojavirtual/criarconfig?dadospix=" + links[j].gerarPix;
+        window.location.href = "lojavirtual/criarconfig.html?dadospix=" + links[j].gerarPix;
       };
 
       linkActions.appendChild(btnAbrir);
@@ -4924,7 +4921,6 @@ function getCRC16(payload) {
 function ord(char) {
     return char.charCodeAt(0);
 }
-
 document.addEventListener("DOMContentLoaded", atualizarManifestoPWA);
 
 // --- GERADOR DE MANIFESTO PWA PERSONALIZADO (LINK DIRETO) ---
@@ -4939,7 +4935,7 @@ function atualizarManifestoPWA() {
     const nomeApp = 'Meu Pix';
     
     // Mantém a correção da URL absoluta para a imagem para não dar erro
-    const iconeApp = 'https://meupix.github.io/pagamentos.files/imagens/favicon.png';
+    const iconeApp = new URL('pagamentos.files/imagens/favicon.png', window.location.href).href;
 
     const manifest = {
         "name": nomeApp,
@@ -4952,7 +4948,7 @@ function atualizarManifestoPWA() {
         "icons": [
             {
                 "src": iconeApp,
-                "sizes": "192x192",
+                "sizes": "512x512",
                 "type": "image/png",
                 "purpose": "any maskable"
             },
@@ -4977,7 +4973,6 @@ function atualizarManifestoPWA() {
     const appleTitle = document.querySelector('meta[name="apple-mobile-web-app-title"]');
     if (appleTitle) appleTitle.setAttribute("content", nomeApp);
 }
-
 function formatPhoneWithCountryCode(value) {
     if (!value) return '';
 
@@ -5533,6 +5528,7 @@ function openChat() {
 }
 
 </script>
+
 <!-- Registrar Service Worker -->
 <script>
 if ('serviceWorker' in navigator) {
@@ -5543,5 +5539,6 @@ if ('serviceWorker' in navigator) {
     });
 }
 </script>
+
 </body>
 </html>
