@@ -2356,42 +2356,7 @@ function CriarLojaVirtual() {
   const minhalogo = document.getElementById('add-logo').value || '';
   const pixkey = formatchavepix(pixKeyInput);
   // Verifica a presença de dados obrigatórios
-  if (pixkey === '') {
-    $('.showError').show();
-    document.getElementById('showError').innerText = 'Insira a chave Pix.';
-    setTimeout(() => { $('.showError').hide(); }, 2000);
-    return;
-  }
 
-  if (merchantName === '') {
-    $('.showError').show();
-    document.getElementById('showError').innerText = 'Insira o nome do beneficiado.';
-    setTimeout(() => { $('.showError').hide(); }, 2000);
-    return;
-  }
-
-  if (merchantCity === '') {
-    $('.showError').show();
-    document.getElementById('showError').innerText = 'Insira a Cidade do Beneficiado.';
-    setTimeout(() => { $('.showError').hide(); }, 2000);
-    return;
-  }
-
-  if (banco === '') {
-    $('.showError').show();
-    document.getElementById('showError').innerText = 'Insira o nome do banco do Beneficiado.';
-    setTimeout(() => { $('.showError').hide(); }, 2000);
-    return;
-  }
-
-  if (cpf.length !== 11 && cpf.length !== 14) {
-    $('.showError').show();
-    document.getElementById('showError').innerText = 'Insira a CPF OU CNPJ do Beneficiado.';
-    setTimeout(() => { $('.showError').hide(); }, 2000);
-    return;
-  }
-
-  if (pixkey !== '' && merchantName !== '' && merchantCity !== '') {
     let ParamsChaves;
 	const personalizationOptions = getQrPersonalizationOptions();
     let personalizationString = "";
@@ -2411,7 +2376,6 @@ function CriarLojaVirtual() {
     // Gera o link do Pix criptografado e redireciona
 	const LinkCriptografado = btoa(ParamsChaves); 
     location.href = "lojavirtual/criarconfig.html?dadospix=" + encodeURIComponent(LinkCriptografado);
-  }
 }
 
 function criaplacapix() {
