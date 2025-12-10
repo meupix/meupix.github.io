@@ -27,7 +27,6 @@
     <!-- Ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-
     <style>
     /* Cores Globais */
     :root {
@@ -93,10 +92,10 @@ header {
     margin-bottom: 20px;
     padding: 20px;
     box-shadow: 0px 0px 23px 0 #05a58285;
-    background: linear-gradient(120deg, #2069587d, #05a58266);
+    background: linear-gradient(120deg, #24866fc0, #05a58285);
     border-radius: 15px;
     display: flex;
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px) !important;
 }
     /* Seção de Produtos */
 .products {
@@ -1266,6 +1265,7 @@ to {
 
 @media (max-width: 1280px) {
 .container {
+    backdrop-filter: blur(8px) !important;
     margin-right: 10px !important;
     margin-left: 10px !important;
     margin-top: 20px !important;
@@ -2184,7 +2184,7 @@ input[type="radio"]:checked + .payment-option {
 }
 
 .current-day {
-  background: rgb(255, 0, 0);
+  color: #ffa400;
   font-weight: bold;
 }
 .aplicarCupomBtn {
@@ -2197,6 +2197,7 @@ input[type="radio"]:checked + .payment-option {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+  flex-shrink: 0;
 }
 
 /* --- Modal base --- */
@@ -2803,24 +2804,23 @@ tbody {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.85); /* Fundo bem escuro para foco */
-    backdrop-filter: blur(5px);
     align-items: center;
     justify-content: center;
 }
 
 .promo-content {
-    background: linear-gradient(135deg, #2ecc71, #27ae60); /* Verde chamativo */
     color: white;
     width: 90%;
     max-width: 400px;
-    padding: 30px 20px;
-    border-radius: 20px;
+    padding: 16px 12px;
+    border-radius: 29px;
     text-align: center;
     position: relative;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
     animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border-top: 6px solid #ffa700;
+    backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.521);
 }
 
 /* Ícone animado */
@@ -3416,7 +3416,7 @@ input:checked + .slider-round:before {
 
     </header>
 
-    <div class="container">
+    <div class="container" style="backdrop-filter: blur(8px);">
     <div id="tela-horarios"></div>
     <div class="products" id="products">
     <h2 class="featured-title">✨ Produtos em destaque  ✨</h2>
@@ -4727,7 +4727,7 @@ function parseProductFromEntry(entry) {
 
     if (!imageUrls || imageUrls.length === 0) {
         imageUrls = [
-            'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgRlizRb5kyLXSQ8P8w6hhv7DsQjm82JUQia943JRHcdu_p-BOghPdbS3Gvomxr5Sx8ivfRwuJd4OB1cjQtXLclAIPv1tMjOCKk_p6wzL6GPp2WZ6IWDCumKCmdNHjpW4-5qqZNp_HpFQhxXHlTO7pH86wbTCLxj0L5Ae7aypZyGngU0fj6eNqjWsyigvhO/s320/Captura%20de%20tela%202025-11-13%20220454.png'
+            'pagamentos.files/imagens/sem-foto.png'
         ];
     }
 
@@ -4752,6 +4752,7 @@ function parseProductFromEntry(entry) {
                 sabor = term.substring('sabor/'.length).split('/');
             } else if (term.toLowerCase().startsWith('quantidade/')) {
                 quantity = parseInt(term.substring('quantidade/'.length));
+                if (quantity <= 5) { isCarousel = true;}
             } else if (term.toLowerCase().startsWith('desconto/')) {
                 discount = parseInt(term.substring('desconto/'.length));
             } else if (term.toLowerCase().startsWith('categorias/')) {
@@ -4925,7 +4926,10 @@ function displayProducts() {
             img.alt = product.name;
             img.loading = 'lazy';
             img.classList.add('slider-image');
-            img.addEventListener('click', () => openFullscreenImage(imageUrl));
+            if (!imageUrl.includes('sem-foto.png')) {
+                img.addEventListener('click', () => openFullscreenImage(imageUrl));
+                img.style.cursor = 'zoom-in';
+            }
             imageSlider.appendChild(img);
         });
 
@@ -5258,6 +5262,12 @@ function updateCartDisplay() {
 
     // 1. Calcula o subtotal
     let subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+    if (cupomAplicado && cupomAplicado.minimo > 0 && subtotal < cupomAplicado.minimo) {
+        cupomAplicado = null; // Remove o cupom
+        showNotification(`Cupom removido: O valor mínimo é ${realBR(cupomAplicado ? cupomAplicado.minimo : 0)}`, 'aviso');
+        updateCouponUI(); // Atualiza a visualização do input
+    }
 
     // 2. Lógica do Carrinho Vazio
     if (cart.length === 0) {
@@ -5813,7 +5823,7 @@ async function finalizarPedido() {
         cupomAplicado = null;
         document.getElementById('cupomInput').value = '';
         document.getElementById('cupomStatus').textContent = '';
-        
+        updateCouponUI();
         clearCart();
         updateOrderHistoryDisplay();
         showTab('orderHistory');
@@ -6564,6 +6574,11 @@ function initializeCarousel() {
             </div>
         `;
 
+        let stockHtml = '';
+        if (product.quantity > 0 && product.quantity <= 5) {
+            stockHtml = `<div class="low-stock-badge"><i class="fas fa-fire"></i> Restam apenas ${product.quantity}!</div>`;
+        }
+
         // Preço e Desconto
         let priceHTML = `<span class="backgroundverde">${realBR(product.price)}</span>`;
         let discountBadge = '';
@@ -6576,23 +6591,28 @@ function initializeCarousel() {
             discountBadge = `<div class="carousel-discount">-${product.discount}%</div>`;
         }
 
-                 let detailsButtonHTML = '';
+        let detailsButtonHTML = '';
         if (product.description && product.description.trim().length > 0) {
-            // Usamos aspas simples dentro do onclick para passar o nome do produto como string
             detailsButtonHTML = `<button class="carousel-btn-details" onclick="showDescriptionModal('${product.name}')"><i class="fa fa-info-circle" aria-hidden="true"></i> detalhes</button>`;
+        }
+        let imagemHtml = '';
+        if (!product.imageUrls[0].includes('sem-foto.png')) {
+            imagemHtml = `<img src="${product.imageUrls[0]}" alt="${product.name}" onclick="openFullscreenImage('${product.imageUrls[0]}')">`
+        } else {
+            imagemHtml = `<img src="${product.imageUrls[0]}" alt="${product.name}">`
         }
 
         // Montagem do HTML
         item.innerHTML = `
             <div class="carousel-img-wrapper">
                 ${discountBadge}
-                <img src="${product.imageUrls[0]}" alt="${product.name}" onclick="openFullscreenImage('${product.imageUrls[0]}')">
-            </div>
+                ${imagemHtml}
+                </div>
             
             <div class="carousel-content">
                 <h3>${product.name}</h3>
                 <div class="carousel-price-tag">${priceHTML}</div>
-
+                ${stockHtml}
                 <div class="carousel-actions">
                     ${sizesHTML}
                     ${saborHTML}
@@ -6801,23 +6821,19 @@ function buyNowCarousel(button, productName) {
 }
 
 async function verifyCouponCode(code) {
-    // 1. Gera o hash para verificação, como antes.
     const hashToVerify = await generateHash(code);
 
-    // 2. A "Mágica" da Promise:
     return new Promise((resolve, reject) => {
-        // Gera um nome de callback único para evitar conflitos
         const callbackName = 'processarCupom_' + Date.now();
 
-        // 3. Define a função de callback que o Blogger vai chamar
         window[callbackName] = (data) => {
             let foundCoupon = null;
-            const couponRegex = /^[a-f0-9]{64}:(\d+(\.\d+)?):(percentual|fixo|frete)$/;
+            // ATUALIZADO: Aceita um 4º grupo opcional para o valor mínimo
+            const couponRegex = /^[a-f0-9]{64}:(\d+(\.\d+)?):(percentual|fixo|frete)(?::(\d+(\.\d+)?))?$/;
 
             if (data && data.feed && data.feed.entry) {
-                // Loop para encontrar o cupom correspondente
                 for (const entry of data.feed.entry) {
-                    if (foundCoupon) break; // Otimização: para o loop se já encontrou
+                    if (foundCoupon) break; 
                     if (entry.content && entry.content.$t) {
                         const lines = entry.content.$t.split('\n').map(line => line.replace(/<[^>]*>/g, '').trim());
                         for (const line of lines) {
@@ -6828,7 +6844,9 @@ async function verifyCouponCode(code) {
                                         hash: match[0].split(':')[0],
                                         valor: parseFloat(match[1]),
                                         tipo: match[3],
-                                        codigoOriginal: code // Guarda o código original para exibição
+                                        // Captura o valor mínimo (grupo 4), ou define como 0 se não existir
+                                        minimo: match[4] ? parseFloat(match[4]) : 0,
+                                        codigoOriginal: code
                                     };
                                     break;
                                 }
@@ -6838,36 +6856,27 @@ async function verifyCouponCode(code) {
                 }
             }
 
-            // 4. Limpa o callback e o script da página
             delete window[callbackName];
             document.body.removeChild(script);
 
-            // 5. Resolve ou Rejeita a Promise com o resultado
             if (foundCoupon) {
-                resolve(foundCoupon); // SUCESSO!
+                resolve(foundCoupon); 
             } else {
-                reject(new Error('Cupom inválido ou expirado.')); // FALHA!
+                reject(new Error('Cupom inválido ou expirado.')); 
             }
         };
 
-        // 6. Cria e injeta o script para fazer a chamada JSONP
         const script = document.createElement('script');
         script.src = `https://www.blogger.com/feeds/${blog}/pages/default?alt=json-in-script&callback=${callbackName}`;
         script.onerror = () => {
-            // Limpeza em caso de erro de rede
             delete window[callbackName];
-            if (document.body.contains(script)) {
-                document.body.removeChild(script);
-            }
+            if (document.body.contains(script)) document.body.removeChild(script);
             reject(new Error('Erro de rede ao verificar o cupom.'));
         };
         document.body.appendChild(script);
     });
 }
 
-/**
- * O GERENTE: Orquestra a aplicação do cupom e atualiza a UI.
- */
 async function applyCoupon() {
     const code = document.getElementById('cupomInput').value.toUpperCase().trim();
     if (!code) return;
@@ -6875,27 +6884,34 @@ async function applyCoupon() {
     const statusEl = document.getElementById('cupomStatus');
     const applyBtn = document.getElementById('aplicarCupomBtn');
 
-    // Desabilita o botão e mostra feedback de carregamento
     applyBtn.disabled = true;
     applyBtn.textContent = 'Verificando...';
     statusEl.textContent = '';
     statusEl.className = 'cupom-status';
 
     try {
-        // Chama o nosso "fiscal" e espera pela resposta (sucesso ou falha)
         const validCoupon = await verifyCouponCode(code);
         
-        // Se chegou aqui, o cupom é VÁLIDO!
+        // --- NOVA VALIDAÇÃO DE MÍNIMO ---
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        if (validCoupon.minimo > 0 && subtotal < validCoupon.minimo) {
+            throw new Error(`Este cupom requer um valor mínimo de ${realBR(validCoupon.minimo)}.`);
+        }
+        // -------------------------------
+        
         cupomAplicado = validCoupon;
         showNotification("Cupom aplicado com sucesso!", 'success');
 
     } catch (error) {
-        // Se chegou aqui, o cupom é INVÁLIDO ou houve um erro de rede
         cupomAplicado = null;
         showNotification(error.message, 'error');
+        statusEl.textContent = error.message; // Mostra erro também abaixo do input
+        statusEl.className = 'cupom-status error';
         
     } finally {
-        // Este bloco SEMPRE executa, seja com sucesso ou falha
+        applyBtn.disabled = false;
+        applyBtn.textContent = 'Aplicar';
         updateCouponUI();
         updateCartDisplay();
     }
@@ -7768,19 +7784,45 @@ async function analisarPedidoColado() {
 
         if (codigoCupom) {
             try {
+                // Busca os dados do cupom (agora inclui o .minimo)
                 const cupomData = await verifyCouponCode(codigoCupom);
-                statusCupomHTML = `<span class="badge-cupom-valid">Cupom ${codigoCupom} Válido ✅</span>`;
                 
-                if (cupomData.tipo === 'percentual') {
-                    descontoSistemaCalculado = somaItensRaw * (cupomData.valor / 100);
-                } else if (cupomData.tipo === 'fixo') {
-                    descontoSistemaCalculado = cupomData.valor;
-                    if(descontoSistemaCalculado > somaItensRaw) descontoSistemaCalculado = somaItensRaw;
-                } else if (cupomData.tipo === 'frete') {
-                    freteSistemaCalculado = 0; 
+                // === NOVA VALIDAÇÃO DE MÍNIMO ===
+                // Verifica se o total dos produtos (somaItensRaw) é menor que o mínimo exigido
+                if (cupomData.minimo > 0 && somaItensRaw < cupomData.minimo) {
+                    
+                    // Se não atingiu o mínimo, o sistema considera inválido
+                    statusCupomHTML = `<span class="badge-cupom-invalid" title="Mínimo exigido: ${realBR(cupomData.minimo)}">Mínimo ñ atingido ❌</span>`;
+                    descontoSistemaCalculado = 0; // Zera o desconto no cálculo do sistema
+                    
+                    // Se era cupom de frete, restaura o frete original do sistema (pois o cupom falhou)
+                    if (cupomData.tipo === 'frete') {
+                         if (!isRetirada) {
+                             // Recalcula o frete padrão (Regra: Taxa fixa ou Frete Grátis Global)
+                             freteSistemaCalculado = taxadeenvio || 0;
+                             if (typeof freteGratisValor !== 'undefined' && freteGratisValor > 0 && somaItensRaw >= freteGratisValor) {
+                                 freteSistemaCalculado = 0;
+                             }
+                         }
+                    }
+
+                } else {
+                    // === CUPOM VÁLIDO E REGRAS ATENDIDAS ===
+                    statusCupomHTML = `<span class="badge-cupom-valid">Cupom ${codigoCupom} Válido ✅</span>`;
+                    
+                    if (cupomData.tipo === 'percentual') {
+                        descontoSistemaCalculado = somaItensRaw * (cupomData.valor / 100);
+                    } else if (cupomData.tipo === 'fixo') {
+                        descontoSistemaCalculado = cupomData.valor;
+                        if(descontoSistemaCalculado > somaItensRaw) descontoSistemaCalculado = somaItensRaw;
+                    } else if (cupomData.tipo === 'frete') {
+                        freteSistemaCalculado = 0; 
+                    }
                 }
+
             } catch (e) {
-                statusCupomHTML = `<span class="badge-cupom-invalid">Cupom Inválido ❌</span>`;
+                // Caso o hash não exista ou dê erro na API
+                statusCupomHTML = `<span class="badge-cupom-invalid">Cupom Inválido/Exp. ❌</span>`;
             }
         }
 
@@ -7880,6 +7922,7 @@ async function analisarPedidoColado() {
                     <div class="quick-actions-grid">
                         <button class="btn-status st-cancelado" onclick="copiarMensagemStatus('cancelado')"><i class="fas fa-ban"></i> Cancelar</button>
                         <button class="btn-status st-reembolso" onclick="copiarMensagemStatus('reembolso')"><i class="fas fa-undo"></i> Estorno</button>
+                        <a href="https://www.blogger.com/blog/pages/${blog}" target="_blank"><button class="btn-status st-reembolso"><i class="fa-brands fa-blogger"></i>Confirma no Blog</button></a>
                     </div>
                 </div>`}
             </div>
@@ -8299,8 +8342,8 @@ function atualizarManifestoPWA() {
     if (!linkEl) return;
 
     const currentUrl = window.location.href.split('?')[0];
-    const nomeApp = nomedaloja;
-    const iconeApp = logotipo; 
+    const nomeApp = nomedaloja || "Minha Loja";
+    const iconeApp = logotipo || "pagamentos.files/imagens/favicon.png"; 
 
     const manifest = {
         "name": nomeApp,
