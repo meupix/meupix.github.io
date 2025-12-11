@@ -45,15 +45,24 @@
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body { background-image: url(https://meupix.vercel.app/pagamentos.files/imagens/capa-pix.png); color: #fff; font-size: 16px; line-height: 1.6;}
-    body.modal-open { overflow: hidden; }
+    body {
+    background-image: url(https://meupix.vercel.app/pagamentos.files/imagens/capa-pix.png);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+body.modal-open { overflow: hidden; }
 
     .container { max-width: 900px; margin: 2rem auto; padding: 0 1.5rem; }
     header { text-align: center; margin-bottom: 3rem; }
     header h1 { font-size: 2.5rem; color: white; font-weight: 700; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
     header p { color: #f0f0f0; font-size: 1.1rem; max-width: 700px; margin: 0.5rem auto 0; }
 
-    .tutorial-panel { background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); border-radius: var(--radius); padding: 2rem; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+    .tutorial-panel { color: #fff; background: linear-gradient(120deg, #2069587d, #05a58266); backdrop-filter: blur(8px); border-radius: var(--radius); padding: 2rem; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
     .tutorial-panel h2 { font-size: 1.75rem; margin-bottom: 2rem; color: white; border-bottom: 1px solid var(--border); padding-bottom: 1rem; text-align: center; }
     
     .passo-a-passo { list-style: none; padding-left: 0; }
@@ -79,7 +88,11 @@
     .collapsible-content { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.7s ease-in-out, opacity 0.5s ease-in-out, margin-top 0.5s ease; }
     .collapsible-content.is-open { max-height: 5000px; opacity: 1; margin-top: 1.5rem; overflow-y: auto; }
 
-    .form-panel { background: var(--floating-cart-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; }
+.form-panel {
+    background: var(--floating-cart-bg);
+    border-radius: var(--radius);
+    padding: 0.5rem;
+}
     h3 { font-size: 1.1rem; margin-top: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem; }
     .form-group { margin-bottom: 1.25rem; }
     .grid-2-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -90,7 +103,6 @@
     input:focus, textarea:focus, select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.3); }
     input.is-invalid { border-color: var(--danger) !important; }
 
-    .horarios-grid { display: grid; grid-template-columns: 80px 1fr 1fr auto 20px 1fr 1fr auto; gap: 0.5rem; align-items: center; padding: 0.5rem 0; }
     .form-actions { display: flex; gap: 1rem; padding-top: 1.2rem; border-top: 1px solid var(--border); flex-wrap: wrap; align-items: center; justify-content: center; flex-direction: column-reverse; }
 
     /* Cupon */
@@ -148,13 +160,16 @@
       body { font-size: 15px; }
       .container { padding: 0 1rem; margin: 1rem auto; }
       header h1 { font-size: 2rem; }
-      .tutorial-panel { padding: 1.5rem 1rem; }
+      .tutorial-panel { color: #fff; padding: 1.5rem 1rem; }
       .passo-a-passo li { display: flex; flex-direction: column; align-items: center; }
       .grid-2-cols { grid-template-columns: 1fr; }
-      .horarios-grid { grid-template-columns: 1fr; text-align: center; }
+
       .horarios-grid span:first-child { margin-bottom: 0.5rem; display: block; }
       .modal-header h2 { font-size: 1.25rem; }
       .btn { padding: 0.75rem 1.25rem; }
+    }
+    #output-text {
+      color: var(--bg);
     }
     
     /* Outros Estilos */
@@ -165,7 +180,13 @@
     .location-input-panel { display: none; }
     .location-input-panel.active { display: block; }
     .toggle-group { display: flex; flex-wrap: wrap; gap: 2rem; margin-bottom: 1.5rem; }
-    .toggle-switch { display: flex; align-items: center; gap: 0.75rem; }
+    .toggle-switch {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    justify-content: center;
+    flex-direction: column-reverse;
+}
     .toggle-input { display: none; }
     .toggle-label { position: relative; display: inline-block; width: 44px; height: 24px; background-color: #a81d09; border-radius: 999px; cursor: pointer; transition: background-color 0.2s ease; }
     .toggle-label::before { content: ''; position: absolute; left: 3px; top: 3px; width: 18px; height: 18px; background-color: white; border-radius: 50%; transition: transform 0.2s ease; }
@@ -215,6 +236,108 @@
     width: auto;
   }
 }
+
+.day-label {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: #fbbf24;
+    margin-right: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+}
+/* === CONTAINER PRINCIPAL DOS HORÁRIOS === */
+#horarios-container {
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+/* === CARD DE CADA DIA === */
+.schedule-day-card {
+    border-radius: 12px;
+    transition: 0.2s ease;
+}
+
+.schedule-day-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Container dos dois períodos */
+.periods-container {
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Bloco de períodos */
+.period-block {
+    border-radius: 10px;
+    display: flex;
+    justify-items: stretch;
+}
+
+/* Ícones manhã/noite */
+.period-block i {
+    font-size: 1.1em;
+    color: #ffd44f;
+}
+
+/* Input time */
+.period-block input[type="time"] {
+    background: #ffffff;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    font-size: 0.9em;
+    transition: 0.2s ease;
+}
+
+.period-block input[type="time"]:disabled {
+    opacity: .5;
+    background: #e5e5e5;
+}
+
+/* Texto “às” */
+.period-separator {
+    font-weight: 600;
+    color: #fff;
+}
+
+/* Switch pequeno */
+.toggle-switch-small .toggle-label {
+    width: 42px;
+    height: 22px;
+    background-color: #059669;/* Vermelho desativado */
+}
+
+.toggle-switch-small input:checked + .toggle-label {
+    background-color: #b91c1c; /* Verde ativo */
+}
+
+.toggle-switch-small .toggle-label::before {
+    width: 16px;
+    height: 16px;
+    top: 3px;
+    left: 3px;
+}
+
+.toggle-switch-small input:checked + .toggle-label::before {
+    transform: translateX(19px);
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+    .periods-container {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
+
   </style>
 </head>
 <body>
@@ -224,13 +347,13 @@
     <button onclick="window.history.back()" class="btn-back">
       <i class="fas fa-arrow-left"></i> Voltar
     </button>
-    <header>
-      <h1>Como Criar sua Loja: Passo a Passo</h1>
-      <p>Siga os passos abaixo para configurar sua loja no Blogger e utilize os geradores para criar suas configurações e cupons de desconto.</p>
-    </header>
 
     <section class="tutorial-panel">
       <h2>Configuração e gerador de cupom da Loja Virtual</h2>
+      
+      <h1>Como Criar sua Loja: Passo a Passo</h1>
+      <p>Siga os passos abaixo para configurar sua loja no Blogger e utilize os geradores para criar suas configurações e cupons de desconto.</p>
+    
       <ol class="passo-a-passo">
         
         <li>
@@ -410,35 +533,48 @@
             <span>Abrir Gerador de Cupons</span>
             <span class="toggle-icon">▼</span>
           </button>
-          <div class="collapsible-content" id="mostrateladecriacupom">
-          <section class="form-panel">
-              <h2>Gerador de Cupons</h2>
-              <div class="form-group">
-                  <label for="codigo">Código do Cupom (ex: BEMVINDO15)</label>
-                  <input type="text" id="codigo" placeholder="Digite o código que o cliente usará">
-              </div>
-              <div class="form-group">
-                  <label for="valor">Valor do Desconto</label>
-                  <input type="number" id="valor" placeholder="Ex: 15 para 15% ou 10 para R$10,00">
-              </div>
-              <div class="form-group">
-                  <label for="tipo">Tipo de Desconto</label>
-                  <select id="tipo">
-                      <option value="percentual">Percentual (%)</option>
-                      <option value="fixo">Valor Fixo (R$)</option>
-                      <option value="frete">Frete Grátis</option>
-                  </select>
-              </div>
-              <div id="resultado-cupom">
-                  <p><strong>Copie a linha abaixo e cole no seu Blogger:</strong></p>
-                  <code id="linhaFinal" title="Clique para copiar"></code>
-                  <div id="copyFeedback">Copiado para a área de transferência!</div>
-              </div>
-              <div class="form-actions">
-                  <button id="gerar-cupom-btn" class="btn btn-primary">Gerar Cupom</button>
-              </div>
-            </ol>
-          </section>
+<div class="collapsible-content" id="mostrateladecriacupom">
+  <section class="form-panel">
+    <h2>Gerador de Cupons</h2>
+    
+    <div class="grid-2-cols">
+        <div class="form-group">
+            <label for="codigo">Código do Cupom (ex: BEMVINDO15)</label>
+            <input type="text" id="codigo" placeholder="Digite o código (ex: NATAL10)">
+        </div>
+        <div class="form-group">
+            <label for="tipo">Tipo de Desconto</label>
+            <select id="tipo">
+                <option value="percentual">Percentual (%)</option>
+                <option value="fixo">Valor Fixo (R$)</option>
+                <option value="frete">Frete Grátis</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="grid-2-cols">
+        <div class="form-group">
+            <label for="valor">Valor do Desconto</label>
+            <input type="number" id="valor" placeholder="Ex: 10">
+            <small style="color: #ccc; font-size: 0.8em;">Se for Frete Grátis, coloque 0.</small>
+        </div>
+        <div class="form-group">
+            <label for="minimo" style="color: #4ecdc4;">Valor Mínimo do Pedido (Opcional)</label>
+            <input type="number" id="minimo" placeholder="Ex: 50 (para R$ 50,00)">
+            <small style="color: #ccc; font-size: 0.8em;">Deixe em branco ou 0 para não ter mínimo.</small>
+        </div>
+    </div>
+
+    <div id="resultado-cupom">
+        <p><strong>Copie a linha abaixo e cole no seu Blogger:</strong></p>
+        <code id="linhaFinal" title="Clique para copiar"></code>
+        <div id="copyFeedback">Copiado para a área de transferência!</div>
+    </div>
+    <div class="form-actions">
+        <button id="gerar-cupom-btn" class="btn btn-primary">Gerar Cupom</button>
+    </div>
+  </section>
+</div>
   </main>
   
   <!-- Modal para exibir o resultado da configuração -->
@@ -538,43 +674,52 @@ Params = new URLSearchParams(ParamsB);
         });
       }
 
-      function initCouponGenerator() {
-        const gerarBtn = document.getElementById('gerar-cupom-btn');
-        const codigoEl = document.getElementById('codigo');
-        const valorEl = document.getElementById('valor');
-        const tipoEl = document.getElementById('tipo');
-        const resultadoEl = document.getElementById('resultado-cupom');
-        const linhaFinalEl = document.getElementById('linhaFinal');
-        const copyFeedbackEl = document.getElementById('copyFeedback');
-        
-        gerarBtn.addEventListener('click', async () => {
-          const codigo = codigoEl.value.toUpperCase().trim();
-          const valor = valorEl.value;
+function initCouponGenerator() {
+    const gerarBtn = document.getElementById('gerar-cupom-btn');
+    const codigoEl = document.getElementById('codigo');
+    const valorEl = document.getElementById('valor');
+    const tipoEl = document.getElementById('tipo');
+    const minimoEl = document.getElementById('minimo'); // Novo campo
+    const resultadoEl = document.getElementById('resultado-cupom');
+    const linhaFinalEl = document.getElementById('linhaFinal');
+    const copyFeedbackEl = document.getElementById('copyFeedback');
+    
+    gerarBtn.addEventListener('click', async () => {
+      const codigo = codigoEl.value.toUpperCase().trim();
+      let valor = valorEl.value.replace(',', '.'); // Aceita vírgula convertendo para ponto
+      let minimo = minimoEl.value.replace(',', '.'); // Aceita vírgula
 
-          if (!codigo || !valor) {
-            linhaFinalEl.textContent = 'ERRO: Preencha os campos de código e valor.';
-            resultadoEl.classList.add('show');
-            return;
-          }
-
-          const encoder = new TextEncoder();
-          const data = encoder.encode(codigo);
-          const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-          const hashArray = Array.from(new Uint8Array(hashBuffer));
-          const hashGerado = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-          
-          const linhaFinal = `${hashGerado}:${valor}:${tipoEl.value}`;
-          linhaFinalEl.textContent = linhaFinal;
-          resultadoEl.classList.add('show');
-        });
-
-        linhaFinalEl.addEventListener('click', () => {
-          navigator.clipboard.writeText(linhaFinalEl.textContent).then(() => {
-            copyFeedbackEl.classList.add('visible');
-            setTimeout(() => copyFeedbackEl.classList.remove('visible'), 2000);
-          });
-        });
+      // Validações básicas
+      if (!codigo) {
+        alert('Por favor, digite um código para o cupom.');
+        codigoEl.focus();
+        return;
       }
+      if (!valor) valor = 0;
+      if (!minimo) minimo = 0; // Se estiver vazio, define como 0 (sem mínimo)
+
+      // Criptografia SHA-256 do código
+      const encoder = new TextEncoder();
+      const data = encoder.encode(codigo);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashGerado = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      
+      // Monta a string no novo formato: HASH:VALOR:TIPO:MINIMO
+      const linhaFinal = `${hashGerado}:${valor}:${tipoEl.value}:${minimo}`;
+      
+      linhaFinalEl.textContent = linhaFinal;
+      resultadoEl.classList.add('show');
+    });
+
+    linhaFinalEl.addEventListener('click', () => {
+      navigator.clipboard.writeText(linhaFinalEl.textContent).then(() => {
+        copyFeedbackEl.classList.add('visible');
+        setTimeout(() => copyFeedbackEl.classList.remove('visible'), 2000);
+      });
+    });
+}
+
 
       // --- LÓGICA DO GERADOR DE CONFIGURAÇÃO ---
       function initFormConfig() {
@@ -595,22 +740,32 @@ Params = new URLSearchParams(ParamsB);
           diasDaSemana.forEach(dia => {
               const isFimDeSemana = dia === "Domingo" || dia === "Sábado";
               const row = document.createElement('div');
-              row.className = 'horarios-grid';
+              row.className = 'schedule-day-card';
               row.innerHTML = `
-                  <span>${dia}:</span>
+                  <div class="day-label">${dia}</div>
+                  <div class="periods-container">
+                <!-- Manhã -->
+                <div class="period-block">
+                    <span style="font-size:0.8em; font-weight:600; color:#fbbf24; margin-right:5px;"><i class="fas fa-sun"></i></span>
                   <input type="time" id="abre1_${dia}" value="09:00" ${isFimDeSemana ? 'disabled' : ''}>
+                  <span class="period-separator">às</span>
                   <input type="time" id="fecha1_${dia}" value="12:00" ${isFimDeSemana ? 'disabled' : ''}>
                   <label class="toggle-switch toggle-switch-small" title="Fechar período da manhã">
                       <input type="checkbox" id="fechado1_${dia}" class="toggle-input" ${isFimDeSemana ? 'checked' : ''}>
                       <span class="toggle-label"></span>
                   </label>
-                  <span class="time-separator">,</span>
+                  </div>                  
+                  <div class="period-block">
+                    <span style="font-size:0.8em; font-weight:600; color:#64748b; margin-right:5px;"><i class="fas fa-moon"></i></span>
                   <input type="time" id="abre2_${dia}" value="14:00" ${isFimDeSemana ? 'disabled' : ''}>
+                  <span class="period-separator">às</span>
                   <input type="time" id="fecha2_${dia}" value="18:00" ${isFimDeSemana ? 'disabled' : ''}>
                   <label class="toggle-switch toggle-switch-small" title="Fechar período da tarde">
                       <input type="checkbox" id="fechado2_${dia}" class="toggle-input" ${isFimDeSemana ? 'checked' : ''}>
                       <span class="toggle-label"></span>
                   </label>
+                  </div>
+                  </div>
               `;
               horariosContainer.appendChild(row);
           });
